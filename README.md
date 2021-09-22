@@ -9,8 +9,8 @@ This is the future CLI tool to communicate with the Carbyne Stack services.
 > tested for a specific use case.
 
 > **IMPORTANT**: The Carbyne Stack community has just started to implement this 
-> CLI from scratch. As we are focusing on achieving feature parity as soon as
-> possible, the prior version of the CLI can be found [here](https://github.com/carbynestack/cli).
+> CLI from scratch. We are focusing on achieving feature parity as soon as possible. 
+> Meanwhile, please use the legacy version of the CLI, which can be found [here](https://github.com/carbynestack/cli).
 
 ## License
 
