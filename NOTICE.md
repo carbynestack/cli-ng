@@ -9,17 +9,6 @@ file in the Carbyne Stack
 
 > **NOTE**: Please keep the following list of contributors sorted.
 
-### Bosch.IO GmbH
-
-- Suschke Volker <volker.suschke@bosch.io>
-- Modica Hanna <hanna.modica@bosch.io>
-
-### Robert Bosch LLC
-
-- Jain Shalabh <shalabh.jain@us.bosch.com>
-
 ### Robert Bosch GmbH
 
-- Becker Sebastian <sebastian.becker@de.bosch.com>
-- Raskin Vadim <vadim.raskin@de.bosch.com>
-- Trieflinger Sven <sven.trieflinger@de.bosch.com>
+- David Greven <fixed-term.David.Greven@de.bosch.com>
