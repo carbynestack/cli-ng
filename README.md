@@ -1,5 +1,6 @@
 # Carbyne Stack Command Line Interface (Next Gen)
 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 This is the future CLI tool to communicate with the Carbyne Stack services.
