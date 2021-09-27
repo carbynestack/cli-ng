@@ -34,4 +34,13 @@
         </repository>
     </repositories>
 
+    <properties>
+        <skip.tests>false</skip.tests>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+    </properties>
+
 </project>
