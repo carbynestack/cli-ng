@@ -66,4 +66,33 @@
         <assertj.version>3.21.0</assertj.version>
     </properties>
 
+    <dependencies>
+        <!-- Carbyne Stack dependencies -->
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>amphora-java-client</artifactId>
+            <version>${amphora.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-common</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-java-client</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-upload-java-client</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>ephemeral-java-client</artifactId>
+            <version>${ephemeral.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>
