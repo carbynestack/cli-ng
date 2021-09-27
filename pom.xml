@@ -225,6 +225,28 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <!-- Include all readme files into artifact -->
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>**/*.md</include>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>3RD-PARTY-LICENSES</targetPath>
+                <directory>${project.basedir}/3RD-PARTY-LICENSES</directory>
+            </resource>
+        </resources>
     </build>
 
 </project>
