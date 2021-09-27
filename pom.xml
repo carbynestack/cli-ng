@@ -204,6 +204,26 @@
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/3RD-PARTY-LICENSES</outputDirectory>
+                    <thirdPartyFilename>sbom.xml</thirdPartyFilename>
+                    <fileTemplate>${project.basedir}/.github/templates/sbom.ftl</fileTemplate>
+                    <excludedScopes>test</excludedScopes>
+                    <sortArtifactByName>true</sortArtifactByName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
