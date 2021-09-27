@@ -14,8 +14,8 @@ public class CsCLI implements Callable<Integer> {
 
     @Override
     public Integer call() {
-		System.out.println("Hello Carbyne Stack Community!");
-		return 0;
-	}
+        System.out.println("Hello Carbyne Stack Community!");
+        return 0;
+    }
 
 }
