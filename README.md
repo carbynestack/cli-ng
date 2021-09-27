@@ -19,6 +19,12 @@ This is the future CLI tool to communicate with the Carbyne Stack services.
 The Carbyne Stack *Command Line Interface* is open-sourced under the Apache
 License 2.0. See the [LICENSE](LICENSE) file for details.
 
+### 3rd Party Licenses
+
+For information on how license obligations for 3rd party OSS dependencies are
+fulfilled see the [README](https://github.com/carbynestack/carbynestack) file of
+the Carbyne Stack repository.
+
 ## Contributing
 
 Please see the Carbyne Stack
