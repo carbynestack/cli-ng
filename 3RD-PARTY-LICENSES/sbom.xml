@@ -1,0 +1,620 @@
+<attributionReport>
+   <dependencies>
+      <dependency>
+         <name>amphora-common</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>amphora-common</artifactId>
+         <version>0.1-SNAPSHOT-1261403362-2-41864d8</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>amphora-java-client</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>amphora-java-client</artifactId>
+         <version>0.1-SNAPSHOT-1261403362-2-41864d8</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache Commons Codec</name>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>1.11</version>
+         <projectUrl>http://commons.apache.org/proper/commons-codec/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache Commons IO</name>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>2.9.0</version>
+         <projectUrl>https://commons.apache.org/proper/commons-io/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache Commons Lang</name>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+         <version>3.12.0</version>
+         <projectUrl>https://commons.apache.org/proper/commons-lang/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache Commons Logging</name>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+         <version>1.2</version>
+         <projectUrl>http://commons.apache.org/proper/commons-logging/</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache HttpClient</name>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.5.13</version>
+         <projectUrl>http://hc.apache.org/httpcomponents-client</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Apache HttpCore</name>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpcore</artifactId>
+         <version>4.4.13</version>
+         <projectUrl>http://hc.apache.org/httpcomponents-core-ga</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Carbyne Stack Ephemeral Java Client</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>ephemeral-java-client</artifactId>
+         <version>0.1-SNAPSHOT-1261324039-3-d2504ed</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Carbyne Stack Java HTTP Client</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>java-http-client</artifactId>
+         <version>0.1-SNAPSHOT-1257534854-1-46815a7</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Carbyne Stack MP-SPDZ Integration Utilities</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>mp-spdz-integration</artifactId>
+         <version>0.1-SNAPSHOT-1257545971-1-d751c28</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>castor-common</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>castor-common</artifactId>
+         <version>0.1-SNAPSHOT-1261403451-2-78f5f5b</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>castor-java-client</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>castor-java-client</artifactId>
+         <version>0.1-SNAPSHOT-1261403451-2-78f5f5b</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>castor-upload-java-client</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>castor-upload-java-client</artifactId>
+         <version>0.1-SNAPSHOT-1261403451-2-78f5f5b</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Checker Qual</name>
+         <groupId>org.checkerframework</groupId>
+         <artifactId>checker-qual</artifactId>
+         <version>2.11.1</version>
+         <projectUrl>https://checkerframework.org</projectUrl>
+         <licenses>
+            <license>
+               <name>The MIT License</name>
+               <url>http://opensource.org/licenses/MIT</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>error-prone annotations</name>
+         <groupId>com.google.errorprone</groupId>
+         <artifactId>error_prone_annotations</artifactId>
+         <version>2.3.4</version>
+         <projectUrl>http://nexus.sonatype.org/oss-repository-hosting.html/error_prone_parent/error_prone_annotations</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>FindBugs-jsr305</name>
+         <groupId>com.google.code.findbugs</groupId>
+         <artifactId>jsr305</artifactId>
+         <version>3.0.2</version>
+         <projectUrl>http://findbugs.sourceforge.net/</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Guava InternalFutureFailureAccess and InternalFutures</name>
+         <groupId>com.google.guava</groupId>
+         <artifactId>failureaccess</artifactId>
+         <version>1.0.1</version>
+         <projectUrl>https://github.com/google/guava/failureaccess</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Guava ListenableFuture only</name>
+         <groupId>com.google.guava</groupId>
+         <artifactId>listenablefuture</artifactId>
+         <version>9999.0-empty-to-avoid-conflict-with-guava</version>
+         <projectUrl>https://github.com/google/guava/listenablefuture</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Guava: Google Core Libraries for Java</name>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+         <version>29.0-jre</version>
+         <projectUrl>https://github.com/google/guava/guava</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>J2ObjC Annotations</name>
+         <groupId>com.google.j2objc</groupId>
+         <artifactId>j2objc-annotations</artifactId>
+         <version>1.3</version>
+         <projectUrl>https://github.com/google/j2objc/</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Jackson-annotations</name>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-annotations</artifactId>
+         <version>2.10.2</version>
+         <projectUrl>http://github.com/FasterXML/jackson</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Jackson-core</name>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-core</artifactId>
+         <version>2.12.3</version>
+         <projectUrl>https://github.com/FasterXML/jackson-core</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>jackson-databind</name>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-databind</artifactId>
+         <version>2.10.2</version>
+         <projectUrl>http://github.com/FasterXML/jackson</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>JUL to SLF4J bridge</name>
+         <groupId>org.slf4j</groupId>
+         <artifactId>jul-to-slf4j</artifactId>
+         <version>1.7.30</version>
+         <projectUrl>http://www.slf4j.org</projectUrl>
+         <licenses>
+            <license>
+               <name>MIT License</name>
+               <url>http://www.opensource.org/licenses/mit-license.php</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>picocli - a mighty tiny Command Line Interface</name>
+         <groupId>info.picocli</groupId>
+         <artifactId>picocli</artifactId>
+         <version>4.6.1</version>
+         <projectUrl>http://picocli.info</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Project Lombok</name>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <version>1.18.18</version>
+         <projectUrl>https://projectlombok.org</projectUrl>
+         <licenses>
+            <license>
+               <name>The MIT License</name>
+               <url>https://projectlombok.org/LICENSE</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>ScribeJava APIs</name>
+         <groupId>com.github.scribejava</groupId>
+         <artifactId>scribejava-apis</artifactId>
+         <version>8.3.1</version>
+         <projectUrl>https://github.com/scribejava/scribejava/scribejava-apis</projectUrl>
+         <licenses>
+            <license>
+               <name>MIT</name>
+               <url>https://github.com/scribejava/scribejava/blob/master/LICENSE.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>ScribeJava Core</name>
+         <groupId>com.github.scribejava</groupId>
+         <artifactId>scribejava-core</artifactId>
+         <version>8.3.1</version>
+         <projectUrl>https://github.com/scribejava/scribejava/scribejava-core</projectUrl>
+         <licenses>
+            <license>
+               <name>MIT</name>
+               <url>https://github.com/scribejava/scribejava/blob/master/LICENSE.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>ScribeJava Java 8+ compatibility stuff</name>
+         <groupId>com.github.scribejava</groupId>
+         <artifactId>scribejava-java8</artifactId>
+         <version>8.3.1</version>
+         <projectUrl>https://github.com/scribejava/scribejava/scribejava-java8</projectUrl>
+         <licenses>
+            <license>
+               <name>MIT</name>
+               <url>https://github.com/scribejava/scribejava/blob/master/LICENSE.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>SLF4J API Module</name>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>1.7.30</version>
+         <projectUrl>http://www.slf4j.org</projectUrl>
+         <licenses>
+            <license>
+               <name>MIT License</name>
+               <url>http://www.opensource.org/licenses/mit-license.php</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring AOP</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-aop</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Beans</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-beans</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Commons Logging Bridge</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-jcl</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Context</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Core</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Expression Language (SpEL)</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-expression</artifactId>
+         <version>5.2.1.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Messaging</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-messaging</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Retry</name>
+         <groupId>org.springframework.retry</groupId>
+         <artifactId>spring-retry</artifactId>
+         <version>1.2.5.RELEASE</version>
+         <projectUrl>https://www.springsource.org</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring Web</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-web</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Spring WebSocket</name>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-websocket</artifactId>
+         <version>5.2.3.RELEASE</version>
+         <projectUrl>https://github.com/spring-projects/spring-framework</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>spring-security-core</name>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-core</artifactId>
+         <version>5.2.1.RELEASE</version>
+         <projectUrl>http://spring.io/spring-security</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>spring-security-web</name>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+         <version>5.2.1.RELEASE</version>
+         <projectUrl>http://spring.io/spring-security</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>tomcat-annotations-api</name>
+         <groupId>org.apache.tomcat</groupId>
+         <artifactId>tomcat-annotations-api</artifactId>
+         <version>9.0.30</version>
+         <projectUrl>https://tomcat.apache.org/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>tomcat-embed-core</name>
+         <groupId>org.apache.tomcat.embed</groupId>
+         <artifactId>tomcat-embed-core</artifactId>
+         <version>9.0.30</version>
+         <projectUrl>https://tomcat.apache.org/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>tomcat-embed-websocket</name>
+         <groupId>org.apache.tomcat.embed</groupId>
+         <artifactId>tomcat-embed-websocket</artifactId>
+         <version>9.0.30</version>
+         <projectUrl>https://tomcat.apache.org/</projectUrl>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Vavr</name>
+         <groupId>io.vavr</groupId>
+         <artifactId>vavr</artifactId>
+         <version>0.10.3</version>
+         <projectUrl>http://vavr.io</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
+         <name>Vavr Match</name>
+         <groupId>io.vavr</groupId>
+         <artifactId>vavr-match</artifactId>
+         <version>0.10.3</version>
+         <projectUrl>http://vavr.io</projectUrl>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+      </dependency>
+   </dependencies>
+</attributionReport>

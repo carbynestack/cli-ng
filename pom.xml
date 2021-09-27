@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2021 - for information on the respective copyright owner
+  ~ see the NOTICE file and/or the repository https://github.com/carbynestack/cli-ng.
+  ~
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.carbynestack</groupId>
+    <artifactId>cli-ng</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <name>Carbyne Stack Command Line Interface (Next Gen)</name>
+    <description>Carbyne Stack Command Line Interface (Next Gen) for interacting with backend services.</description>
+
+    <licenses>
+        <license>
+            <name>Apache-2.0</name>
+            <url>https://spdx.org/licenses/Apache-2.0.html</url>
+        </license>
+    </licenses>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>Github Packages</name>
+            <url>https://maven.pkg.github.com/carbynestack/*</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <skip.tests>false</skip.tests>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+
+        <!-- Plugin versions -->
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-jacoco-plugin.version>0.8.6</maven-jacoco-plugin.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
+
+        <!-- Carbyne Stack dependency versions -->
+        <amphora.version>0.1-SNAPSHOT-1261403362-2-41864d8</amphora.version>
+        <castor.version>0.1-SNAPSHOT-1261403451-2-78f5f5b</castor.version>
+        <ephemeral.version>0.1-SNAPSHOT-1261324039-3-d2504ed</ephemeral.version>
+
+        <!-- External dependency versions -->
+        <picocli.version>4.6.1</picocli.version>
+        <jackson.version>2.12.3</jackson.version>
+        <scribejava.version>8.3.1</scribejava.version>
+
+        <!-- Test dependency versions -->
+        <junit.version>5.8.1</junit.version>
+        <assertj.version>3.21.0</assertj.version>
+    </properties>
+
+    <dependencies>
+        <!-- Carbyne Stack dependencies -->
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>amphora-java-client</artifactId>
+            <version>${amphora.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-common</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-java-client</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>castor-upload-java-client</artifactId>
+            <version>${castor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>ephemeral-java-client</artifactId>
+            <version>${ephemeral.version}</version>
+        </dependency>
+
+        <!-- External dependencies -->
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>${picocli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>${scribejava.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>info.picocli</groupId>
+                            <artifactId>picocli-codegen</artifactId>
+                            <version>${picocli.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.carbynestack.cli.CsCLI</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble-all</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>${skip.tests}</skipTests>
+                    <failIfNoTests>false</failIfNoTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/3RD-PARTY-LICENSES</outputDirectory>
+                    <thirdPartyFilename>sbom.xml</thirdPartyFilename>
+                    <fileTemplate>${project.basedir}/.github/templates/sbom.ftl</fileTemplate>
+                    <excludedScopes>test</excludedScopes>
+                    <sortArtifactByName>true</sortArtifactByName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <!-- Include all readme files into artifact -->
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>**/*.md</include>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>3RD-PARTY-LICENSES</targetPath>
+                <directory>${project.basedir}/3RD-PARTY-LICENSES</directory>
+            </resource>
+        </resources>
+    </build>
+
+</project>
