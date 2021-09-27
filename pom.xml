@@ -50,6 +50,11 @@
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
+
+        <!-- Carbyne Stack dependency versions -->
+        <amphora.version>0.1-SNAPSHOT-1261403362-2-41864d8</amphora.version>
+        <castor.version>0.1-SNAPSHOT-1261403451-2-78f5f5b</castor.version>
+        <ephemeral.version>0.1-SNAPSHOT-1261324039-3-d2504ed</ephemeral.version>
     </properties>
 
 </project>
