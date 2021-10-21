@@ -282,7 +282,9 @@
                             <buildArgs>
                                 <buildArg>--no-fallback</buildArg>
                                 <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                <buildArg>-H:+PrintClassInitialization</buildArg>
 
+                                <buildArg>--initialize-at-run-time=org.assertj.core</buildArg>
                                 <buildArg>--trace-class-initialization=org.assertj.core.internal.bytebuddy.utility.dispatcher.JavaDispatcher,org.assertj.core.internal.bytebuddy.description.method.MethodDescription$ForLoadedMethod,org.assertj.core.internal.bytebuddy.description.type.TypeDescription$AbstractBase,org.assertj.core.internal.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$ForLoadedExecutable,org.assertj.core.internal.bytebuddy.ClassFileVersion,org.assertj.core.internal.bytebuddy.description.type.TypeDescription$ForLoadedType</buildArg>
                             </buildArgs>
                             <skipNativeBuild>false</skipNativeBuild>
