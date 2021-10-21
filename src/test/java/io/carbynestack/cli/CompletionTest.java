@@ -11,7 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CompletionTest {
     @Test
     public void getSHELL() {
-        System.out.println(System.getenv("SHELL"));
+        System.out.println("SHELL: " + System.getenv("SHELL"));
+        System.out.println(System.getenv());
     }
 
     @ParameterizedTest
