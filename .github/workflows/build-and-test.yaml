@@ -84,7 +84,7 @@ jobs:
               "password": "${{ secrets.GHPR_TOKEN }}"
             }]
       - name: Build with Maven
-        if: !contains(matrix.java_version, 'graal-aot')
+        if: (!contains(matrix.java_version, 'graal-aot'))
         run: mvn install -Dskip.tests --batch-mode --update-snapshots --no-transfer-progress
       - name: Native build with Maven
         if: contains(matrix.java_version, 'graal-aot')
