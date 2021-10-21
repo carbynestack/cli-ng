@@ -36,7 +36,7 @@ jobs:
       - name: Install GraalVM 21.3.*
         if: contains(matrix.java_version, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
         run: |
-          curl -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz -o graalvm.tar.gz
+          curl -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java17-linux-amd64-21.3.0.tar.gz -o graalvm.tar.gz
           mkdir graalvm
           tar -xf graalvm.tar.gz -C ./graalvm --strip-components=1
           chmod -R a+rwx ./graalvm
