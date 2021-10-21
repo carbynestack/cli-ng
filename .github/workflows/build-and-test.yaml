@@ -94,7 +94,7 @@ jobs:
         run: mvn verify --activate-profiles coverage --batch-mode --no-transfer-progress
       - name: Native tests run
         if: contains(matrix.java_version, 'graal-aot')
-        run: mvn clean -Pnative -Dagent=true -Dskip.tests test --batch-mode --no-transfer-progress
+        run: mvn clean -Pnative -Dagent=true test --batch-mode --no-transfer-progress
       - name: Collect Jacoco reports
         if: (!contains(matrix.java_version, 'graal'))
         run: echo ::set-output name=reports::$(find . -regex '.*/target/site/jacoco/jacoco.xml' | tr '\n' ',' | sed 's/.$//')
