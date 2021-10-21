@@ -280,7 +280,6 @@
                             <imageName>cs</imageName>
                             <mainClass>io.carbynestack.cli.CsCLI</mainClass>
                             <buildArgs>
-                                <buildArg>--verbose</buildArg>
                                 <buildArg>--no-fallback</buildArg>
                             </buildArgs>
                             <skipNativeBuild>false</skipNativeBuild>
