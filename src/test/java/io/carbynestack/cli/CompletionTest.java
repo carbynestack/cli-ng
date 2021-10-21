@@ -16,7 +16,7 @@ public class CompletionTest {
 
     @ParameterizedTest
     @CommandSource(args = "generate-completion")
-    @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash")
+    @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash.*")
     public void execute(CommandResult result) {
         assertThat(result.out()).startsWith("""
                 #!/usr/bin/env bash
