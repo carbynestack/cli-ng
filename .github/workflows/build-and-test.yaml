@@ -13,18 +13,66 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        java_version: [temurin-17, graalvm-17, graal-aot-17]
+        java_version: [temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17]
     steps:
       - uses: actions/checkout@v2
       - name: Move to $HOME
         if: contains(matrix.java_version, 'graal')
         run: cd $HOME
-      - name: Set up JDK 17
+      - name: Cache GraalVM installation
+        if: contains(matrix.java_version, 'graal')
+        id: cache-graalvm
+        uses: actions/cache@v2
+        with:
+          path: graalvm
+          key: ${{ runner.os }}-graalvm-21.3.0
+      - name: Set up Temurin JDK 17
+        if: contains(matrix.java_version, 'temurin')
         uses: actions/setup-java@v2
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
+      - name: Install GraalVM 21.3.*
+        if: contains(matrix.java_version, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
+        run: |
+          curl -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz -o graalvm.tar.gz
+          mkdir graalvm
+          tar -xf graalvm.tar.gz -C ./graalvm --strip-components=1
+          chmod -R a+rwx ./graalvm
+      - name: Set up GraalVM PATH & ENV
+        if: contains(matrix.java_version, 'graal')
+        run: |
+          echo "$PWD/graalvm/bin" >> $GITHUB_PATH
+          echo "GRAALVM_HOME=$PWD/graalvm" >> $GITHUB_ENV
+          echo "JAVA_HOME=$PWD/graalvm" >> $GITHUB_ENV
+      - name: Install GraalVM native-image
+        if: contains(matrix.java_version, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
+        run: gu install native-image
+      - name: Cache GraalVM Maven installation
+        if: contains(matrix.java_version, 'graal')
+        id: cache-maven
+        uses: actions/cache@v2
+        with:
+          path: maven
+          key: ${{ runner.os }}-maven-3.8.3
+      - name: Install GraalVM Maven
+        if: contains(matrix.java_version, 'graal') && steps.cache-maven.outputs.cache-hit != 'true'
+        run: |
+          curl -sL https://mirror.lyrahosting.com/apache/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz -o maven.tar.gz
+          mkdir maven
+          tar -xf maven.tar.gz -C ./maven --strip-components=1
+          chmod -R a+rwx ./maven
+      - name: Set GraalVM Maven PATH
+        if: contains(matrix.java_version, 'graal')
+        run: echo "$PWD/maven/bin" >> $GITHUB_PATH
+      - name: Cache GraalVM Maven packages
+        if: contains(matrix.java_version, 'graal')
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-graalvm-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-graalvm
       - name: Setting up Github Package Repository as Maven Repository
         uses: s4u/maven-settings-action@v2
         with:
