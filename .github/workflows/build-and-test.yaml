@@ -6,6 +6,8 @@
 #
 name: Build and test artifacts
 on: push
+env:
+  SHELL: /bin/bash
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -30,10 +32,7 @@ jobs:
       - name: Build with Maven
         run: mvn install -Dskip.tests --batch-mode --update-snapshots --no-transfer-progress
       - name: Run Tests
-        shell: bash
-        run: |
-          echo $SHELL
-          mvn verify --activate-profiles coverage --batch-mode --no-transfer-progress
+        run: mvn verify --activate-profiles coverage --batch-mode --no-transfer-progress
       - name: Collect Jacoco reports
         run: echo ::set-output name=reports::$(find . -regex '.*/target/site/jacoco/jacoco.xml' | tr '\n' ',' | sed 's/.$//')
         id: jacoco
