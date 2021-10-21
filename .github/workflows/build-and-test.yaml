@@ -6,6 +6,8 @@
 #
 name: Build and test artifacts
 on: push
+env:
+  SHELL: /bin/bash
 jobs:
   test:
     runs-on: ubuntu-20.04

@@ -18,7 +18,8 @@ import static picocli.CommandLine.usage;
  * @since 0.1.0
  */
 @Command(name = "cs", description = "Command Line Interface to interact with Carbyne Stack Virtual Clouds",
-        scope = INHERIT, mixinStandardHelpOptions = true, showAtFileInUsageHelp = true, versionProvider = Version.class)
+        scope = INHERIT, mixinStandardHelpOptions = true, showAtFileInUsageHelp = true, versionProvider = Version.class,
+        subcommands = { Completion.class })
 public class CsCLI implements Runnable {
     /**
      * The Carbyne Stack CLI semantic version number.
