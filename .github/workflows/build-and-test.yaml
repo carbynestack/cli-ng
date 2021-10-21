@@ -11,6 +11,9 @@ env:
 jobs:
   test:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        java_version: [temurin-17, graalvm-17, graal-aot-17]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
