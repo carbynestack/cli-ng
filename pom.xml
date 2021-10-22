@@ -50,6 +50,7 @@
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
+        <graalvm-native-maven-plugin.version>0.9.6</graalvm-native-maven-plugin.version>
 
         <!-- Carbyne Stack dependency versions -->
         <amphora.version>0.1-SNAPSHOT-1261403362-2-41864d8</amphora.version>
@@ -250,6 +251,46 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${graalvm-native-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>cs</imageName>
+                            <mainClass>io.carbynestack.cli.CsCLI</mainClass>
+                            <buildArgs>
+                                <buildArg>--no-fallback</buildArg>
+                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                <buildArg>-H:+PrintClassInitialization</buildArg>
+                                <buildArg>--initialize-at-build-time=org.assertj.core.internal.bytebuddy.utility.dispatcher.JavaDispatcher,org.assertj.core.internal.bytebuddy.description.method.MethodDescription$ForLoadedMethod,org.assertj.core.internal.bytebuddy.description.type.TypeDescription$AbstractBase,org.assertj.core.internal.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$ForLoadedExecutable,org.assertj.core.internal.bytebuddy.ClassFileVersion,org.assertj.core.internal.bytebuddy.description.type.TypeDescription$ForLoadedType</buildArg>
+                            </buildArgs>
+                            <skipNativeBuild>false</skipNativeBuild>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>coverage</id>
             <build>
