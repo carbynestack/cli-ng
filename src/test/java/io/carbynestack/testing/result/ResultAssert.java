@@ -44,18 +44,6 @@ public class ResultAssert<S, F> extends AbstractAssert<ResultAssert<S, F>, Resul
         return new ResultAssert<>(actual);
     }
 
-    /*
-    public ResultAssert<S, F> isFailure(CsFailure failure) {
-        isNotNull();
-        if(actual instanceof Failure<S, F> actualFailure && !Objects.equals(actualFailure, failure.failure())) {
-            failWithMessage("Expected failure %s to be equal to failure %s", actualFailure, failure.failure());
-        } else if(!actual.isFailure()) {
-            failWithMessage("Expected a failure but was %s", actual);
-        }
-        return this;
-    }
-     */
-
     /**
      * Verifies that the actual value is a {@link Success}.
      *
