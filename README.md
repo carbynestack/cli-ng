@@ -1,6 +1,7 @@
 # Carbyne Stack Command Line Interface (Next Gen)
 
 [![codecov](https://codecov.io/gh/carbynestack/cli-ng/branch/master/graph/badge.svg?token=ja4W6WLOHO)](https://codecov.io/gh/carbynestack/cli-ng)
+[![Known Vulnerabilities](https://snyk.io/test/github/carbynestack/cli-ng/badge.svg)](https://snyk.io/test/github/carbynestack/cli-ng)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
