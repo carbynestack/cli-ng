@@ -11,6 +11,7 @@ import io.carbynestack.common.result.Result;
 import io.carbynestack.common.result.Success;
 import org.assertj.core.api.AbstractAssert;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -76,8 +77,8 @@ public class ResultAssert<S, F> extends AbstractAssert<ResultAssert<S, F>, Resul
     public ResultAssert<S, F> hasValue(S value) {
         isSuccess();
         if (this.actual instanceof Success<S, F> success && !Objects.equals(success.value(), value))
-            failWithMessage("Expecting result success value to equal %s but was: %s",
-                    value, success.value());
+            failWithActualExpectedAndMessage(success.value(), value,
+                    "Expecting result success value to equal %s but was: %s", value, success.value());
         return this;
     }
 
@@ -89,8 +90,28 @@ public class ResultAssert<S, F> extends AbstractAssert<ResultAssert<S, F>, Resul
     public ResultAssert<S, F> hasReason(F reason) {
         isFailure();
         if (this.actual instanceof Failure<S, F> failure && !Objects.equals(failure.reason(), reason))
-            failWithMessage("Expecting result failure reason to equal %s but was: %s",
-                    reason, failure.reason());
+            failWithActualExpectedAndMessage(failure.reason(), reason,
+                    "Expecting result failure reason to equal %s but was: %s", reason, failure.reason());
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param actual             the actual value that was found during the test
+     * @param expected           the value that was expected
+     * @param errorMessageFormat the error message to format
+     * @param arguments          the arguments referenced by the format specifiers in the message
+     * @apiNote Transforms string arguments to be displayed in quotes and escapes line breaks
+     * for more legible error messages.
+     * @since 0.1.0
+     */
+    @Override
+    protected void failWithActualExpectedAndMessage(Object actual, Object expected, String errorMessageFormat, Object... arguments) {
+        super.failWithActualExpectedAndMessage(actual, expected, errorMessageFormat, Arrays.stream(arguments)
+                .map(arg -> arg instanceof String ? ((String) arg)
+                        .replaceAll(System.lineSeparator(), "\\\\n") : arg)
+                .map(arg -> arg instanceof String ? String.format("'%s'", arg) : arg)
+                .toArray());
     }
 }
