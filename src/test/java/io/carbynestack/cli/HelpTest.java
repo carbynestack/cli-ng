@@ -8,17 +8,20 @@ package io.carbynestack.cli;
 
 import io.carbynestack.testing.command.CommandResult;
 import io.carbynestack.testing.command.CommandSource;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HelpTest {
+    @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource
     public void executeCLI(CommandResult result) {
         verifyHelp(result);
     }
 
+    @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource(args = "--help")
     public void executeHelp(CommandResult result) {

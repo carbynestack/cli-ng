@@ -8,6 +8,7 @@ package io.carbynestack.cli;
 
 import io.carbynestack.testing.command.CommandResult;
 import io.carbynestack.testing.command.CommandSource;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -38,6 +39,7 @@ public class VersionTest {
         assertThat(version.getVersion()).anyMatch(line -> line.contains(sequence + ":"));
     }
 
+    @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource(args = "--version")
     public void executeVersion(CommandResult result) {
