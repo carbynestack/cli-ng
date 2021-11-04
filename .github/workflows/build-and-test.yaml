@@ -19,6 +19,7 @@ jobs:
         uses: pre-commit/action@2.0.3
   test:
     runs-on: ubuntu-20.04
+    needs: verification
     strategy:
       matrix:
         java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
