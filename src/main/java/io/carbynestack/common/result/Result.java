@@ -6,10 +6,16 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.function.ThrowingSupplier;
+
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents either a success value or a failure reason.
@@ -21,6 +27,29 @@ import java.util.function.Supplier;
  * @since 0.1.0
  */
 public sealed interface Result<S, F> permits Failure, Success {
+    /**
+     * Returns the {@link Success} value of the {@link ThrowingSupplier} or
+     * the supplied {@link Failure} reason if the supplier has thrown a
+     * {@link Throwable} of type {@link E}.
+     *
+     * @param supplier the {@code Success} result supplier
+     * @param reason   the {@code Failure} reason
+     * @param <E>      the type of throwable permitted by this supplier
+     * @param <S>      the success value type
+     * @param <F>      the failure reason type
+     * @return the supplied {@code Success} or {@code Failure} result
+     * @since 0.1.0
+     */
+    static <E extends Throwable, S, F> Result<S, F> of(ThrowingSupplier<E, S> supplier, F reason) {
+        requireNonNull(supplier);
+        requireNonNull(reason);
+        try {
+            return new Success<>(supplier.get());
+        } catch (Throwable e) {
+            return new Failure<>(reason);
+        }
+    }
+
     /**
      * Returns true if the {@code Result} is a {@link Success} or otherwise false.
      *
@@ -53,9 +82,23 @@ public sealed interface Result<S, F> permits Failure, Success {
      * from this {@link Success} or this {@link Failure}
      * @throws NullPointerException if the mapping function is {@code null}
      * @see #recover(Function)
+     * @see #peek(Consumer)
      * @since 0.1.0
      */
     <N> Result<N, F> map(Function<? super S, ? super N> function);
+
+    /**
+     * If the {@code Result} is a {@link Success}, invokes the provided
+     * consumer with the {@link Success#value()}. Otherwise, the
+     * {@link Failure} is returned.
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    Result<S, F> peek(Consumer<? super S> consumer);
 
     /**
      * If the {@code Result} is a {@link Failure}, returns the result of
@@ -147,4 +190,15 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @since 0.1.0
      */
     Optional<S> toOptional();
+
+    /**
+     * If the {@code Result} is a {@link Success}, returns a {@link Stream}
+     * for the {@link Success#value()}. Otherwise, an empty {@code Stream} is
+     * returned.
+     *
+     * @return a {@code Stream} with the {@link Success#value()} or otherwise
+     * an empty {@code Stream}
+     * @since 0.1.0
+     */
+    Stream<S> stream();
 }

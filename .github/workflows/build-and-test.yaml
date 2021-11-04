@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-name: Build and test artifacts
+name: Artifacts
 on: push
 env:
   SHELL: /bin/bash
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        java_version: [temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17]
+        java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
     steps:
       - uses: actions/checkout@v2
       - name: Move to $HOME
