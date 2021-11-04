@@ -7,9 +7,11 @@
 package io.carbynestack.common.result;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -44,12 +46,28 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
      * @return a cast version this {@link Failure}
      * @throws NullPointerException if the mapping function is {@code null}
      * @see #recover(Function)
+     * @see #peek(Consumer)
      * @since 0.1.0
      */
     @Override
     public <N> Result<N, F> map(Function<? super S, ? super N> function) {
         requireNonNull(function);
         return new Failure<>(this.reason());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    @Override
+    public Result<S, F> peek(Consumer<? super S> consumer) {
+        requireNonNull(consumer);
+        return this;
     }
 
     /**
@@ -150,5 +168,16 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     @Override
     public Optional<S> toOptional() {
         return Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return an empty {@code Stream}
+     * @since 0.1.0
+     */
+    @Override
+    public Stream<S> stream() {
+        return Stream.empty();
     }
 }

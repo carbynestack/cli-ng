@@ -7,9 +7,11 @@
 package io.carbynestack.common.result;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -45,12 +47,28 @@ public record Success<S, F>(S value) implements Result<S, F> {
      * from this {@link Success}
      * @throws NullPointerException if the mapping function is {@code null}
      * @see #recover(Function)
+     * @see #peek(Consumer)
      * @since 0.1.0
      */
     @Override
     @SuppressWarnings("unchecked")
     public <N> Result<N, F> map(Function<? super S, ? super N> function) {
         return new Success<>((N) function.apply(this.value()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    @Override
+    public Result<S, F> peek(Consumer<? super S> consumer) {
+        consumer.accept(this.value());
+        return this;
     }
 
     /**
@@ -150,5 +168,16 @@ public record Success<S, F>(S value) implements Result<S, F> {
     @Override
     public Optional<S> toOptional() {
         return Optional.ofNullable(this.value());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@code Stream} with the {@link Success#value()}
+     * @since 0.1.0
+     */
+    @Override
+    public Stream<S> stream() {
+        return Stream.of(this.value());
     }
 }
