@@ -8,9 +8,11 @@ package io.carbynestack.cli.util.args;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class NoArgTest {
     @Test
     public void constructor() {
-        new NoArg();
+        assertThat(new NoArg()).isExactlyInstanceOf(NoArg.class);
     }
 }
