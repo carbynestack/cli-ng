@@ -9,6 +9,13 @@ on: push
 env:
   SHELL: /bin/bash
 jobs:
+  verification:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@2
+      - name: Verify changed files
+        uses: pre-commit/action@2.0.3
   test:
     runs-on: ubuntu-20.04
     strategy:
