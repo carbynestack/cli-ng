@@ -6,17 +6,25 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.testing.nullable.NullableParamSource;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
+import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FailureTest {
+    @SuppressWarnings("unused")
+    public static final Arguments FOLD = Arguments.of(identity(), identity());
+
     public final int reason = 21;
     public final Result<Integer, Integer> result = new Failure<>(reason);
 
@@ -46,7 +54,21 @@ public class FailureTest {
 
     @Test
     public void mapAndTransformType() {
-        assertThat(result.map(v -> String.format("%s * 2 -> %s", v, v * 2))).hasReason(reason);
+        assertThat(result.map(v -> String.format("%s * 2 -> %s", v, v * 2)))
+                .hasReason(reason);
+    }
+
+    @Test
+    public void peek() {
+        var output = new AtomicInteger(-1);
+        result.peek(output::set);
+        assertThat(output).hasValue(-1);
+    }
+
+    @Test
+    public void peekNullPointerException() {
+        assertThatThrownBy(() -> result.peek(null))
+                .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -77,14 +99,11 @@ public class FailureTest {
         assertThat(result.<Integer>fold(r -> r + 9, v -> v * 2)).isEqualTo(30);
     }
 
-    @Test
-    public void foldNullPointerException() {
-        //TODO rework test once @NullableParamSource is available
-        assertThatThrownBy(() -> result.fold(null, Function.identity()))
-                .isExactlyInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> result.fold(Function.identity(), null))
-                .isExactlyInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> result.fold(null, null))
+    @ParameterizedTest
+    @NullableParamSource("FOLD")
+    public void foldNullPointerException(Function<? super Integer, ? super Integer> failureFunction,
+                                         Function<? super Integer, ? super Integer> successFunction) {
+        assertThatThrownBy(() -> result.fold(failureFunction, successFunction))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
@@ -116,5 +135,10 @@ public class FailureTest {
     @Test
     public void toOptional() {
         assertThat(result.toOptional()).isEmpty();
+    }
+
+    @Test
+    public void stream() {
+        assertThat(result.stream()).isEmpty();
     }
 }

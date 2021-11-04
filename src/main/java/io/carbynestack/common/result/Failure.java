@@ -7,9 +7,11 @@
 package io.carbynestack.common.result;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -24,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  */
 public record Failure<S, F>(F reason) implements Result<S, F> {
     /**
-     * {@inheritDoc}
+     * Returns true if the {@code Result} is a {@link Success} or otherwise false.
      *
      * @return false
      * @see #isFailure()
@@ -36,7 +38,9 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     }
 
     /**
-     * {@inheritDoc}
+     * If the {@code Result} is a {@link Success}, returns the result of
+     * applying the given mapping function to the {@link Success#value()}.
+     * Otherwise, a cast version of the {@link Failure} is returned.
      *
      * @param function the mapping function to apply to a {@link Success#value()}
      * @param <N>      the success type of the value returned from the mapping
@@ -44,6 +48,7 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
      * @return a cast version this {@link Failure}
      * @throws NullPointerException if the mapping function is {@code null}
      * @see #recover(Function)
+     * @see #peek(Consumer)
      * @since 0.1.0
      */
     @Override
@@ -54,6 +59,23 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
 
     /**
      * {@inheritDoc}
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    @Override
+    public Result<S, F> peek(Consumer<? super S> consumer) {
+        requireNonNull(consumer);
+        return this;
+    }
+
+    /**
+     * If the {@code Result} is a {@link Failure}, returns the result of
+     * applying the given mapping function to the {@link Failure#reason()}.
+     * Otherwise, this {@link Success} is returned.
      *
      * @param function the mapping function to apply to a {@link Failure#reason()}
      * @return the {@code Result} of mapping the given function to the reason
@@ -70,7 +92,10 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     }
 
     /**
-     * {@inheritDoc}
+     * If the {@code Result} is a {@link Success}, returns the result of
+     * applying the given {@code Result}-bearing mapping function to the
+     * {@link Success#value()}. Otherwise, a cast version of the {@link Failure}
+     * is returned.
      *
      * @param function the mapping function to apply to a {@link Success#value()}
      * @param <N>      the success type of the value returned from the mapping
@@ -87,7 +112,9 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     }
 
     /**
-     * {@inheritDoc}
+     * If the {@code Result} is a {@link Failure}, the failure function is
+     * applied to the {@link Failure#reason()}. Otherwise, the success
+     * function is applied to the {@link Success#value()}.
      *
      * @param failureFunction the mapping function to apply to a
      *                        {@link Failure#reason()}
@@ -111,7 +138,9 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     }
 
     /**
-     * {@inheritDoc}
+     * If the {@code Result} is a {@link Success}, and the value matches the
+     * given predicate, returns this or otherwise a {@link Failure} with the
+     * given reason.
      *
      * @param predicate the predicate to apply to a {@link Success#value()}
      * @param reason    the failure reason for the value mismatch
@@ -126,7 +155,8 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     }
 
     /**
-     * {@inheritDoc}
+     * If the {@code Result} is a {@link Success} return this, otherwise the
+     * result of the supplying function is returned.
      *
      * @param supplier the supplying function that produces an {@code Result}
      *                 to be returned
@@ -150,5 +180,16 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     @Override
     public Optional<S> toOptional() {
         return Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return an empty {@code Stream}
+     * @since 0.1.0
+     */
+    @Override
+    public Stream<S> stream() {
+        return Stream.empty();
     }
 }
