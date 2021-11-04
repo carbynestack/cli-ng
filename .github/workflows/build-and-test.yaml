@@ -20,8 +20,6 @@ jobs:
         exclude:
           - distribution: temurin
             compilation: aot
-
-        java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
     env:
       JDK: ${{ matrix.jdk }}
       DISTRIBUTION: ${{ matrix.distribution }}
