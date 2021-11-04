@@ -14,6 +14,8 @@ jobs:
     strategy:
       matrix:
         java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
+    env:
+      JAVA: ${{ matrix.java_version }}
     steps:
       - uses: actions/checkout@v2
       - name: Move to $HOME
@@ -100,8 +102,9 @@ jobs:
         run: echo ::set-output name=reports::$(find . -regex '.*/target/site/jacoco/jacoco.xml' | tr '\n' ',' | sed 's/.$//')
         id: jacoco
       - uses: codecov/codecov-action@v2
-        if: (!contains(matrix.java_version, 'graal'))
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.jacoco.outputs.reports }}
+          env_vars: JAVA
+          fail_ci_if_error: true
           name: codecov
