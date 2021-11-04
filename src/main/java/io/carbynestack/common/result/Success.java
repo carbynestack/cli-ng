@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  */
 public record Success<S, F>(S value) implements Result<S, F> {
     /**
-     * Returns true if the {@code Result} is a {@link Success} or otherwise false.
+     * {@inheritDoc}
      *
      * @return true
      * @see #isFailure()
@@ -38,9 +38,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Success}, returns the result of
-     * applying the given mapping function to the {@link Success#value()}.
-     * Otherwise, a cast version of the {@link Failure} is returned.
+     * {@inheritDoc}
      *
      * @param function the mapping function to apply to a {@link Success#value()}
      * @param <N>      the success type of the value returned from the mapping
@@ -74,9 +72,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Failure}, returns the result of
-     * applying the given mapping function to the {@link Failure#reason()}.
-     * Otherwise, this {@link Success} is returned.
+     * {@inheritDoc}
      *
      * @param function the mapping function to apply to a {@link Failure#reason()}
      * @return this {@link Success}
@@ -92,10 +88,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Success}, returns the result of
-     * applying the given {@code Result}-bearing mapping function to the
-     * {@link Success#value()}. Otherwise, a cast version of the {@link Failure}
-     * is returned.
+     * {@inheritDoc}
      *
      * @param function the mapping function to apply to a {@link Success#value()}
      * @param <N>      the success type of the value returned from the mapping
@@ -113,9 +106,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Failure}, the failure function is
-     * applied to the {@link Failure#reason()}. Otherwise, the success
-     * function is applied to the {@link Success#value()}.
+     * {@inheritDoc}
      *
      * @param failureFunction the mapping function to apply to a
      *                        {@link Failure#reason()}
@@ -139,9 +130,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Success}, and the value matches the
-     * given predicate, returns this or otherwise a {@link Failure} with the
-     * given reason.
+     * {@inheritDoc}
      *
      * @param predicate the predicate to apply to a {@link Success#value()}
      * @param reason    the failure reason for the value mismatch
@@ -155,8 +144,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
     }
 
     /**
-     * If the {@code Result} is a {@link Success} return this, otherwise the
-     * result of the supplying function is returned.
+     * {@inheritDoc}
      *
      * @param supplier the supplying function that produces an {@code Result}
      *                 to be returned
