@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
-        uses: actions/setup-python@2
+        uses: actions/setup-python@2.2.2
       - name: Verify changed files
         uses: pre-commit/action@2.0.3
   test:
