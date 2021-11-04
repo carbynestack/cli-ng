@@ -12,6 +12,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
     env:
