@@ -14,26 +14,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VerbosityTest {
     @Test
     public void fromReturnsDefault() {
-        assertThat(Verbosity.from(new boolean[0])).isEqualTo(DEFAULT);
+        assertThat(from(new boolean[0])).isEqualTo(DEFAULT);
     }
 
     @Test
     public void fromReturnsVerbose() {
-        assertThat(Verbosity.from(new boolean[]{true})).isEqualTo(VERBOSE);
+        assertThat(from(new boolean[]{true})).isEqualTo(VERBOSE);
     }
 
     @Test
     public void fromReturnsExtraVerbose() {
-        assertThat(Verbosity.from(new boolean[]{true, true})).isEqualTo(EXTRA_VERBOSE);
+        assertThat(from(new boolean[]{true, true})).isEqualTo(EXTRA_VERBOSE);
     }
 
     @Test
     public void fromReturnsDebug() {
-        assertThat(Verbosity.from(new boolean[]{true, true, true})).isEqualTo(DEBUG);
+        assertThat(from(new boolean[]{true, true, true})).isEqualTo(DEBUG);
     }
 
     @Test
     public void fromOverflow() {
-        assertThat(Verbosity.from(new boolean[]{true, true, true, true})).isEqualTo(DEFAULT);
+        assertThat(from(new boolean[]{true, true, true, true})).isEqualTo(DEFAULT);
     }
 }
