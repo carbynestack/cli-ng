@@ -25,12 +25,7 @@ License 2.0. See the [LICENSE](LICENSE) file for details.
 ### 3rd Party Licenses
 
 For information on how license obligations for 3rd party OSS dependencies are
-fulfilled see the [README]
-
-
-
-
-(https://github.com/carbynestack/carbynestack) file of
+fulfilled see the [README](https://github.com/carbynestack/carbynestack) file of
 the Carbyne Stack repository.
 
 ## Contributing
