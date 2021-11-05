@@ -16,7 +16,7 @@ import io.carbynestack.common.result.Result;
  * @param <Args> the argument record type
  * @since 0.3.0
  */
-public interface CommandRunner<Args extends Record> {
+public interface CommandRunner<A extends Record> {
     /**
      * Runs the command implementing the {@code CommandRunner}
      * interface.
@@ -26,5 +26,5 @@ public interface CommandRunner<Args extends Record> {
      * @return the exit code or a failure as a {@link Result}
      * @since 0.3.0
      */
-    Result<Integer, ? extends CsFailureReason> run(Args args, Common common);
+    Result<Integer, ? extends CsFailureReason> run(A args, Common common);
 }
