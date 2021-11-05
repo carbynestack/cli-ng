@@ -9,65 +9,86 @@ on: push
 env:
   SHELL: /bin/bash
 jobs:
+  verification:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Verify changed files
+        uses: pre-commit/action@v2.0.3
   test:
     runs-on: ubuntu-20.04
+    needs: verification
     strategy:
+      fail-fast: false
       matrix:
-        java_version: [ temurin-jdk-17, graalvm-jdk-17, graal-aot-jdk-17 ]
+        jdk: [ 17 ]
+        distribution: [ temurin,graalvm ]
+        compilation: [ jit,aot ]
+        exclude:
+          - distribution: temurin
+            compilation: aot
+    env:
+      JDK: ${{ matrix.jdk }}
+      DISTRIBUTION: ${{ matrix.distribution }}
+      COMPILATION: ${{ matrix.compilation }}
     steps:
       - uses: actions/checkout@v2
       - name: Move to $HOME
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         run: cd $HOME
       - name: Cache GraalVM installation
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         id: cache-graalvm
         uses: actions/cache@v2
         with:
           path: graalvm
           key: ${{ runner.os }}-graalvm-21.3.0
-      - name: Set up Temurin JDK 17
-        if: contains(matrix.java_version, 'temurin')
+      - name: Set up Temurin JDK ${{ matrix.jdk }}
+        if: contains(matrix.distribution, 'temurin')
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
           cache: 'maven'
       - name: Install GraalVM 21.3.*
-        if: contains(matrix.java_version, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
+        if: contains(matrix.distribution, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
         run: |
           curl -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java17-linux-amd64-21.3.0.tar.gz -o graalvm.tar.gz
           mkdir graalvm
           tar -xf graalvm.tar.gz -C ./graalvm --strip-components=1
           chmod -R a+rwx ./graalvm
       - name: Set up GraalVM PATH & ENV
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         run: |
           echo "$PWD/graalvm/bin" >> $GITHUB_PATH
           echo "GRAALVM_HOME=$PWD/graalvm" >> $GITHUB_ENV
           echo "JAVA_HOME=$PWD/graalvm" >> $GITHUB_ENV
       - name: Install GraalVM native-image
-        if: contains(matrix.java_version, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
+        if: contains(matrix.distribution, 'graal') && steps.cache-graalvm.outputs.cache-hit != 'true'
         run: gu install native-image
       - name: Cache GraalVM Maven installation
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         id: cache-maven
         uses: actions/cache@v2
         with:
           path: maven
           key: ${{ runner.os }}-maven-3.8.3
       - name: Install GraalVM Maven
-        if: contains(matrix.java_version, 'graal') && steps.cache-maven.outputs.cache-hit != 'true'
+        if: contains(matrix.distribution, 'graal') && steps.cache-maven.outputs.cache-hit != 'true'
         run: |
           curl -sL https://mirror.lyrahosting.com/apache/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz -o maven.tar.gz
           mkdir maven
           tar -xf maven.tar.gz -C ./maven --strip-components=1
           chmod -R a+rwx ./maven
       - name: Set GraalVM Maven PATH
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         run: echo "$PWD/maven/bin" >> $GITHUB_PATH
       - name: Cache GraalVM Maven packages
-        if: contains(matrix.java_version, 'graal')
+        if: contains(matrix.distribution, 'graal')
         uses: actions/cache@v2
         with:
           path: ~/.m2
@@ -84,24 +105,24 @@ jobs:
               "password": "${{ secrets.GHPR_TOKEN }}"
             }]
       - name: Build with Maven
-        if: (!contains(matrix.java_version, 'graal-aot'))
+        if: (!contains(matrix.compilation, 'aot'))
         run: mvn install -Dskip.tests --batch-mode --update-snapshots --no-transfer-progress
       - name: Native build with Maven
-        if: contains(matrix.java_version, 'graal-aot')
+        if: contains(matrix.compilation, 'aot')
         run: mvn clean -Pnative -DskipTests -Dskip.tests package --batch-mode --update-snapshots --no-transfer-progress
       - name: Run tests
-        if: (!contains(matrix.java_version, 'graal-aot'))
+        if: (!contains(matrix.compilation, 'aot'))
         run: mvn verify --activate-profiles coverage --batch-mode --no-transfer-progress
       - name: Native tests run
-        if: contains(matrix.java_version, 'graal-aot')
+        if: contains(matrix.compilation, 'aot')
         run: mvn clean -Pnative -Dagent=true test --batch-mode --no-transfer-progress
       - name: Collect Jacoco reports
-        if: (!contains(matrix.java_version, 'graal'))
         run: echo ::set-output name=reports::$(find . -regex '.*/target/site/jacoco/jacoco.xml' | tr '\n' ',' | sed 's/.$//')
         id: jacoco
       - uses: codecov/codecov-action@v2
-        if: (!contains(matrix.java_version, 'graal'))
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.jacoco.outputs.reports }}
+          env_vars: JDK,DISTRIBUTION,COMPILATION
+          fail_ci_if_error: true
           name: codecov
