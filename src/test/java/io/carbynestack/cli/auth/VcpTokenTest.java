@@ -20,7 +20,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class VcpTokenTest {
+class VcpTokenTest {
     private static final String BASE_URL = "baseURL", ACCESS_TOKEN = "accessToken", REFRESH_TOKEN = "refreshToken";
     private static final URI BASE_URL_URI = URI.create(BASE_URL);
     private static final Date EXPIRES = new Date(), CREATION = new Date();
@@ -29,12 +29,12 @@ public class VcpTokenTest {
             EXPIRES_IN, REFRESH_TOKEN, "scope", null);
 
     @SuppressWarnings("unused")
-    public static final Arguments PARAMS = Arguments.of(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES),
+    private static final Arguments PARAMS = Arguments.of(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES),
             FROM_WITH_CREATION = Arguments.of(CREATION, BASE_URL_URI, OAUTH_2_ACCESS_TOKEN),
             FROM = Arguments.of(BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
 
     @Test
-    public void constructor() {
+    void constructor() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
         assertThat(token.baseURL()).isEqualTo(BASE_URL);
         assertThat(token.accessToken()).isEqualTo(ACCESS_TOKEN);
@@ -44,13 +44,13 @@ public class VcpTokenTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    public void constructorNullableValues(String baseURL, String accessToken, String refreshToken, Date expires) {
+    void constructorNullableValues(String baseURL, String accessToken, String refreshToken, Date expires) {
         assertThatThrownBy(() -> new VcpToken(baseURL, accessToken, refreshToken, expires))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void constructorEmptyBaseURL() {
+    void constructorEmptyBaseURL() {
         assertThatThrownBy(() -> new VcpToken("", ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing base URL.");
@@ -58,14 +58,14 @@ public class VcpTokenTest {
 
     @ParameterizedTest
     @BlankStringSource
-    public void constructorBlankBaseURL(String baseURL) {
+    void constructorBlankBaseURL(String baseURL) {
         assertThatThrownBy(() -> new VcpToken(baseURL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing base URL.");
     }
 
     @Test
-    public void constructorEmptyAccessToken() {
+    void constructorEmptyAccessToken() {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, "", REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing access token.");
@@ -73,14 +73,14 @@ public class VcpTokenTest {
 
     @ParameterizedTest
     @BlankStringSource
-    public void constructorBlankAccessToken(String accessToken) {
+    void constructorBlankAccessToken(String accessToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, accessToken, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing access token.");
     }
 
     @Test
-    public void constructorEmptyRefreshToken() {
+    void constructorEmptyRefreshToken() {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, ACCESS_TOKEN, "", EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing refresh token.");
@@ -88,14 +88,14 @@ public class VcpTokenTest {
 
     @ParameterizedTest
     @BlankStringSource
-    public void constructorBlankRefreshToken(String refreshToken) {
+    void constructorBlankRefreshToken(String refreshToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, ACCESS_TOKEN, refreshToken, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing refresh token.");
     }
 
     @Test
-    public void fromWithCreation() {
+    void fromWithCreation() {
         var token = VcpToken.from(CREATION, BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
         var expires = Date.from(CREATION.toInstant().plus(EXPIRES_IN, SECONDS));
         assertThat(token.baseURL()).isEqualTo(BASE_URL_URI.toString());
@@ -105,7 +105,7 @@ public class VcpTokenTest {
     }
 
     @Test
-    public void from() {
+    void from() {
         var token = VcpToken.from(BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
         assertThat(token.baseURL()).isEqualTo(BASE_URL_URI.toString());
         assertThat(token.accessToken()).isEqualTo(ACCESS_TOKEN);
@@ -114,20 +114,20 @@ public class VcpTokenTest {
 
     @ParameterizedTest
     @NullableParamSource("FROM_WITH_CREATION")
-    public void fromWithCreationNullableValues(Date created, URI baseURL, OAuth2AccessToken token) {
+    void fromWithCreationNullableValues(Date created, URI baseURL, OAuth2AccessToken token) {
         assertThatThrownBy(() -> VcpToken.from(created, baseURL, token))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @NullableParamSource("FROM")
-    public void fromWithCreationNullableValues(URI baseURL, OAuth2AccessToken token) {
+    void fromWithCreationNullableValues(URI baseURL, OAuth2AccessToken token) {
         assertThatThrownBy(() -> VcpToken.from(baseURL, token))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void expired() {
+    void expired() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
         var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, SECONDS));
         assertThat(token.expired()).isTrue();

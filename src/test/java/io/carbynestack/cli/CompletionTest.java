@@ -13,11 +13,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CompletionTest {
+class CompletionTest {
     @ParameterizedTest
     @CommandSource(args = "generate-completion")
     @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash.*")
-    public void execute(CommandResult result) {
+    void execute(CommandResult result) {
         assertThat(result.out()).startsWith("""
                 #!/usr/bin/env bash
                 #

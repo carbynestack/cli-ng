@@ -12,16 +12,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HelpTest {
+class HelpTest {
     @ParameterizedTest
     @CommandSource
-    public void executeCLI(CommandResult result) {
+    void executeCLI(CommandResult result) {
         verifyHelp(result);
     }
 
     @ParameterizedTest
     @CommandSource(args = "--help")
-    public void executeHelp(CommandResult result) {
+    void executeHelp(CommandResult result) {
         verifyHelp(result);
     }
 
