@@ -13,11 +13,35 @@ import java.util.function.Supplier;
 
 import static java.util.function.Function.identity;
 
+/**
+ * Handles command executions.
+ *
+ * @since 0.4.0
+ */
 public final class CommandExecutor {
-    public static <Args extends Record> int execute(Supplier<? extends CommandRunner<Args>> runner, Args args, Common common) {
+    /**
+     * Executes a command implementation represented by the
+     * supplied runner with the given arguments.
+     *
+     * @param runner the command runner
+     * @param args   the command arguments
+     * @param common the common command arguments
+     * @param <A>    the command arguments type
+     * @return the command exit code
+     * @since 0.4.0
+     */
+    public static <A extends Record> int execute(Supplier<? extends CommandRunner<A>> runner, A args, Common common) {
         return runner.get().run(args, common).fold(r -> 3, identity());
     }
 
+    /**
+     * Top-level command execution with unparsed arguments.
+     *
+     * @param command the command runner
+     * @param args    the unparsed command arguments
+     * @return the command exit code
+     * @since 0.4.0
+     */
     public static int execute(Supplier<? extends DefaultCommandRunner> command, String... args) {
         return new CommandLine(command.get())
                 .setExecutionStrategy(new CommandExecutionStrategy())
