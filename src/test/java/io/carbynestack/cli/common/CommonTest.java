@@ -9,6 +9,7 @@ package io.carbynestack.cli.common;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommonTest {
     private final Common common = new Common();
@@ -26,5 +27,10 @@ class CommonTest {
     @Test
     void spec() {
         assertThat(common.spec).isNull();
+    }
+
+    @Test
+    void out() {
+        assertThatThrownBy(common::out).isExactlyInstanceOf(NullPointerException.class);
     }
 }
