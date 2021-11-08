@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
 
-public class ExitCodesTest {
+class ExitCodesTest {
     @Test
-    public void success() {
+    void success() {
         assertThat(ExitCodes.success()).hasValue(0);
     }
 }

@@ -4,15 +4,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package io.carbynestack.cli.util.args;
+package io.carbynestack.cli.common;
 
+import io.carbynestack.cli.common.Common.VerbosityOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NoArgTest {
+public class VerbosityOptionsTest {
+    public final VerbosityOptions verbosityOptions = new VerbosityOptions();
+
     @Test
-    void constructor() {
-        assertThat(new NoArg()).isExactlyInstanceOf(NoArg.class);
+    public void quiet() {
+        assertThat(verbosityOptions.quiet).isFalse();
     }
 }
