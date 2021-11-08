@@ -13,18 +13,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HelpTest {
+class HelpTest {
     @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource
-    public void executeCLI(CommandResult result) {
+    void executeCLI(CommandResult result) {
         verifyHelp(result);
     }
 
     @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource(args = "--help")
-    public void executeHelp(CommandResult result) {
+    void executeHelp(CommandResult result) {
         verifyHelp(result);
     }
 

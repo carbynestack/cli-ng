@@ -4,15 +4,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package io.carbynestack.cli.util.args;
+package io.carbynestack.cli.common;
 
+import io.carbynestack.cli.common.Common.ShapeOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NoArgTest {
+public class ShapeOptionsTest {
+    public final ShapeOptions shapeOptions = new ShapeOptions();
+
     @Test
-    void constructor() {
-        assertThat(new NoArg()).isExactlyInstanceOf(NoArg.class);
+    public void plain() {
+        assertThat(shapeOptions.plain).isFalse();
     }
 }

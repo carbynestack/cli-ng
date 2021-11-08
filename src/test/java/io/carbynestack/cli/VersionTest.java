@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static picocli.CommandLine.Help.Ansi;
 
-public class VersionTest {
+class VersionTest {
     private final Version version = new Version();
 
     @Test
-    public void getLocale() {
+    void getLocale() {
         var locale = Locale.getDefault();
         var target = new Locale("en", "US");
         var result = version.getLocale();
@@ -35,14 +35,14 @@ public class VersionTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"Carbyne Stack CLI", "Picocli", "Amphora", "Castor", "Ephemeral", "JVM", "OS", "Locale"})
-    public void getVersion(String sequence) {
+    void getVersion(String sequence) {
         assertThat(version.getVersion()).anyMatch(line -> line.contains(sequence + ":"));
     }
 
     @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource(args = "--version")
-    public void executeVersion(CommandResult result) {
+    void executeVersion(CommandResult result) {
         assertThat(result.exitCode()).isZero();
         assertThat(result.err()).isBlank();
         var expected = Arrays.stream(version.getVersion()).limit(10)
