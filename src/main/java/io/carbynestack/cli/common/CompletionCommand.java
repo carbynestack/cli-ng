@@ -28,6 +28,14 @@ import static io.carbynestack.cli.util.ExitCodes.success;
         "", "  source <(${PARENT-COMMAND-FULL-NAME:-$PARENTCOMMAND} ${COMMAND-NAME})", ""},
         optionListHeading = "Options:%n")
 public class CompletionCommand extends DefaultCommandRunner {
+    /**
+     * Prints the auto-completion bsh/zsh script.
+     *
+     * @param noArgs the ignored command arguments
+     * @param common the common command options
+     * @return the exit code (success: 0)
+     * @since 0.1.0
+     */
     @Override
     public Result<Integer, ? extends CsFailureReason> run(NoArg noArgs, Common common) {
         common.spec.commandLine().getOut().print(AutoComplete.bash(common.spec.root().name(),
