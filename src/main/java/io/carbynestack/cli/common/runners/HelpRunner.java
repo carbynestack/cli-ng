@@ -14,7 +14,20 @@ import io.carbynestack.common.result.Result;
 
 import static io.carbynestack.cli.util.ExitCodes.success;
 
+/**
+ * The help command option runner.
+ *
+ * @since 0.4.0
+ */
 public class HelpRunner implements CommandRunner<NoArg> {
+    /**
+     * Prints the usage help to the output stream.
+     *
+     * @param noArg  the ignored command arguments
+     * @param common the common command options
+     * @return the exit code (success: 0)
+     * @since 0.4.0
+     */
     @Override
     public Result<Integer, ? extends CsFailureReason> run(NoArg noArg, Common common) {
         common.spec.commandLine().usage(common.spec.commandLine().getOut());
