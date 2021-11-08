@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ShapeOptionsTest {
-    public final ShapeOptions shapeOptions = new ShapeOptions();
+class ShapeOptionsTest {
+    private final ShapeOptions shapeOptions = new ShapeOptions();
 
     @Test
-    public void plain() {
+    void plain() {
         assertThat(shapeOptions.plain).isFalse();
     }
 }

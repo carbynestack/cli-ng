@@ -18,11 +18,11 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static picocli.CommandLine.Help.Ansi;
 
-public class VersionRunnerTest {
+class VersionRunnerTest {
     private final VersionRunner runner = new VersionRunner();
 
     @Test
-    public void getLocale() {
+    void getLocale() {
         var locale = Locale.getDefault();
         var target = new Locale("en", "US");
         var result = runner.getLocale();
@@ -33,14 +33,14 @@ public class VersionRunnerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"Carbyne Stack CLI", "Picocli", "Amphora", "Castor", "Ephemeral", "JVM", "OS", "Locale"})
-    public void getVersion(String sequence) {
+    void getVersion(String sequence) {
         assertThat(runner.getOutput()).contains(sequence + ":");
     }
 
     @ParameterizedTest
     @CommandSource(args = "--version")
     @Disabled("Disabled until shapeless output support is available!")
-    public void executeVersion(CommandResult result) {
+    void executeVersion(CommandResult result) {
         assertThat(result.exitCode()).isZero();
         assertThat(result.err()).isBlank();
         assertThat(result.out()).startsWith(Ansi.ON.string(runner.getOutput()));
