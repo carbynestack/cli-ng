@@ -7,11 +7,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CompletionCommandTest {
+class CompletionCommandTest {
     @ParameterizedTest
     @CommandSource(args = "generate-completion")
-    @EnabledIfEnvironmentVariable(named = "SHELL", matches = "/bin/bash")
-    public void execute(CommandResult result) {
+    @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash.*")
+    void execute(CommandResult result) {
         assertThat(result.out()).startsWith("""
                 #!/usr/bin/env bash
                 #
