@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoArgTest {
+class NoArgTest {
     @Test
-    public void constructor() {
+    void constructor() {
         assertThat(new NoArg()).isExactlyInstanceOf(NoArg.class);
     }
 }

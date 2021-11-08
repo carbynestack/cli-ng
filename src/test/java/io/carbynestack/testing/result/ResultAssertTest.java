@@ -15,13 +15,13 @@ import org.opentest4j.AssertionFailedError;
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ResultAssertTest {
-    public final int value = 12, reason = 21;
-    public final String some = "some", none = "none";
-    public final Result<Integer, Integer> success = new Success<>(value), failure = new Failure<>(reason);
+class ResultAssertTest {
+    private final int value = 12, reason = 21;
+    private final String some = "some", none = "none";
+    private final Result<Integer, Integer> success = new Success<>(value), failure = new Failure<>(reason);
 
     @Test
-    public void isSuccess() {
+    void isSuccess() {
         assertThat(success).isSuccess();
         assertThatThrownBy(() -> assertThat(failure).isSuccess())
                 .isExactlyInstanceOf(AssertionError.class)
@@ -29,7 +29,7 @@ public class ResultAssertTest {
     }
 
     @Test
-    public void isFailure() {
+    void isFailure() {
         assertThat(failure).isFailure();
         assertThatThrownBy(() -> assertThat(success).isFailure())
                 .isExactlyInstanceOf(AssertionError.class)
@@ -37,7 +37,7 @@ public class ResultAssertTest {
     }
 
     @Test
-    public void hasValue() {
+    void hasValue() {
         assertThat(success).hasValue(value);
         assertThatThrownBy(() -> assertThat(failure).hasValue(value))
                 .isExactlyInstanceOf(AssertionError.class)
@@ -48,28 +48,28 @@ public class ResultAssertTest {
     }
 
     @Test
-    public void hasStringValue() {
+    void hasStringValue() {
         assertThatThrownBy(() -> assertThat(new Success<>(some)).hasValue(none))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal '%s' but was: '%s'", none, some);
     }
 
     @Test
-    public void hasStringValueWithSingleQuotes() {
+    void hasStringValueWithSingleQuotes() {
         assertThatThrownBy(() -> assertThat(new Success<>("'first'")).hasValue("second"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal 'second' but was: '%s'", "'first'");
     }
 
     @Test
-    public void hasStringValueWithLineBreaks() {
+    void hasStringValueWithLineBreaks() {
         assertThatThrownBy(() -> assertThat(new Success<>("first\nsecond")).hasValue("third"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal 'third' but was: '%s'", "first\\nsecond");
     }
 
     @Test
-    public void hasReason() {
+    void hasReason() {
         assertThat(failure).hasReason(reason);
         assertThatThrownBy(() -> assertThat(success).hasReason(reason))
                 .isExactlyInstanceOf(AssertionError.class)
@@ -80,21 +80,21 @@ public class ResultAssertTest {
     }
 
     @Test
-    public void hasStringReason() {
+    void hasStringReason() {
         assertThatThrownBy(() -> assertThat(new Failure<>(some)).hasReason(none))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal '%s' but was: '%s'", none, some);
     }
 
     @Test
-    public void hasStringReasonWithSingleQuotes() {
+    void hasStringReasonWithSingleQuotes() {
         assertThatThrownBy(() -> assertThat(new Failure<>("'first'")).hasReason("second"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal 'second' but was: '%s'", "'first'");
     }
 
     @Test
-    public void hasStringReasonWithLineBreaks() {
+    void hasStringReasonWithLineBreaks() {
         assertThatThrownBy(() -> assertThat(new Failure<>("first\nsecond")).hasReason("third"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal 'third' but was: '%s'", "first\\nsecond");
