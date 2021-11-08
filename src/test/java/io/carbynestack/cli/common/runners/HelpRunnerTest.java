@@ -4,27 +4,24 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package io.carbynestack.cli;
+package io.carbynestack.cli.common.runners;
 
 import io.carbynestack.testing.command.CommandResult;
 import io.carbynestack.testing.command.CommandSource;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HelpTest {
-    @Disabled("Disabled until the Common options @Mixin is merged!")
+public class HelpRunnerTest {
     @ParameterizedTest
     @CommandSource
-    void executeCLI(CommandResult result) {
+    public void executeCLI(CommandResult result) {
         verifyHelp(result);
     }
 
-    @Disabled("Disabled until the Common options @Mixin is merged!")
     @ParameterizedTest
     @CommandSource(args = "--help")
-    void executeHelp(CommandResult result) {
+    public void executeHelp(CommandResult result) {
         verifyHelp(result);
     }
 

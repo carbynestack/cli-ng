@@ -6,11 +6,13 @@
  */
 package io.carbynestack.cli;
 
-import picocli.CommandLine;
+import io.carbynestack.cli.common.CompletionCommand;
+import io.carbynestack.cli.common.runners.DefaultCommandRunner;
 import picocli.CommandLine.Command;
 
+import static io.carbynestack.cli.common.CommandExecutor.execute;
+import static java.lang.System.exit;
 import static picocli.CommandLine.ScopeType.INHERIT;
-import static picocli.CommandLine.usage;
 
 /**
  * Represents the main CLI command and hierarchy root for help and versioning.
@@ -19,8 +21,9 @@ import static picocli.CommandLine.usage;
  */
 @Command(name = "cs", description = "Command Line Interface to interact with Carbyne Stack Virtual Clouds",
         scope = INHERIT, usageHelpAutoWidth = true, showEndOfOptionsDelimiterInUsageHelp = true,
-        showAtFileInUsageHelp = true, versionProvider = Version.class, subcommands = {Completion.class})
-public class CsCLI implements Runnable {
+        mixinStandardHelpOptions = true, showAtFileInUsageHelp = true,
+        subcommands = {CompletionCommand.class})
+public class CsCLI extends DefaultCommandRunner {
     /**
      * The Carbyne Stack CLI semantic version number.
      *
@@ -35,16 +38,6 @@ public class CsCLI implements Runnable {
      * @since 0.1.0
      */
     public static void main(String[] args) {
-        System.exit(new CommandLine(new CsCLI()).execute(args));
-    }
-
-    /**
-     * The (unnamed) default command logic which outputs the CLIs help information.
-     *
-     * @since 0.1.0
-     */
-    @Override
-    public void run() {
-        usage(this, System.out);
+        exit(execute(CsCLI::new, args));
     }
 }

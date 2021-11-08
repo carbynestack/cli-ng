@@ -1,10 +1,4 @@
-/*
- * Copyright (c) 2021 - for information on the respective copyright owner
- * see the NOTICE file and/or the repository https://github.com/carbynestack/cli-ng.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-package io.carbynestack.cli;
+package io.carbynestack.cli.common;
 
 import io.carbynestack.testing.command.CommandResult;
 import io.carbynestack.testing.command.CommandSource;
@@ -13,11 +7,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CompletionTest {
+public class CompletionCommandTest {
     @ParameterizedTest
     @CommandSource(args = "generate-completion")
-    @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash.*")
-    void execute(CommandResult result) {
+    @EnabledIfEnvironmentVariable(named = "SHELL", matches = "/bin/bash")
+    public void execute(CommandResult result) {
         assertThat(result.out()).startsWith("""
                 #!/usr/bin/env bash
                 #
