@@ -12,6 +12,7 @@ import picocli.CommandLine;
 import java.util.function.Supplier;
 
 import static java.util.function.Function.identity;
+import static picocli.AutoComplete.GenerateCompletion;
 
 /**
  * Handles command executions.
@@ -40,6 +41,7 @@ public final class CommandExecutor {
      * @param command the command runner
      * @param args    the unparsed command arguments
      * @return the command exit code
+     * @see GenerateCompletion
      * @since 0.4.0
      */
     public static int execute(Supplier<? extends DefaultCommandRunner> command, String... args) {
