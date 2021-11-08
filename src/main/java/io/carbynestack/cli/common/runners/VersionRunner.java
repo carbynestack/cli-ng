@@ -20,13 +20,32 @@ import static io.carbynestack.cli.CsCLI.VERSION;
 import static io.carbynestack.cli.util.ExitCodes.success;
 import static java.lang.System.getProperty;
 
+/**
+ * The version command option runner.
+ *
+ * @since 0.4.0
+ */
 public class VersionRunner implements CommandRunner<NoArg> {
+    /**
+     * Prints the version information to the output stream.
+     *
+     * @param noArg  the ignored command arguments
+     * @param common the common command options
+     * @return the exit code (success: 0)
+     * @since 0.4.0
+     */
     @Override
     public Result<Integer, ? extends CsFailureReason> run(NoArg noArg, Common common) {
         common.out().println(getOutput());
         return success();
     }
 
+    /**
+     * Returns the interpolated version of {@link #getText()}.
+     *
+     * @return the interpolated version information text
+     * @since 0.2.0
+     */
     @Stub
     String getOutput() {
         return String.format(getText(), VERSION, CommandLine.VERSION, getProperty("java.version"),
@@ -34,6 +53,12 @@ public class VersionRunner implements CommandRunner<NoArg> {
                 getProperty("os.name"), getProperty("os.version"), getProperty("os.arch"), getLocale());
     }
 
+    /**
+     * Returns the raw version information text used by {@link #getOutput()}.
+     *
+     * @return the raw version information text
+     * @since 0.2.0
+     */
     @Stub
     String getText() {
         return """
