@@ -188,6 +188,18 @@
          </licenses>
       </dependency>
       <dependency>
+         <name>common-types</name>
+         <groupId>io.carbynestack</groupId>
+         <artifactId>common-types</artifactId>
+         <version>0.1-SNAPSHOT-1452592126-1-135764e</version>
+         <licenses>
+            <license>
+               <name>Apache-2.0</name>
+               <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            </license>
+         </licenses>
+      </dependency>
+      <dependency>
          <name>error-prone annotations</name>
          <groupId>com.google.errorprone</groupId>
          <artifactId>error_prone_annotations</artifactId>
