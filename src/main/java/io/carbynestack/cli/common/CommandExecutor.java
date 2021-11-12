@@ -7,6 +7,7 @@
 package io.carbynestack.cli.common;
 
 import io.carbynestack.cli.common.runners.DefaultCommandRunner;
+import io.carbynestack.common.Stub;
 import picocli.CommandLine;
 
 import java.util.function.Supplier;
@@ -20,6 +21,19 @@ import static picocli.AutoComplete.GenerateCompletion;
  * @since 0.4.0
  */
 public final class CommandExecutor {
+    /**
+     * Package-private {@code CommandExecutor} constructor.
+     *
+     * @throws UnsupportedOperationException Instance creation of utility
+     *                                       class CommandExecutor not
+     *                                       permitted!
+     * @since 0.4.0
+     */
+    @Stub
+    CommandExecutor() {
+        throw new UnsupportedOperationException("Instance creation of utility class CommandExecutor not permitted!");
+    }
+
     /**
      * Executes a command implementation represented by the
      * supplied runner with the given arguments.

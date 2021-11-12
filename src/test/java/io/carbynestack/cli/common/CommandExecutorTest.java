@@ -14,8 +14,16 @@ import org.junit.jupiter.api.Test;
 
 import static io.carbynestack.cli.util.ExitCodes.success;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommandExecutorTest {
+    @Test
+    void constructor() {
+        assertThatThrownBy(CommandExecutor::new)
+                .isExactlyInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("Instance creation of utility class CommandExecutor not permitted!");
+    }
+
     @Test
     void execute() {
         assertThat(CommandExecutor.execute(() -> new TestRunner(success()), new NoArg(), new Common())).isZero();
