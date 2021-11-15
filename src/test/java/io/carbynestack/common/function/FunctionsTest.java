@@ -8,7 +8,6 @@ package io.carbynestack.common.function;
 
 import io.carbynestack.common.Tuple.*;
 import io.carbynestack.common.function.Functions.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiFunction;
@@ -20,7 +19,7 @@ class FunctionsTest {
     void testFrom() {
         BiFunction<Integer, Integer, Integer> f = Integer::sum;
         assertThat(f.apply(12, 21)).isEqualTo(33);
-        Assertions.assertThat(Functions.from(f).apply(12, 21)).isEqualTo(33);
+        assertThat(Functions.from(f).apply(12, 21)).isEqualTo(33);
     }
 
     @Test
