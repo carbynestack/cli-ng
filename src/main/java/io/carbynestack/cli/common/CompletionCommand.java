@@ -4,12 +4,16 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package io.carbynestack.cli;
+package io.carbynestack.cli.common;
 
+import io.carbynestack.cli.common.runners.DefaultCommandRunner;
+import io.carbynestack.cli.util.args.NoArg;
+import io.carbynestack.common.CsFailureReason;
+import io.carbynestack.common.result.Result;
 import picocli.AutoComplete;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
+
+import static io.carbynestack.cli.util.ExitCodes.success;
 
 /**
  * Represents the auto-completion generation command that outputs a Bash/ZSH
@@ -23,24 +27,20 @@ import picocli.CommandLine.Spec;
         "Run the following command to give `${ROOT-COMMAND-NAME:-$PARENTCOMMAND}` TAB completion in the current shell:",
         "", "  source <(${PARENT-COMMAND-FULL-NAME:-$PARENTCOMMAND} ${COMMAND-NAME})", ""},
         optionListHeading = "Options:%n")
-public class Completion implements Runnable {
+public class CompletionCommand extends DefaultCommandRunner {
     /**
-     * The command specification containing the options, parameters, subcommands and
-     * print streams.
+     * Prints the auto-completion bsh/zsh script.
      *
+     * @param noArgs the ignored command arguments
+     * @param common the common command options
+     * @return the exit code (success: 0)
      * @since 0.1.0
      */
-    @Spec
-    CommandSpec spec;
-
-    /**
-     * Generates a Bash/ZSH completion script and prints it to the output stream.
-     *
-     * @see AutoComplete.GenerateCompletion
-     * @since 0.1.0
-     */
-    public void run() {
-        spec.commandLine().getOut().print(AutoComplete.bash(spec.root().name(), spec.root().commandLine()) + '\n');
-        spec.commandLine().getOut().flush();
+    @Override
+    public Result<Integer, ? extends CsFailureReason> run(NoArg noArgs, Common common) {
+        common.spec.commandLine().getOut().print(AutoComplete.bash(common.spec.root().name(),
+                common.spec.root().commandLine()) + '\n');
+        common.spec.commandLine().getOut().flush();
+        return success();
     }
 }

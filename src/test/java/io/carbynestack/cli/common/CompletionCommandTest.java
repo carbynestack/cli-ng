@@ -4,7 +4,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package io.carbynestack.cli;
+package io.carbynestack.cli.common;
 
 import io.carbynestack.testing.command.CommandResult;
 import io.carbynestack.testing.command.CommandSource;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CompletionTest {
+class CompletionCommandTest {
     @ParameterizedTest
     @CommandSource(args = "generate-completion")
     @EnabledIfEnvironmentVariable(named = "SHELL", matches = ".*bash.*")

@@ -8,6 +8,8 @@ package io.carbynestack.cli.common;
 
 import picocli.CommandLine.Model.CommandSpec;
 
+import java.io.PrintWriter;
+
 import static picocli.CommandLine.*;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
@@ -44,6 +46,17 @@ public class Common {
         return Verbosity.from(verbosityOptions.verbosity);
     }
      */
+
+    /**
+     * Returns a {@link PrintWriter} for the current output
+     * stream.
+     *
+     * @return a {@code PrintWriter}
+     * @since 0.3.0
+     */
+    public PrintWriter out() {
+        return spec.commandLine().getOut();
+    }
 
     /**
      * The shared set of mutually exclusive verbosity options.
