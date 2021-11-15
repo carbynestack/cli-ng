@@ -11,22 +11,22 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KeyStoreUtilFailuresTest {
+class KeyStoreUtilFailuresTest {
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    public void reason(KeyStoreUtilFailures failure) {
+    void reason(KeyStoreUtilFailures failure) {
         assertThat(failure.synopsis()).isEqualTo("Failed to generate temporary keystore.");
     }
 
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    public void descriptionEmpty(KeyStoreUtilFailures failure) {
+    void descriptionEmpty(KeyStoreUtilFailures failure) {
         assertThat(failure.description()).isNotEmpty();
     }
 
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    public void descriptionBlank(KeyStoreUtilFailures failure) {
+    void descriptionBlank(KeyStoreUtilFailures failure) {
         assertThat(failure.description()).isNotBlank();
     }
 }

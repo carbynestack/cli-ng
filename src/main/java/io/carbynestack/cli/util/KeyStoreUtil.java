@@ -23,79 +23,78 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static io.carbynestack.cli.util.KeyStoreUtilFailures.*;
 
+/**
+ * Handles the generation of certificates and creation of keystores.
+ *
+ * @since 0.5.0
+ */
 public final class KeyStoreUtil {
+    /**
+     * Generates a certificate using a factory and a path.
+     *
+     * @param factory the certificate factory
+     * @param cert    the certificate path
+     * @return the generated certificate or a failure as a {@link Result}
+     * @since 0.5.0
+     */
+    @Stub
     static Result<X509Certificate, KeyStoreUtilFailures> generateCertificate(CertificateFactory factory, Path cert) {
-        try {
-            return new Success<>((X509Certificate) factory.generateCertificate(new FileInputStream(cert.toFile())));
-        } catch (Throwable throwable) {
-            return Map.of(FileNotFoundException.class, FILE_NOT_FOUND, CertificateException.class, CERTIFICATE_PARSING)
-                    .getOrDefault(throwable.getClass(), OTHER).toFailure();
-        }
+        return Result.of(() -> (X509Certificate) factory.generateCertificate(new FileInputStream(cert.toFile())),
+                Map.of(FileNotFoundException.class, FILE_NOT_FOUND, CertificateException.class, CERTIFICATE_PARSING,
+                        Throwable.class, OTHER), OTHER);
     }
 
+    /**
+     * Creates a temporary keystore for the given certificates, store and factory.
+     *
+     * @param certs              the certificates to store in the keystore
+     * @param store              the certificate keystore
+     * @param certificateFactory the certificate factory
+     * @return the keystore file or a failure reason as a {@link Result}
+     * @since 0.5.0
+     */
     @Stub
     static Result<File, KeyStoreUtilFailures> tempKeyStorePems(Collection<Path> certs, KeyStore store, CertificateFactory certificateFactory) {
-        //TODO make recovery more versatile -> or maybe offer possibility to transform (or map with two params/biMap?)
-        if(certs == null || certs.isEmpty()) return NO_CERTS.toFailure();
+        return Result.of(() -> {
+            if (certs == null || certs.isEmpty()) return NO_CERTS.toFailure();
 
-        try {
-            //Throws java.io.IOException, java.security.NoSuchAlgorithmException, java.security.cert.CertificateException
             store.load(null);
-            var collection = certs.stream()
-                    .filter(Objects::nonNull)
-                    .map(cert -> generateCertificate(certificateFactory, cert))
-                    .toList();
 
-            for(var entry : collection) {
-                if(entry instanceof Success<X509Certificate, ?> success) {
-                    //TODO maybe Result.perform/do/...
-                    //Throws java.security.KeyStoreException
-                    store.setCertificateEntry(success.value().getSubjectX500Principal().getName(), success.value());
-                } else if (entry instanceof Failure<?, KeyStoreUtilFailures> failure) {
-                    //TODO make failures convertible
+            for (var entry : certs.stream().filter(Objects::nonNull)
+                    .map(cert -> generateCertificate(certificateFactory, cert))
+                    .collect(Collectors.toSet())) {
+                if (entry.tryPeek(cert -> store.setCertificateEntry(cert.getSubjectX500Principal().getName(), cert),
+                        JKS_INSTANCE) instanceof Failure<X509Certificate, KeyStoreUtilFailures> failure)
                     return new Failure<>(failure.reason());
-                }
             }
 
-            //Throws java.io.IOException
             var temp = File.createTempFile("cs_keystore", ".jks");
 
-            try(var output = new FileOutputStream(temp)) {
+            try (var output = new FileOutputStream(temp)) {
                 store.store(output, "".toCharArray());
-                //TODO think about possible failure...
             }
 
             temp.deleteOnExit();
 
             return new Success<>(temp);
-        } catch (IOException ioException) {
-            //TODO append the stacktrace
-            if(ioException.getCause() instanceof UnrecoverableEntryException) {
-                return WRONG_PASSWORD.toFailure();
-            } else {
-                //TODO could also be file creation exception
-                return KEYSTORE_DATA_FORMAT.toFailure();
-            }
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            //TODO append the stacktrace
-            return NO_SUCH_ALGORITHM.toFailure();
-        } catch (Throwable throwable) {
-            return OTHER.toFailure();
-        }
+        }, Map.of(UnrecoverableEntryException.class, WRONG_PASSWORD, IOException.class, KEYSTORE_DATA_FORMAT,
+                NoSuchAlgorithmException.class, NO_SUCH_ALGORITHM, Throwable.class, OTHER), OTHER).unsafeFlatten();
     }
 
+    /**
+     * Creates a temporary keystore for the given certificates.
+     *
+     * @param certs the certificates to store in the keystore
+     * @return the keystore file or a failure reason as a {@link Result}
+     * @since 0.5.0
+     */
     public static Result<File, KeyStoreUtilFailures> tempKeyStorePems(Collection<Path> certs) {
-        try {
-            return tempKeyStorePems(certs, KeyStore.getInstance("JKS"), CertificateFactory.getInstance("X509"));
-        } catch (KeyStoreException e) {
-            //TODO append the stacktrace
-            return JKS_INSTANCE.toFailure();
-        } catch (CertificateException certificateException) {
-            //TODO append the stacktrace
-            return X509_CERTIFICATE_FACTORY.toFailure();
-        }
+        return Result.of(() -> tempKeyStorePems(certs, KeyStore.getInstance("JKS"),
+                CertificateFactory.getInstance("X509")), Map.of(KeyStoreException.class, JKS_INSTANCE,
+                CertificateException.class, X509_CERTIFICATE_FACTORY), OTHER).unsafeFlatten();
     }
 }

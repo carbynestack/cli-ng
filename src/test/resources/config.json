@@ -1,0 +1,21 @@
+{
+  "prime": 198766463529478683931867765928436695041,
+  "r": 141515903391459779531506841503331516415,
+  "noSslValidation": true,
+  "trustedCertificates": [],
+  "vcp": {
+    "apollo": {
+      "amphoraServiceUrl": "http://$APOLLO_FQDN/amphora",
+      "castorServiceUrl": "http://$APOLLO_FQDN/castor",
+      "ephemeralServiceUrl": "http://$APOLLO_FQDN/",
+      "baseUrl": "http://$APOLLO_FQDN/"
+    },
+    "starbuck": {
+      "amphoraServiceUrl": "http://$STARBUCK_FQDN/amphora",
+      "castorServiceUrl": "http://$STARBUCK_FQDN/castor",
+      "ephemeralServiceUrl": "http://$STARBUCK_FQDN/",
+      "baseUrl": "http://$STARBUCK_FQDN/"
+    }
+  },
+  "rinv": 133854242216446749056083838363708373830
+}
