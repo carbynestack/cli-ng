@@ -53,6 +53,7 @@
         <graalvm-native-maven-plugin.version>0.9.6</graalvm-native-maven-plugin.version>
 
         <!-- Carbyne Stack dependency versions -->
+        <common.version>0.1-SNAPSHOT-1452592126-1-135764e</common.version>
         <amphora.version>0.1-SNAPSHOT-1261403362-2-41864d8</amphora.version>
         <castor.version>0.1-SNAPSHOT-1261403451-2-78f5f5b</castor.version>
         <ephemeral.version>0.1-SNAPSHOT-1261324039-3-d2504ed</ephemeral.version>
@@ -69,6 +70,11 @@
 
     <dependencies>
         <!-- Carbyne Stack dependencies -->
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>common-types</artifactId>
+            <version>${common.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.carbynestack</groupId>
             <artifactId>amphora-java-client</artifactId>
@@ -113,6 +119,12 @@
         </dependency>
 
         <!-- Test dependencies -->
+        <dependency>
+            <groupId>io.carbynestack</groupId>
+            <artifactId>common-testing</artifactId>
+            <version>${common.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -184,6 +196,9 @@
                         <manifest>
                             <mainClass>io.carbynestack.cli.CsCLI</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>

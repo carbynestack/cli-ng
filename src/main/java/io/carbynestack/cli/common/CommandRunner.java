@@ -13,7 +13,7 @@ import io.carbynestack.common.result.Result;
  * The {@code CommandRunner} interface represents the
  * foundation of every runnable command.
  *
- * @param <Args> the argument record type
+ * @param <A> the argument record type
  * @since 0.3.0
  */
 public interface CommandRunner<A extends Record> {

@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VerbosityOptionsTest {
-    public final VerbosityOptions verbosityOptions = new VerbosityOptions();
+class VerbosityOptionsTest {
+    private final VerbosityOptions verbosityOptions = new VerbosityOptions();
 
     @Test
-    public void quiet() {
+    void quiet() {
         assertThat(verbosityOptions.quiet).isFalse();
     }
 }

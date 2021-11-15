@@ -7,6 +7,7 @@
 package io.carbynestack.testing.command;
 
 import io.carbynestack.cli.CsCLI;
+import io.carbynestack.cli.common.CommandExecutor;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,7 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.support.AnnotationConsumer;
-import picocli.CommandLine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -69,7 +69,7 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
         try {
             System.setErr(new PrintStream(err));
             System.setOut(new PrintStream(out));
-            exitCode = new CommandLine(new CsCLI()).execute(args);
+            exitCode = CommandExecutor.execute(CsCLI::new, args);
         } finally {
             System.setErr(oldErr);
             System.setOut(oldOut);
