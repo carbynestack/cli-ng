@@ -17,7 +17,7 @@ import java.util.function.Function;
  *
  * @since 0.5.0
  */
-public final class Functions {
+public interface Functions {
 
     /**
      * Converts a function of type {@code BiFunction} to a {@code Function2}.
@@ -30,7 +30,7 @@ public final class Functions {
      * @see BiFunction
      * @since 0.5.0
      */
-    public static <A1, A2, R> Function2<A1, A2, R> from(BiFunction<A1, A2, R> biFunction) {
+    static <A1, A2, R> Function2<A1, A2, R> from(BiFunction<A1, A2, R> biFunction) {
         return biFunction::apply;
     }
 
@@ -45,7 +45,7 @@ public final class Functions {
      * @see BiFunction
      * @since 0.5.0
      */
-    public static <A1, A2, R> BiFunction<A1, A2, R> to(Function2<A1, A2, R> function2) {
+    static <A1, A2, R> BiFunction<A1, A2, R> to(Function2<A1, A2, R> function2) {
         return function2::apply;
     }
 
@@ -61,7 +61,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function2<A1, A2, R> extends Applicable2<A1, A2, R>, Applicable1<Tuple2<A1, A2>, R> {
+    interface Function2<A1, A2, R> extends Applicable2<A1, A2, R>, Applicable1<Tuple2<A1, A2>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -118,7 +118,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function3<A1, A2, A3, R> extends Applicable3<A1, A2, A3, R>, Applicable1<Tuple3<A1, A2, A3>, R> {
+    interface Function3<A1, A2, A3, R> extends Applicable3<A1, A2, A3, R>, Applicable1<Tuple3<A1, A2, A3>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -177,7 +177,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function4<A1, A2, A3, A4, R> extends Applicable4<A1, A2, A3, A4, R>, Applicable1<Tuple4<A1, A2, A3, A4>, R> {
+    interface Function4<A1, A2, A3, A4, R> extends Applicable4<A1, A2, A3, A4, R>, Applicable1<Tuple4<A1, A2, A3, A4>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -238,7 +238,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function5<A1, A2, A3, A4, A5, R> extends Applicable5<A1, A2, A3, A4, A5, R>, Applicable1<Tuple5<A1, A2, A3, A4, A5>, R> {
+    interface Function5<A1, A2, A3, A4, A5, R> extends Applicable5<A1, A2, A3, A4, A5, R>, Applicable1<Tuple5<A1, A2, A3, A4, A5>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -301,7 +301,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function6<A1, A2, A3, A4, A5, A6, R> extends Applicable6<A1, A2, A3, A4, A5, A6, R>, Applicable1<Tuple6<A1, A2, A3, A4, A5, A6>, R> {
+    interface Function6<A1, A2, A3, A4, A5, A6, R> extends Applicable6<A1, A2, A3, A4, A5, A6, R>, Applicable1<Tuple6<A1, A2, A3, A4, A5, A6>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -368,7 +368,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function7<A1, A2, A3, A4, A5, A6, A7, R> extends Applicable7<A1, A2, A3, A4, A5, A6, A7, R>, Applicable1<Tuple7<A1, A2, A3, A4, A5, A6, A7>, R> {
+    interface Function7<A1, A2, A3, A4, A5, A6, A7, R> extends Applicable7<A1, A2, A3, A4, A5, A6, A7, R>, Applicable1<Tuple7<A1, A2, A3, A4, A5, A6, A7>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
@@ -437,7 +437,7 @@ public final class Functions {
      * @since 0.5.0
      */
     @FunctionalInterface
-    public interface Function8<A1, A2, A3, A4, A5, A6, A7, A8, R> extends Applicable8<A1, A2, A3, A4, A5, A6, A7, A8, R>, Applicable1<Tuple8<A1, A2, A3, A4, A5, A6, A7, A8>, R> {
+    interface Function8<A1, A2, A3, A4, A5, A6, A7, A8, R> extends Applicable8<A1, A2, A3, A4, A5, A6, A7, A8, R>, Applicable1<Tuple8<A1, A2, A3, A4, A5, A6, A7, A8>, R> {
 
         /**
          * Applies the function to the given {@code Tuple}.
