@@ -20,13 +20,7 @@ class KeyStoreUtilFailuresTest {
 
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    void descriptionEmpty(KeyStoreUtilFailures failure) {
-        assertThat(failure.description()).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = KeyStoreUtilFailures.class)
-    void descriptionBlank(KeyStoreUtilFailures failure) {
+    void descriptionEmptyOrBlank(KeyStoreUtilFailures failure) {
         assertThat(failure.description()).isNotBlank();
     }
 }
