@@ -34,6 +34,19 @@ import static io.carbynestack.cli.util.KeyStoreUtilFailures.*;
  */
 public final class KeyStoreUtil {
     /**
+     * Package-private {@code KeyStoreUtil} constructor.
+     *
+     * @throws UnsupportedOperationException Instance creation of utility
+     *                                       class KeyStoreUtil not
+     *                                       permitted!
+     * @since 0.5.0
+     */
+    @Stub
+    KeyStoreUtil() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Generates a certificate using a factory and a path.
      *
      * @param factory the certificate factory
