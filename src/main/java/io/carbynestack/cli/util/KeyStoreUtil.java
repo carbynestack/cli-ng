@@ -43,7 +43,7 @@ public final class KeyStoreUtil {
      */
     @Stub
     KeyStoreUtil() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Instance creation of utility class KeyStoreUtil not permitted!");
     }
 
     /**

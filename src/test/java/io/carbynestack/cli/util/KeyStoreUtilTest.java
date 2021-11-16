@@ -21,8 +21,16 @@ import static io.carbynestack.cli.util.KeyStoreUtil.tempKeyStorePems;
 import static io.carbynestack.cli.util.KeyStoreUtilFailures.*;
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KeyStoreUtilTest {
+    @Test
+    void constructor() {
+        assertThatThrownBy(KeyStoreUtil::new)
+                .isExactlyInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("Instance creation of utility class KeyStoreUtil not permitted!");
+    }
+
     @Test
     void generateCertificateFileNotFound() throws CertificateException {
         var temp = Paths.get("missing-cert", ".X509");
