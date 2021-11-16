@@ -52,6 +52,6 @@ public class CommandExecutionStrategy implements IExecutionStrategy {
                 .findFirst()
                 .flatMap(identity())
                 .orElseGet(() -> new Success<>(new RunLast().execute(parseResult)))
-                .fold(r -> 3, identity());
+                .fold(identity(), r -> 3);
     }
 }
