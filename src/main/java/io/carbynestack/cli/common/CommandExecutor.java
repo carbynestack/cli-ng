@@ -46,7 +46,7 @@ public final class CommandExecutor {
      * @since 0.4.0
      */
     public static <A extends Record> int execute(Supplier<? extends CommandRunner<A>> runner, A args, Common common) {
-        return runner.get().run(args, common).fold(r -> 3, identity());
+        return runner.get().run(args, common).fold(identity(), r -> 3);
     }
 
     /**
