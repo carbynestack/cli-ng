@@ -49,13 +49,40 @@ public class Common {
      */
     @ArgGroup(heading = "%nVerbosity:")
     VerbosityOptions verbosityOptions;
+    /**
+     * The verbosity defined by {@link #verbosityOptions}.
+     *
+     * @since 0.5.0
+     */
     private Verbosity verbosity;
+    /**
+     * The output format defined by {@link #shapeOptions}.
+     *
+     * @since 0.5.0
+     */
     private Format format;
+    /**
+     * The shared access tokens path.
+     *
+     * @since 0.5.0
+     */
     @Option(names = {"-t", "--tokens"})
     private File accessTokenFile;
+    /**
+     * The shared logging options.
+     *
+     * @since 0.3.0
+     */
     @Option(names = {"-l", "--log"})
     private boolean log = false;
 
+    /**
+     * Output file option setter.
+     *
+     * @param file the output file
+     * @throws FileNotFoundException if the file is missing
+     * @since 0.5.0
+     */
     @SuppressWarnings("unused")
     @Option(names = {"-o", "--output"})
     private void setOutputFile(File file) throws FileNotFoundException {
@@ -63,17 +90,35 @@ public class Common {
         //TODO handle exceptions
     }
 
+    /**
+     * Config file option setter.
+     *
+     * @param configFile the config file
+     * @since 0.5.0
+     */
     @SuppressWarnings("unused")
     @Option(names = {"-c", "--config"})
     private void setConfigFile(Optional<File> configFile) {
     }
 
+    /**
+     * Returns the verbosity defined by {@link #verbosityOptions}.
+     *
+     * @return the command verbosity level
+     * @since 0.5.0
+     */
     public Verbosity verbosity() {
         return (verbosity == null ? (verbosity = verbosityOptions == null
                 ? DEFAULT : (verbosityOptions.quiet
                 ? QUIET : Verbosity.from(verbosityOptions.verbosity))) : verbosity);
     }
 
+    /**
+     * Returns the output format defined by {@link #shapeOptions}.
+     *
+     * @return the command output format
+     * @since 0.5.0
+     */
     public Format format() {
         return (format == null ? (format = shapeOptions.plain
                 ? PLAIN : (shapeOptions.json
