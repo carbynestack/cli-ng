@@ -66,6 +66,7 @@ public class Common {
      *
      * @since 0.5.0
      */
+    @SuppressWarnings("unused")
     @Option(names = {"-t", "--tokens"})
     private File accessTokenFile;
     /**
@@ -73,6 +74,7 @@ public class Common {
      *
      * @since 0.3.0
      */
+    @SuppressWarnings("unused")
     @Option(names = {"-l", "--log"})
     private boolean log = false;
 
@@ -99,6 +101,7 @@ public class Common {
     @SuppressWarnings("unused")
     @Option(names = {"-c", "--config"})
     private void setConfigFile(Optional<File> configFile) {
+        //TODO integrate config resolver
     }
 
     /**
@@ -107,6 +110,7 @@ public class Common {
      * @return the command verbosity level
      * @since 0.5.0
      */
+    @SuppressWarnings("unused")
     public Verbosity verbosity() {
         return (verbosity == null ? (verbosity = verbosityOptions == null
                 ? DEFAULT : (verbosityOptions.quiet
