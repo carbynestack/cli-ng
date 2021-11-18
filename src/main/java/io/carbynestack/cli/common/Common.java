@@ -6,10 +6,19 @@
  */
 package io.carbynestack.cli.common;
 
+import io.carbynestack.cli.util.Format;
+import io.carbynestack.cli.util.Verbosity;
 import picocli.CommandLine.Model.CommandSpec;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
+import static io.carbynestack.cli.util.Format.JSON;
+import static io.carbynestack.cli.util.Format.PLAIN;
+import static io.carbynestack.cli.util.Verbosity.DEFAULT;
+import static io.carbynestack.cli.util.Verbosity.QUIET;
 import static picocli.CommandLine.*;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
@@ -20,32 +29,105 @@ import static picocli.CommandLine.Spec.Target.MIXEE;
  */
 public class Common {
     /**
-     * The shared verbosity options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nVerbosity:%n")
-    public VerbosityOptions verbosityOptions;
-    /**
-     * The shared output shape options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nOutput format:%n")
-    public ShapeOptions shapeOptions;
-    /**
      * The command specification of the mixee.
      *
      * @since 0.3.0
      */
     @Spec(MIXEE)
     public CommandSpec spec;
-
-    /*
-    public Verbosity verbosity() {
-        return Verbosity.from(verbosityOptions.verbosity);
-    }
+    /**
+     * The shared output shape options.
+     *
+     * @since 0.3.0
      */
+    @ArgGroup(heading = "%nOutput format:")
+    ShapeOptions shapeOptions;
+    /**
+     * The shared verbosity options.
+     *
+     * @since 0.3.0
+     */
+    @ArgGroup(heading = "%nVerbosity:")
+    VerbosityOptions verbosityOptions;
+    /**
+     * The verbosity defined by {@link #verbosityOptions}.
+     *
+     * @since 0.5.0
+     */
+    private Verbosity verbosity;
+    /**
+     * The output format defined by {@link #shapeOptions}.
+     *
+     * @since 0.5.0
+     */
+    private Format format;
+    /**
+     * The shared access tokens path.
+     *
+     * @since 0.5.0
+     */
+    @SuppressWarnings("unused")
+    @Option(names = {"-t", "--tokens"})
+    private File accessTokenFile;
+    /**
+     * The shared logging options.
+     *
+     * @since 0.3.0
+     */
+    @SuppressWarnings("unused")
+    @Option(names = {"-l", "--log"})
+    private boolean log = false;
+
+    /**
+     * Output file option setter.
+     *
+     * @param file the output file
+     * @throws FileNotFoundException if the file is missing
+     * @since 0.5.0
+     */
+    @SuppressWarnings("unused")
+    @Option(names = {"-o", "--output"})
+    private void setOutputFile(File file) throws FileNotFoundException {
+        spec.commandLine().setOut(new PrintWriter(file));
+        //TODO handle exceptions
+    }
+
+    /**
+     * Config file option setter.
+     *
+     * @param configFile the config file
+     * @since 0.5.0
+     */
+    @SuppressWarnings("unused")
+    @Option(names = {"-c", "--config"})
+    private void setConfigFile(Optional<File> configFile) {
+        //TODO integrate config resolver
+    }
+
+    /**
+     * Returns the verbosity defined by {@link #verbosityOptions}.
+     *
+     * @return the command verbosity level
+     * @since 0.5.0
+     */
+    @SuppressWarnings("unused")
+    public Verbosity verbosity() {
+        return (verbosity == null ? (verbosity = verbosityOptions == null
+                ? DEFAULT : (verbosityOptions.quiet
+                ? QUIET : Verbosity.from(verbosityOptions.verbosity))) : verbosity);
+    }
+
+    /**
+     * Returns the output format defined by {@link #shapeOptions}.
+     *
+     * @return the command output format
+     * @since 0.5.0
+     */
+    public Format format() {
+        return (format == null ? (format = shapeOptions.plain
+                ? PLAIN : (shapeOptions.json
+                ? JSON : Format.DEFAULT)) : format);
+    }
 
     /**
      * Returns a {@link PrintWriter} for the current output
@@ -64,8 +146,8 @@ public class Common {
      * @since 0.3.0
      */
     public static class VerbosityOptions {
-        /*@Option(names = {"-v", "--verbose"})
-        public boolean[] verbosity = new boolean[0];*/
+        @Option(names = {"-v", "--verbose"})
+        public boolean[] verbosity = new boolean[0];
         @Option(names = {"-q", "--quiet"})
         public boolean quiet = false;
     }
@@ -78,6 +160,9 @@ public class Common {
     public static class ShapeOptions {
         @Option(names = "--plain")
         public boolean plain = false;
+        @Option(names = "--json")
+        public boolean json = false;
     }
 }
+
 
