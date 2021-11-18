@@ -36,8 +36,37 @@ public @interface CommandSource {
      * <p>If this attribute is not set explicitly, a no-args execution request
      * is assumed.
      *
-     * @return The command arguments.
+     * @return the command arguments
      * @since 0.1.0
      */
     String[] args() default "";
+
+    /**
+     * The environment key-value pairs.
+     *
+     * <p>If this attribute is not set explicitly, an empty environment
+     * is assumed.
+     *
+     * @return the environment variables and value
+     * @since 0.5.0
+     */
+    String[] env() default "";
+
+    /**
+     * True if the provider should generate command expression variations
+     * for all common flags and options.
+     *
+     * @return if the option is enabled (default: true)
+     * @since 0.5.0
+     */
+    boolean generation() default true;
+
+    /**
+     * True if the output option paths should be shortened for more compact
+     * command expressions.
+     *
+     * @return if the option is enabled (default: true)
+     * @since 0.5.0
+     */
+    boolean shortened() default true;
 }
