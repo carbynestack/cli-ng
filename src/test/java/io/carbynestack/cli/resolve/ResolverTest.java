@@ -112,7 +112,7 @@ public class ResolverTest {
         Resolver.environment = Map.of("CS_R", "1")::get;
 
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("r"))
-                .with(Optional.empty())).isEqualTo(1);
+                .with(empty())).isEqualTo(1);
 
         Resolver.environment = System::getenv;
     }
@@ -122,7 +122,7 @@ public class ResolverTest {
         Resolver.environment = Collections.<String, String>emptyMap()::get;
 
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("r"))
-                .with(Optional.empty())).isEqualTo("141515903391459779531506841503331516415");
+                .with(empty())).isEqualTo("141515903391459779531506841503331516415");
 
         Resolver.environment = System::getenv;
     }
