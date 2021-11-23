@@ -164,5 +164,3 @@ public class Common {
         public boolean json = false;
     }
 }
-
-
