@@ -18,19 +18,19 @@ class ResultUtilTest {
     @Test
     void succ() {
         var value = 12;
-        assertThat(ResultUtil.scs(value)).hasValue(value);
+        assertThat(ResultUtil.success(value)).hasValue(value);
     }
 
     @Test
     void fail() {
         var reason = 21;
-        assertThat(ResultUtil.fl(reason)).hasReason(reason);
+        assertThat(ResultUtil.failure(reason)).hasReason(reason);
     }
 
     @Test
     void retry() {
         var value = 12;
-        assertThat(ResultUtil.retry(10, () -> ResultUtil.scs(value)))
+        assertThat(ResultUtil.retry(10, () -> ResultUtil.success(value)))
                 .hasValue(value);
     }
 
@@ -38,9 +38,9 @@ class ResultUtilTest {
     void retryWithDelayedSuccess() {
         var value = 12;
         var cases = List.<Result<Integer, Integer>>of(
-                ResultUtil.fl(21),
-                ResultUtil.fl(21),
-                ResultUtil.scs(value)
+                ResultUtil.failure(21),
+                ResultUtil.failure(21),
+                ResultUtil.success(value)
         ).iterator();
         assertThat(ResultUtil.retry(2, cases::next))
                 .hasValue(value);
@@ -49,13 +49,13 @@ class ResultUtilTest {
     @Test
     void retryWithFailure() {
         var reason = 21;
-        assertThat(ResultUtil.retry(3, () -> ResultUtil.fl(reason)))
+        assertThat(ResultUtil.retry(3, () -> ResultUtil.failure(reason)))
                 .hasReason(reason);
     }
 
     @Test
     void retryIllegalArgumentException() {
-        assertThatThrownBy(() -> ResultUtil.retry(-1, () -> ResultUtil.scs(12)))
+        assertThatThrownBy(() -> ResultUtil.retry(-1, () -> ResultUtil.success(12)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Times cannot be below zero.");
     }

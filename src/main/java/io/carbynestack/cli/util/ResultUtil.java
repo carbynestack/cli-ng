@@ -30,7 +30,7 @@ public final class ResultUtil {
      * @return the created {@code Success} instance
      * @since 0.7.0
      */
-    public static <S, F> Success<S, F> scs(S value) {
+    public static <S, F> Success<S, F> success(S value) {
         return new Success<>(value);
     }
 
@@ -43,7 +43,7 @@ public final class ResultUtil {
      * @return the created {@code Failure} instance
      * @since 0.7.0
      */
-    public static <S, F> Failure<S, F> fl(F reason) {
+    public static <S, F> Failure<S, F> failure(F reason) {
         return new Failure<>(reason);
     }
 
