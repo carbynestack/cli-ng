@@ -56,14 +56,14 @@ public class PicocliCommon implements Common {
      * @since 0.3.0
      */
     @ArgGroup(heading = "%nOutput format:")
-    private ShapedOptions shapedOptions = new ShapedOptions();
+    ShapedOptions shapedOptions = new ShapedOptions();
     /**
      * The shared verbosity options.
      *
      * @since 0.3.0
      */
     @ArgGroup(heading = "%nVerbosity:")
-    private VerbosityOptions verbosityOptions = new VerbosityOptions();
+    VerbosityOptions verbosityOptions = new VerbosityOptions();
     /**
      * The command specification of the mixee.
      *

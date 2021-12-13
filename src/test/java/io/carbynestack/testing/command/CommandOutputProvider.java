@@ -142,6 +142,8 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
             System.setErr(new PrintStream(err));
             System.setOut(new PrintStream(out));
             exitCode = CommandExecutor.execute(CsCLI::new, combinedArgs);
+        } catch (Throwable throwable) {
+            throw new AssertionError(throwable);
         } finally {
             System.setErr(oldErr);
             System.setOut(oldOut);
