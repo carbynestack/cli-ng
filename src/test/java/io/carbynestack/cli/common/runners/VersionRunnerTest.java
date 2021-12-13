@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 import java.util.Locale;
 
+import static java.lang.System.getProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static picocli.CommandLine.Help.Ansi;
 
@@ -45,9 +46,14 @@ class VersionRunnerTest {
                             Castor: 0.1-SNAPSHOT-1261403451-2-78f5f5b""";
                     case DEBUG -> """                  
                             @|bold Runtime & Environment|@:
-                            JVM: 17.0.1 (Oracle Corporation OpenJDK 64-Bit Server VM 17.0.1+12-39)
-                            OS: Mac OS X 12.0.1 x86_64
-                            Locale: en-DE (English Germany)""";
+                            JVM: %s (%s %s %s)
+                            OS: %s %s %s
+                            Locale: %s"""
+                            .formatted(getProperty("java.version"),
+                                    getProperty("java.vendor"), getProperty("java.vm.name"),
+                                    getProperty("java.vm.version"), getProperty("os.name"),
+                                    getProperty("os.version"), getProperty("os.arch"),
+                                    runner.getLocale());
                 }));
     }
 
@@ -69,10 +75,15 @@ class VersionRunnerTest {
             case DEBUG -> """                  
                     ,
                     "environment": {
-                    	"jvm": "17.0.1 (Oracle Corporation OpenJDK 64-Bit Server VM 17.0.1+12-39)",
-                    	"os": "Mac OS X 12.0.1 x86_64",
-                    	"locale": "en (English )"
-                    }""";
+                    	"jvm": "%s (%s %s %s)",
+                    	"os": "%s %s %s",
+                    	"locale": "%s"
+                    }"""
+                    .formatted(getProperty("java.version"),
+                            getProperty("java.vendor"), getProperty("java.vm.name"),
+                            getProperty("java.vm.version"), getProperty("os.name"),
+                            getProperty("os.version"), getProperty("os.arch"),
+                            runner.getLocale());
         });
     }
 
@@ -90,9 +101,14 @@ class VersionRunnerTest {
                       castor: "0.1-SNAPSHOT-1261403451-2-78f5f5b\"""";
             case DEBUG -> """                  
                     environment:
-                      jvm: "17.0.1 (Oracle Corporation OpenJDK 64-Bit Server VM 17.0.1+12-39)"
-                      os: "Mac OS X 12.0.1 x86_64"
-                      locale: "en (English )\"""";
+                      jvm: "%s (%s %s %s)"
+                      os: "%s %s %s"
+                      locale: "%s\""""
+                    .formatted(getProperty("java.version"),
+                            getProperty("java.vendor"), getProperty("java.vm.name"),
+                            getProperty("java.vm.version"), getProperty("os.name"),
+                            getProperty("os.version"), getProperty("os.arch"),
+                            runner.getLocale());
         });
     }
 
