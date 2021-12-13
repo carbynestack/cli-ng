@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.carbynestack.cli.util.StringUtil.toTitleCase;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -92,9 +93,7 @@ public record Resolver(Map<String, String> supplied) {
      */
     @Stub
     static String flattenedEntryKey(Entry<String, Object> parent, Entry<String, Object> child) {
-        return parent.getKey() +
-                Character.toTitleCase(child.getKey().charAt(0))
-                + child.getKey().substring(1);
+        return parent.getKey() + toTitleCase(child.getKey());
     }
 
     /**
