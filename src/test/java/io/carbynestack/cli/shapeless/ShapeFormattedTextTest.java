@@ -104,11 +104,4 @@ class ShapeFormattedTextTest {
     void assembleEmptyList() {
         assertThat(formattedText.assemble(Collections.emptyList())).hasValue("");
     }
-    /*
-    var lines = new String[] {"first", "second"};
-        assertThat(formattedText.from(new Fragment.Text(lines)))
-                .hasValue("[%s]".formatted(Arrays.stream(lines)
-                        .map("\"%s\""::formatted)
-                        .collect(Collectors.joining(", "))));
-     */
 }
