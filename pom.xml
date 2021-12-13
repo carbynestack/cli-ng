@@ -53,7 +53,7 @@
         <graalvm-native-maven-plugin.version>0.9.6</graalvm-native-maven-plugin.version>
 
         <!-- Carbyne Stack dependency versions -->
-        <common.version>0.1-SNAPSHOT-1466229359-11-8167216</common.version>
+        <common.version>0.2-SNAPSHOT-1572433626-19-a73b4a5</common.version>
         <amphora.version>0.1-SNAPSHOT-1261403362-2-41864d8</amphora.version>
         <castor.version>0.1-SNAPSHOT-1261403451-2-78f5f5b</castor.version>
         <ephemeral.version>0.1-SNAPSHOT-1261324039-3-d2504ed</ephemeral.version>

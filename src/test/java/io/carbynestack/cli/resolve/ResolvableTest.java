@@ -6,7 +6,7 @@
  */
 package io.carbynestack.cli.resolve;
 
-import io.carbynestack.testing.blankstring.BlankStringSource;
+import io.carbynestack.testing.blankstring.EmptyOrBlankStringSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,16 +31,9 @@ class ResolvableTest {
                 .isEqualTo("CS_NO_SSL_VALIDATION");
     }
 
-    @Test
-    void environmentKeyEmptyString() {
-        assertThatThrownBy(() -> new TestResolvable("").environmentKey())
-                .isExactlyInstanceOf(IllegalStateException.class)
-                .hasMessage("Missing Resolvable#keyPath value.");
-    }
-
     @ParameterizedTest
-    @BlankStringSource
-    void environmentKeyBlankString(String keyPath) {
+    @EmptyOrBlankStringSource
+    void environmentKeyEmptyOrBlankString(String keyPath) {
         assertThatThrownBy(() -> new TestResolvable(keyPath).environmentKey())
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasMessage("Missing Resolvable#keyPath value.");
@@ -60,16 +53,9 @@ class ResolvableTest {
                 .isEqualTo("noSslValidation");
     }
 
-    @Test
-    void configKeyEmptyString() {
-        assertThatThrownBy(() -> new TestResolvable("").configKey())
-                .isExactlyInstanceOf(IllegalStateException.class)
-                .hasMessage("Missing Resolvable#keyPath value.");
-    }
-
     @ParameterizedTest
-    @BlankStringSource
-    void configKeyBlankString(String keyPath) {
+    @EmptyOrBlankStringSource
+    void configKeyEmptyOrBlankString(String keyPath) {
         assertThatThrownBy(() -> new TestResolvable(keyPath).configKey())
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasMessage("Missing Resolvable#keyPath value.");
@@ -81,7 +67,7 @@ class ResolvableTest {
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
-    private static record TestResolvable(String keyPath) implements Resolvable<Integer> {
+    private record TestResolvable(String keyPath) implements Resolvable<Integer> {
         @Override
         public Optional<Integer> parse(String value) {
             return Optional.ofNullable(value).map(Integer::valueOf);
