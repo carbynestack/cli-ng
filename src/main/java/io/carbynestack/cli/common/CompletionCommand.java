@@ -38,9 +38,12 @@ public class CompletionCommand extends DefaultCommandRunner {
      */
     @Override
     public Result<Integer, ? extends CsFailureReason> run(NoArg noArgs, Common common) {
-        common.spec.commandLine().getOut().print(AutoComplete.bash(common.spec.root().name(),
-                common.spec.root().commandLine()) + '\n');
-        common.spec.commandLine().getOut().flush();
+        if (common instanceof PicocliCommon picocliCommon) {
+            picocliCommon.spec.commandLine().getOut()
+                    .print(AutoComplete.bash(picocliCommon.spec.root().name(),
+                            picocliCommon.spec.root().commandLine()) + '\n');
+            picocliCommon.spec.commandLine().getOut().flush();
+        }
         return success();
     }
 }

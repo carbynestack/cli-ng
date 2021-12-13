@@ -6,7 +6,7 @@
  */
 package io.carbynestack.cli.common;
 
-import io.carbynestack.cli.common.Common.VerbosityOptions;
+import io.carbynestack.cli.common.PicocliCommon.VerbosityOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

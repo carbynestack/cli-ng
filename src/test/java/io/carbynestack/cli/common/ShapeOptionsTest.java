@@ -6,13 +6,13 @@
  */
 package io.carbynestack.cli.common;
 
-import io.carbynestack.cli.common.Common.ShapeOptions;
+import io.carbynestack.cli.common.PicocliCommon.ShapedOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ShapeOptionsTest {
-    private final ShapeOptions shapeOptions = new ShapeOptions();
+    private final ShapedOptions shapeOptions = new ShapedOptions();
 
     @Test
     void plain() {

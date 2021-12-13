@@ -8,6 +8,7 @@ package io.carbynestack.cli.common.runners;
 
 import io.carbynestack.cli.common.CommandRunner;
 import io.carbynestack.cli.common.Common;
+import io.carbynestack.cli.common.PicocliCommon;
 import io.carbynestack.cli.util.args.NoArg;
 import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.result.Result;
@@ -30,7 +31,7 @@ public class DefaultCommandRunner implements CommandRunner<NoArg>, Callable<Inte
      * @since 0.4.0
      */
     @Mixin
-    protected Common common;
+    protected PicocliCommon common;
 
     /**
      * Default implementation of the runner logic which uses the {@link HelpRunner}

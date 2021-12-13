@@ -52,7 +52,7 @@ public enum Verbosity {
      * @since 0.2.0
      */
     public static Verbosity from(boolean[] verbosity) {
-        return Verbosity.values()[(verbosity.length < (values().length - 1)
+        return values()[(verbosity.length < (values().length - 1)
                 ? verbosity.length : 0) + 1];
     }
 }

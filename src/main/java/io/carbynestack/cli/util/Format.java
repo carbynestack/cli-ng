@@ -29,5 +29,11 @@ public enum Format {
      *
      * @since 0.5.0
      */
-    JSON;
+    JSON,
+    /**
+     * YAML structure
+     *
+     * @since 0.8.0
+     */
+    YAML;
 }

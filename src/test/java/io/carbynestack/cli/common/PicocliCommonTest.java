@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CommonTest {
-    private final Common common = new Common();
+class PicocliCommonTest {
+    private final PicocliCommon common = new PicocliCommon();
 
     @Test
     void verbosityOptions() {
-        assertThat(common.verbosityOptions).isNull();
+        assertThat(common.verbosityOptions).isNotNull();
     }
 
     @Test
     void shapeOptions() {
-        assertThat(common.shapeOptions).isNull();
+        assertThat(common.shapedOptions).isNotNull();
     }
 
     @Test

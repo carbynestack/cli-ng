@@ -6,128 +6,104 @@
  */
 package io.carbynestack.cli.common;
 
+import io.carbynestack.cli.resolve.Resolver;
+import io.carbynestack.cli.shapeless.Fragment;
+import io.carbynestack.cli.shapeless.Fragment.Pair;
+import io.carbynestack.cli.shapeless.Fragment.Section;
+import io.carbynestack.cli.shapeless.Fragment.Text;
+import io.carbynestack.cli.shapeless.ShapeWriter;
+import io.carbynestack.cli.shapeless.ShapeWriter.Nullify;
 import io.carbynestack.cli.util.Format;
 import io.carbynestack.cli.util.Verbosity;
-import picocli.CommandLine.Model.CommandSpec;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 
-import static io.carbynestack.cli.util.Format.JSON;
-import static io.carbynestack.cli.util.Format.PLAIN;
-import static io.carbynestack.cli.util.Verbosity.DEFAULT;
-import static io.carbynestack.cli.util.Verbosity.QUIET;
-import static picocli.CommandLine.*;
-import static picocli.CommandLine.Spec.Target.MIXEE;
+import static io.carbynestack.cli.util.Format.DEFAULT;
+import static java.util.Map.entry;
+import static java.util.stream.Collectors.toMap;
+import static picocli.CommandLine.Help.Ansi.AUTO;
+import static picocli.CommandLine.Help.Ansi.OFF;
 
 /**
  * A collection of common options shared between all commands.
  *
  * @since 0.3.0
  */
-public class Common {
+public interface Common {
     /**
-     * The command specification of the mixee.
+     * Returns the resolver for a provided config.
      *
-     * @since 0.3.0
+     * @return the config resolver
+     * @since 0.7.0
      */
-    @Spec(MIXEE)
-    public CommandSpec spec;
-    /**
-     * The shared output shape options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nOutput format:")
-    ShapeOptions shapeOptions;
-    /**
-     * The shared verbosity options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nVerbosity:")
-    VerbosityOptions verbosityOptions;
-    /**
-     * The verbosity defined by {@link #verbosityOptions}.
-     *
-     * @since 0.5.0
-     */
-    private Verbosity verbosity;
-    /**
-     * The output format defined by {@link #shapeOptions}.
-     *
-     * @since 0.5.0
-     */
-    private Format format;
-    /**
-     * The shared access tokens path.
-     *
-     * @since 0.5.0
-     */
-    @SuppressWarnings("unused")
-    @Option(names = {"-t", "--tokens"})
-    private File accessTokenFile;
-    /**
-     * The shared logging options.
-     *
-     * @since 0.3.0
-     */
-    @SuppressWarnings("unused")
-    @Option(names = {"-l", "--log"})
-    private boolean log = false;
+    Resolver config();
 
     /**
-     * Output file option setter.
+     * Returns true if the SSL validation should be disabled.
      *
-     * @param file the output file
-     * @throws FileNotFoundException if the file is missing
-     * @since 0.5.0
+     * @return an {@link Optional} option representation
+     * @since 0.9.0
      */
-    @SuppressWarnings("unused")
-    @Option(names = {"-o", "--output"})
-    private void setOutputFile(File file) throws FileNotFoundException {
-        spec.commandLine().setOut(new PrintWriter(file));
-        //TODO handle exceptions
-    }
+    Optional<Boolean> noSslValidation();
 
     /**
-     * Config file option setter.
+     * Returns a collection of certificate paths.
      *
-     * @param configFile the config file
-     * @since 0.5.0
+     * @return an {@link Optional} option representation for
+     * trusted certificates
+     * @since 0.9.0
      */
-    @SuppressWarnings("unused")
-    @Option(names = {"-c", "--config"})
-    private void setConfigFile(Optional<File> configFile) {
-        //TODO integrate config resolver
-    }
+    Optional<List<Path>> trustedCertificates();
 
     /**
-     * Returns the verbosity defined by {@link #verbosityOptions}.
+     * Returns the verbosity defined by
+     * {@link PicocliCommon#verbosityOptions}.
      *
      * @return the command verbosity level
      * @since 0.5.0
      */
-    @SuppressWarnings("unused")
-    public Verbosity verbosity() {
-        return (verbosity == null ? (verbosity = verbosityOptions == null
-                ? DEFAULT : (verbosityOptions.quiet
-                ? QUIET : Verbosity.from(verbosityOptions.verbosity))) : verbosity);
-    }
+    Verbosity verbosity();
 
     /**
-     * Returns the output format defined by {@link #shapeOptions}.
+     * Returns the output format defined by
+     * {@link PicocliCommon#shapedOptions}.
      *
      * @return the command output format
      * @since 0.5.0
      */
-    public Format format() {
-        return (format == null ? (format = shapeOptions.plain
-                ? PLAIN : (shapeOptions.json
-                ? JSON : Format.DEFAULT)) : format);
-    }
+    Format format();
+
+    /**
+     * Returns the command output fragment transformation
+     * pipeline.
+     *
+     * @return the transformation pipeline
+     * @since 0.7.0
+     */
+    UnaryOperator<Fragment> fragmentTransform();
+
+    /**
+     * Updates the command output fragment transformation
+     * pipeline.
+     *
+     * @param operator the new transformation pipeline
+     * @since 0.7.0
+     */
+    void fragmentTransform(UnaryOperator<Fragment> operator);
+
+    /**
+     * Returns a {@link Nullify} shape writer.
+     *
+     * @return the nullify shape writer
+     * @since 0.7.0
+     */
+    Nullify nullifyShapeWriter();
 
     /**
      * Returns a {@link PrintWriter} for the current output
@@ -136,31 +112,89 @@ public class Common {
      * @return a {@code PrintWriter}
      * @since 0.3.0
      */
-    public PrintWriter out() {
-        return spec.commandLine().getOut();
+    ShapeWriter out();
+
+    /**
+     * Returns a {@link PrintWriter} for the current output
+     * stream.
+     *
+     * <p>The content written to the writer is only displayed
+     * if the minimum verbosity level supplied is reached.
+     *
+     * @param min the minimum verbosity level
+     * @return a {@code PrintWriter}
+     * @since 0.7.0
+     */
+    default ShapeWriter out(Verbosity min) {
+        return min.ordinal() <= verbosity().ordinal() ? out() : nullifyShapeWriter();
     }
 
     /**
-     * The shared set of mutually exclusive verbosity options.
+     * Returns a {@link PrintWriter} for a nullify
+     * stream.
      *
-     * @since 0.3.0
+     * @return a {@code PrintWriter}
+     * @since 0.7.0
      */
-    public static class VerbosityOptions {
-        @Option(names = {"-v", "--verbose"})
-        public boolean[] verbosity = new boolean[0];
-        @Option(names = {"-q", "--quiet"})
-        public boolean quiet = false;
+    PrintWriter nullifyPrintWriter();
+
+    /**
+     * Returns a {@link PrintWriter} for the current error
+     * output stream.
+     *
+     * @return a {@code PrintWriter}
+     * @since 0.7.0
+     */
+    PrintWriter err();
+
+    /**
+     * Returns a {@link PrintWriter} for the current error
+     * output stream.
+     *
+     * <p>The content written to the writer is only displayed
+     * if the minimum verbosity level supplied is reached.
+     *
+     * @param min the minimum verbosity level
+     * @return a {@code PrintWriter}
+     * @since 0.7.0
+     */
+    default PrintWriter err(Verbosity min) {
+        return min.ordinal() <= verbosity().ordinal() ? err() : nullifyPrintWriter();
     }
 
     /**
-     * The shared set of mutually exclusive output shape options.
+     * Returns a {@link Logger} for the current command run.
      *
-     * @since 0.3.0
+     * @return a {@code Logger}
+     * @since 0.8.0
      */
-    public static class ShapeOptions {
-        @Option(names = "--plain")
-        public boolean plain = false;
-        @Option(names = "--json")
-        public boolean json = false;
+    Logger log();
+
+    /**
+     * Transforms output fragments to support ANSI formatting.
+     *
+     * @param fragment the fragment to transform
+     * @return the transformed fragment
+     * @since 0.7.0
+     */
+    default Fragment ansi(Fragment fragment) {
+        UnaryOperator<String> escape = text -> format() == DEFAULT
+                ? AUTO.string(text) : OFF.string(text);
+
+        if (fragment instanceof Pair pair) {
+            return new Pair(OFF.string(pair.key()),
+                    escape.apply(pair.value()));
+        } else if (fragment instanceof Text text) {
+            return new Text(text.lines().stream()
+                    .map(escape).toList());
+        } else if (fragment instanceof Section section) {
+            return new Section(escape.apply(section.key()),
+                    section.entries().entrySet().stream()
+                            .map(entry -> entry(OFF.string(entry.getKey()),
+                                    escape.apply(entry.getValue())))
+                            .collect(toMap(Entry::getKey, Entry::getValue)));
+        } else {
+            return fragment;
+        }
     }
 }

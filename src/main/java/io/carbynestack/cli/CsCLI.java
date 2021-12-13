@@ -38,6 +38,13 @@ public class CsCLI extends DefaultCommandRunner {
      * @since 0.1.0
      */
     public static void main(String[] args) {
-        exit(execute(CsCLI::new, args));
+        try {
+            exit(execute(CsCLI::new, args));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            if (t.getCause() != null) {
+                t.getCause().printStackTrace();
+            }
+        }
     }
 }

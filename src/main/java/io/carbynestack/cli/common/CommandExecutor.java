@@ -7,13 +7,17 @@
 package io.carbynestack.cli.common;
 
 import io.carbynestack.cli.common.runners.DefaultCommandRunner;
+import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.Stub;
+import io.carbynestack.common.function.AnyThrowingSupplier;
+import picocli.AutoComplete.GenerateCompletion;
 import picocli.CommandLine;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
+import static io.carbynestack.cli.util.Verbosity.VERBOSE;
 import static java.util.function.Function.identity;
-import static picocli.AutoComplete.GenerateCompletion;
 
 /**
  * Handles command executions.
@@ -46,7 +50,27 @@ public final class CommandExecutor {
      * @since 0.4.0
      */
     public static <A extends Record> int execute(Supplier<? extends CommandRunner<A>> runner, A args, Common common) {
-        return runner.get().run(args, common).fold(identity(), r -> 3);
+        var res = runner.get().run(args, common).recover(r -> {
+            printFormattedError(r, common);
+            return 3;
+        });
+        return common.out().flush()
+                .map(n -> res)
+                .unsafeFlatten()
+                .fold(identity(), r -> 3);
+    }
+
+    /**
+     * Prints a formatted version of the encountered error.
+     *
+     * @param reason the failure reason
+     * @param common the common options
+     * @since 0.8.0
+     */
+    private static void printFormattedError(CsFailureReason reason, Common common) {
+        common.err().println(reason.synopsis());
+        if (!Objects.equals(reason.synopsis(), reason.description()))
+            common.err(VERBOSE).println(reason.description());
     }
 
     /**
@@ -58,7 +82,7 @@ public final class CommandExecutor {
      * @see GenerateCompletion
      * @since 0.4.0
      */
-    public static int execute(Supplier<? extends DefaultCommandRunner> command, String... args) {
+    public static int execute(AnyThrowingSupplier<? extends DefaultCommandRunner> command, String... args) throws Throwable {
         return new CommandLine(command.get())
                 .setExecutionStrategy(new CommandExecutionStrategy())
                 .execute(args);
