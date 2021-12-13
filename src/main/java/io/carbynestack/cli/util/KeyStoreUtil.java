@@ -9,7 +9,6 @@ package io.carbynestack.cli.util;
 import io.carbynestack.common.Stub;
 import io.carbynestack.common.result.Failure;
 import io.carbynestack.common.result.Result;
-import io.carbynestack.common.result.Success;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -26,8 +25,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.carbynestack.cli.util.KeyStoreUtilFailures.*;
-import static io.carbynestack.cli.util.ResultUtil.fail;
-import static io.carbynestack.cli.util.ResultUtil.succ;
+import static io.carbynestack.cli.util.ResultUtil.fl;
+import static io.carbynestack.cli.util.ResultUtil.scs;
 
 /**
  * Handles the generation of certificates and creation of keystores.
@@ -84,7 +83,7 @@ public final class KeyStoreUtil {
                     .collect(Collectors.toSet())) {
                 if (entry.tryPeek(cert -> store.setCertificateEntry(cert.getSubjectX500Principal().getName(), cert),
                         JKS_INSTANCE) instanceof Failure<X509Certificate, KeyStoreUtilFailures> failure)
-                    return fail(failure.reason());
+                    return fl(failure.reason());
             }
 
             var temp = File.createTempFile("cs_keystore", ".jks");
@@ -95,7 +94,7 @@ public final class KeyStoreUtil {
 
             temp.deleteOnExit();
 
-            return succ(temp);
+            return scs(temp);
         }, Map.of(UnrecoverableEntryException.class, WRONG_PASSWORD, IOException.class, KEYSTORE_DATA_FORMAT,
                 NoSuchAlgorithmException.class, NO_SUCH_ALGORITHM, Throwable.class, OTHER), OTHER).unsafeFlatten();
     }

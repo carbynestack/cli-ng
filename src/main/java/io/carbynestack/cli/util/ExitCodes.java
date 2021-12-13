@@ -8,9 +8,8 @@ package io.carbynestack.cli.util;
 
 import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.result.Result;
-import io.carbynestack.common.result.Success;
 
-import static io.carbynestack.cli.util.ResultUtil.succ;
+import static io.carbynestack.cli.util.ResultUtil.scs;
 
 /**
  * Represents a collection of exit codes in {@link Result} form.
@@ -28,6 +27,6 @@ public interface ExitCodes extends CsFailureReason {
      * @since 0.2.0
      */
     static <F extends CsFailureReason> Result<Integer, F> success() {
-        return succ(0);
+        return scs(0);
     }
 }
