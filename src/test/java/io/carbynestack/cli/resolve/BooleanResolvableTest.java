@@ -6,7 +6,7 @@
  */
 package io.carbynestack.cli.resolve;
 
-import io.carbynestack.testing.blankstring.BlankStringSource;
+import io.carbynestack.testing.blankstring.EmptyOrBlankStringSource;
 import io.carbynestack.testing.nullable.NullableParamSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,24 +31,24 @@ public class BooleanResolvableTest {
     }
 
     @ParameterizedTest
-    @BlankStringSource
-    public void constructorEmptyOrBlankKeyPath(String keyPath) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankKeyPath(String keyPath) {
         assertThatThrownBy(() -> new BooleanResolvable(keyPath, resolvable.synopsis(), resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing keyPath.");
     }
 
     @ParameterizedTest
-    @BlankStringSource
-    public void constructorEmptyOrBlankSynopsis(String synopsis) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankSynopsis(String synopsis) {
         assertThatThrownBy(() -> new BooleanResolvable(resolvable.keyPath(), synopsis, resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing synopsis.");
     }
 
     @ParameterizedTest
-    @BlankStringSource
-    public void constructorEmptyOrBlankDescription(String description) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankDescription(String description) {
         assertThatThrownBy(() -> new BooleanResolvable(resolvable.keyPath(), resolvable.synopsis(), description))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing description.");
