@@ -113,7 +113,7 @@ public class VersionRunner implements CommandRunner<NoArg> {
     private Section getDependencies() {
         return new Section("dependencies", Map.of(
                 "picocli", CommandLine.VERSION,
-                "common", "0.1-SNAPSHOT-1452592126-1-135764e",
+                "common", "0.2-SNAPSHOT-1572433626-19-a73b4a5",
                 "amphora", "0.1-SNAPSHOT-1261403362-2-41864d",
                 "castor", "0.1-SNAPSHOT-1261403451-2-78f5f5b",
                 "ephemeral", "0.1-SNAPSHOT-1261324039-3-d2504ed"

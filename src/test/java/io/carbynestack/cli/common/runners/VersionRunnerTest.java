@@ -38,7 +38,7 @@ class VersionRunnerTest {
                             Version: 0.1.0""";
                     case EXTRA_VERBOSE -> """                  
                             @|bold Dependencies|@:
-                            Common: 0.1-SNAPSHOT-1452592126-1-135764e
+                            Common: 0.2-SNAPSHOT-1572433626-19-a73b4a5
                             Picocli: 4.6.1
                             Ephemeral: 0.1-SNAPSHOT-1261324039-3-d2504ed
                             Amphora: 0.1-SNAPSHOT-1261403362-2-41864d
@@ -60,7 +60,7 @@ class VersionRunnerTest {
                     	"text-1": ["Command Line Interface to interact with Carbyne Stack Virtual Clouds"],""";
             case EXTRA_VERBOSE -> """                  
                     "dependencies": {
-                    	"common": "0.1-SNAPSHOT-1452592126-1-135764e",
+                    	"common": "0.2-SNAPSHOT-1572433626-19-a73b4a5",
                     	"picocli": "4.6.1",
                     	"ephemeral": "0.1-SNAPSHOT-1261324039-3-d2504ed",
                     	"amphora": "0.1-SNAPSHOT-1261403362-2-41864d",
@@ -71,7 +71,7 @@ class VersionRunnerTest {
                     "environment": {
                     	"jvm": "17.0.1 (Oracle Corporation OpenJDK 64-Bit Server VM 17.0.1+12-39)",
                     	"os": "Mac OS X 12.0.1 x86_64",
-                    	"locale": "en-DE (English Germany)"
+                    	"locale": "en (English )"
                     }""";
         });
     }
@@ -83,7 +83,7 @@ class VersionRunnerTest {
                     text-1: ["Command Line Interface to interact with Carbyne Stack Virtual Clouds"]""";
             case EXTRA_VERBOSE -> """                  
                     dependencies:
-                      common: "0.1-SNAPSHOT-1452592126-1-135764e"
+                      common: "0.2-SNAPSHOT-1572433626-19-a73b4a5"
                       picocli: "4.6.1"
                       ephemeral: "0.1-SNAPSHOT-1261324039-3-d2504ed"
                       amphora: "0.1-SNAPSHOT-1261403362-2-41864d"
@@ -92,7 +92,7 @@ class VersionRunnerTest {
                     environment:
                       jvm: "17.0.1 (Oracle Corporation OpenJDK 64-Bit Server VM 17.0.1+12-39)"
                       os: "Mac OS X 12.0.1 x86_64"
-                      locale: "en-DE (English Germany)\"""";
+                      locale: "en (English )\"""";
         });
     }
 
