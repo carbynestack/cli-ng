@@ -7,7 +7,7 @@
 package io.carbynestack.cli.auth;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import io.carbynestack.testing.blankstring.BlankStringSource;
+import io.carbynestack.testing.blankstring.EmptyOrBlankStringSource;
 import io.carbynestack.testing.nullable.NullableParamSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.net.URI;
 import java.util.Date;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,46 +50,25 @@ class VcpTokenTest {
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
-    @Test
-    void constructorEmptyBaseURL() {
-        assertThatThrownBy(() -> new VcpToken("", ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Missing base URL.");
-    }
-
     @ParameterizedTest
-    @BlankStringSource
-    void constructorBlankBaseURL(String baseURL) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankBaseURL(String baseURL) {
         assertThatThrownBy(() -> new VcpToken(baseURL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing base URL.");
     }
 
-    @Test
-    void constructorEmptyAccessToken() {
-        assertThatThrownBy(() -> new VcpToken(BASE_URL, "", REFRESH_TOKEN, EXPIRES))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Missing access token.");
-    }
-
     @ParameterizedTest
-    @BlankStringSource
-    void constructorBlankAccessToken(String accessToken) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankAccessToken(String accessToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, accessToken, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing access token.");
     }
 
-    @Test
-    void constructorEmptyRefreshToken() {
-        assertThatThrownBy(() -> new VcpToken(BASE_URL, ACCESS_TOKEN, "", EXPIRES))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Missing refresh token.");
-    }
-
     @ParameterizedTest
-    @BlankStringSource
-    void constructorBlankRefreshToken(String refreshToken) {
+    @EmptyOrBlankStringSource
+    void constructorEmptyOrBlankRefreshToken(String refreshToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, ACCESS_TOKEN, refreshToken, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing refresh token.");
@@ -129,7 +109,7 @@ class VcpTokenTest {
     @Test
     void expired() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
-        var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, SECONDS));
+        var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, MINUTES));
         assertThat(token.expired()).isTrue();
         assertThat(token.expired(expires)).isFalse();
     }
