@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.net.URI;
 import java.util.Date;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -108,7 +109,7 @@ class VcpTokenTest {
     @Test
     void expired() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
-        var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, SECONDS));
+        var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, MINUTES));
         assertThat(token.expired()).isTrue();
         assertThat(token.expired(expires)).isFalse();
     }
