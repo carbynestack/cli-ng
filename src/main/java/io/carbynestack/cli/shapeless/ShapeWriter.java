@@ -103,6 +103,7 @@ public sealed interface ShapeWriter {
                 instanceof Failure<String, ShapingFailureReason> failure)
             return failure(failure.reason());
 
+        writer.println();
         writer.flush();
         buffer().clear();
 
