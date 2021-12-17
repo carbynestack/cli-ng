@@ -21,7 +21,7 @@ import static picocli.CommandLine.ScopeType.INHERIT;
  */
 @Command(name = "cs", description = "Command Line Interface to interact with Carbyne Stack Virtual Clouds",
         scope = INHERIT, usageHelpAutoWidth = true, showEndOfOptionsDelimiterInUsageHelp = true,
-        mixinStandardHelpOptions = true, showAtFileInUsageHelp = true,
+        mixinStandardHelpOptions = true, showAtFileInUsageHelp = true, requiredOptionMarker = '*',
         subcommands = {CompletionCommand.class})
 public class CsCLI extends DefaultCommandRunner {
     /**
