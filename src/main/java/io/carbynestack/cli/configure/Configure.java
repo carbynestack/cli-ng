@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 - for information on the respective copyright owner
+ * see the NOTICE file and/or the repository https://github.com/carbynestack/cli-ng.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package io.carbynestack.cli.configure;
 
 import io.carbynestack.cli.common.CommandRunner;
@@ -40,8 +46,9 @@ public class Configure implements CommandRunner<NoArg>, Callable<Integer> {
     public static final PathsResolvable TRUSTED_CERTIFICATES = new PathsResolvable("trusted/certificates",
             "Trusted certificates", "Trusted certificates");
     private static final Iterator<String> CLUSTER_NAMES = List.of("apollo", "starbuck").iterator();
+
     @Unmatched
-    List<String> unmatched;
+    private List<String> unmatched;
     @Option(names = "--prime")
     private Optional<BigInteger> prime;
     @Option(names = "--r")
