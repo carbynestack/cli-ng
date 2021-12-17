@@ -51,20 +51,6 @@ public class PicocliCommon implements Common {
      */
     private final PrintWriter nullifyPrintWriter = new PrintWriter(OutputStream.nullOutputStream());
     /**
-     * The shared output shape options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nOutput format:")
-    ShapedOptions shapedOptions = new ShapedOptions();
-    /**
-     * The shared verbosity options.
-     *
-     * @since 0.3.0
-     */
-    @ArgGroup(heading = "%nVerbosity:")
-    VerbosityOptions verbosityOptions = new VerbosityOptions();
-    /**
      * The command specification of the mixee.
      *
      * @since 0.3.0
@@ -72,19 +58,34 @@ public class PicocliCommon implements Common {
     @Spec(MIXEE)
     public CommandSpec spec;
     /**
+     * The shared output shape options.
+     *
+     * @since 0.3.0
+     */
+    @ArgGroup(heading = "%nOutput format:%n")
+    ShapedOptions shapedOptions = new ShapedOptions();
+    /**
+     * The shared verbosity options.
+     *
+     * @since 0.3.0
+     */
+    @ArgGroup(heading = "%nVerbosity:%n")
+    VerbosityOptions verbosityOptions = new VerbosityOptions();
+    /**
      * If the SSL validation should be disabled.
      *
      * @since 0.9.0
      */
     @Option(names = "--no-ssl-validation", arity = "0..1", paramLabel = "NO_SSL_VALIDATION",
-            defaultValue = "false")
+            defaultValue = "false", description = "Disable SSL certificate validation.")
     boolean noSslValidation = false;
     /**
      * A collection of trusted certificate paths.
      *
      * @since 0.9.0
      */
-    @Option(names = "--trusted-certificates", arity = "0..*", paramLabel = "TRUSTED_CERTIFICATES")
+    @Option(names = "--trusted-certificates", arity = "0..*", paramLabel = "TRUSTED_CERTIFICATES",
+            description = "Provide trusted certificate paths.")
     List<Path> trustedCertificates = emptyList();
     /**
      * The output fragment transformed (default {@link #ansi(Fragment)}).
@@ -125,7 +126,8 @@ public class PicocliCommon implements Common {
      * @since 0.5.0
      */
     @SuppressWarnings("unused")
-    @Option(names = {"-o", "--output"})
+    @Option(names = {"-o", "--output"}, paramLabel = "OUTPUT_FILE",
+            description = "Redirect all output into this file.")
     private void setOutputFile(File file) throws FileNotFoundException {
         spec.commandLine().setOut(new PrintWriter(file));
     }
@@ -137,9 +139,12 @@ public class PicocliCommon implements Common {
      * @since 0.5.0
      */
     @SuppressWarnings("unused")
-    @Option(names = {"-c", "--config"})
+    @Option(names = {"-c", "--config"}, paramLabel = "CONFIG_FILE",
+            description = "Configuration file used instead of reading the default "
+                    + "configuration from \"~/.cs/config\".")
     private void setConfigFile(Optional<File> configFile) {
-        config = Resolver.config(configFile.orElseGet(() -> new File("~/.cs/config")));
+        config = Resolver.config(configFile.orElseGet(() -> new File(
+                System.getProperty("user.home") + File.separator + ".cs/config")));
     }
 
     /**
@@ -290,9 +295,12 @@ public class PicocliCommon implements Common {
      * @since 0.3.0
      */
     static class VerbosityOptions {
-        @Option(names = {"-v", "--verbose"})
+        @Option(names = {"-v", "--verbose"},
+                description = "Unlock additional details. This flag is repeatable "
+                        + "until the debug mode (-vvv) is reached.")
         public boolean[] verbosity = new boolean[0];
-        @Option(names = {"-q", "--quiet"})
+        @Option(names = {"-q", "--quiet"},
+                description = "Suppress all non machine-readable outputs.")
         public boolean quiet = false;
     }
 
@@ -302,11 +310,11 @@ public class PicocliCommon implements Common {
      * @since 0.3.0
      */
     static class ShapedOptions {
-        @Option(names = "--plain")
+        @Option(names = "--plain", description = "Disable all ANSI output styling.")
         public boolean plain = false;
-        @Option(names = "--json")
+        @Option(names = "--json", description = "Format the output as JSON.")
         public boolean json = false;
-        @Option(names = "--yaml")
+        @Option(names = "--yaml", description = "Format the output as YAML.")
         public boolean yaml = false;
     }
 }
