@@ -1,0 +1,10 @@
+{
+  "vcp": {
+    "apollo": {
+      "ephemeralServiceUrl": "http://172.18.1.128.sslip.io/"
+    },
+    "starbuck": {
+      "ephemeralServiceUrl": "http://172.18.2.128.sslip.io/"
+    }
+  }
+}
