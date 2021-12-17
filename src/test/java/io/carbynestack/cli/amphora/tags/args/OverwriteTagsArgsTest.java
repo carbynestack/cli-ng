@@ -17,24 +17,26 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SharedTaggedSecretArgsTest {
+public class OverwriteTagsArgsTest {
     private static final UUID ID = UUID.randomUUID();
-    private static final Map<String, String> RAW_TAG = Map.of("first", "1");
+    private static final Map<String, String> RAW_TAGS = Map.of(
+            "first", "1", "second", "2"
+    );
 
     @SuppressWarnings("unused")
-    private static final Arguments PARAMS = Arguments.of(ID, RAW_TAG);
+    private static final Arguments PARAMS = Arguments.of(ID, RAW_TAGS);
 
     @Test
     void constructor() {
-        var args = new SharedTaggedSecretArgs(ID, RAW_TAG);
+        var args = new SharedTaggedSecretArgs(ID, RAW_TAGS);
         assertThat(args.id()).isEqualTo(ID);
-        assertThat(args.rawTag()).isEqualTo(RAW_TAG);
+        assertThat(args.rawTag()).isEqualTo(RAW_TAGS);
     }
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(UUID id, Map<String, String> rawTag) {
-        assertThatThrownBy(() -> new SharedTaggedSecretArgs(id, rawTag))
+    void constructorNullableValues(UUID id, Map<String, String> rawTags) {
+        assertThatThrownBy(() -> new SharedTaggedSecretArgs(id, rawTags))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 }
