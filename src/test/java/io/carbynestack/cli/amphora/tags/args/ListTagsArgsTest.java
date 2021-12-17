@@ -18,12 +18,12 @@ public class ListTagsArgsTest {
     @Test
     void constructor() {
         var id = UUID.randomUUID();
-        assertThat(new GetSecretArgs(id).id()).isEqualTo(id);
+        assertThat(new ListTagsArgs(id).id()).isEqualTo(id);
     }
 
     @Test
     void constructorNullableValue() {
-        assertThatThrownBy(() -> new GetSecretArgs(null))
+        assertThatThrownBy(() -> new ListTagsArgs(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 }
