@@ -39,11 +39,11 @@ class VersionRunnerTest {
                             Version: 0.1.0""";
                     case EXTRA_VERBOSE -> """                  
                             @|bold Dependencies|@:
-                            Common: 0.2-SNAPSHOT-1572433626-19-a73b4a5
-                            Picocli: 4.6.1
-                            Ephemeral: 0.1-SNAPSHOT-1261324039-3-d2504ed
-                            Amphora: 0.1-SNAPSHOT-1261403362-2-41864d
-                            Castor: 0.1-SNAPSHOT-1261403451-2-78f5f5b""";
+                            Common: 0.2-SNAPSHOT-1587470979-20-8cde8f2
+                            Picocli: 4.6.2
+                            Ephemeral: 0.1-SNAPSHOT-1587474485-10-70795c1
+                            Amphora: 0.1-SNAPSHOT-1587466393-7-ca547ae
+                            Castor: 0.1-SNAPSHOT-1587455527-8-cc32141""";
                     case DEBUG -> """                  
                             @|bold Runtime & Environment|@:
                             JVM: %s (%s %s %s)
@@ -66,11 +66,11 @@ class VersionRunnerTest {
                     	"text-1": ["Command Line Interface to interact with Carbyne Stack Virtual Clouds"],""";
             case EXTRA_VERBOSE -> """                  
                     "dependencies": {
-                    	"common": "0.2-SNAPSHOT-1572433626-19-a73b4a5",
-                    	"picocli": "4.6.1",
-                    	"ephemeral": "0.1-SNAPSHOT-1261324039-3-d2504ed",
-                    	"amphora": "0.1-SNAPSHOT-1261403362-2-41864d",
-                    	"castor": "0.1-SNAPSHOT-1261403451-2-78f5f5b"
+                    	"common": "0.2-SNAPSHOT-1587470979-20-8cde8f2",
+                    	"picocli": "4.6.2",
+                    	"ephemeral": "0.1-SNAPSHOT-1587474485-10-70795c1",
+                    	"amphora": "0.1-SNAPSHOT-1587466393-7-ca547ae",
+                    	"castor": "0.1-SNAPSHOT-1587455527-8-cc32141"
                     }""";
             case DEBUG -> """                  
                     ,
@@ -94,11 +94,11 @@ class VersionRunnerTest {
                     text-1: ["Command Line Interface to interact with Carbyne Stack Virtual Clouds"]""";
             case EXTRA_VERBOSE -> """                  
                     dependencies:
-                      common: "0.2-SNAPSHOT-1572433626-19-a73b4a5"
-                      picocli: "4.6.1"
-                      ephemeral: "0.1-SNAPSHOT-1261324039-3-d2504ed"
-                      amphora: "0.1-SNAPSHOT-1261403362-2-41864d"
-                      castor: "0.1-SNAPSHOT-1261403451-2-78f5f5b\"""";
+                      common: "0.2-SNAPSHOT-1587470979-20-8cde8f2"
+                      picocli: "4.6.2"
+                      ephemeral: "0.1-SNAPSHOT-1587474485-10-70795c1"
+                      amphora: "0.1-SNAPSHOT-1587466393-7-ca547ae"
+                      castor: "0.1-SNAPSHOT-1587455527-8-cc32141\"""";
             case DEBUG -> """                  
                     environment:
                       jvm: "%s (%s %s %s)"
