@@ -6,7 +6,6 @@
  */
 package io.carbynestack.cli.amphora.tags.args;
 
-import io.carbynestack.cli.amphora.secrets.args.GetSecretArgs;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
