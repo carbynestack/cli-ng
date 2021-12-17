@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.carbynestack.common.Generated;
 import io.carbynestack.common.Stub;
+import io.carbynestack.common.Tuple;
 import io.carbynestack.common.Tuple.Tuple2;
 
 import java.io.File;
@@ -174,6 +175,12 @@ public record Resolver(Map<String, String> supplied) {
         return new With2<>(this, r1, r2);
     }
 
+    public <E1, E2, E3, E4, E5> With5<E1, E2, E3, E4, E5> resolve(Resolvable<E1> r1, Resolvable<E2> r2,
+                                                                  Resolvable<E3> r3, Resolvable<E4> r4,
+                                                                  Resolvable<E5> r5) {
+        return new With5<>(this, r1, r2, r3, r4, r5);
+    }
+
     /**
      * Returns an {@link Optional} containing the result of an
      * environment lookup for the {@link Resolvable#environmentKey()}.
@@ -211,7 +218,7 @@ public record Resolver(Map<String, String> supplied) {
      * @param <E> the {@link Resolvable} value type
      * @since 0.5.0
      */
-    public static record With<E>(Resolver resolver, Resolvable<E> resolvable) {
+    public record With<E>(Resolver resolver, Resolvable<E> resolvable) {
         /**
          * Returns the supplied {@link Optional} if not
          * empty or the result of an environment lookup or
@@ -239,7 +246,7 @@ public record Resolver(Map<String, String> supplied) {
      * @param <E2> the second resolvable value type
      * @since 0.5.0
      */
-    public static record With2<E1, E2>(Resolver resolver, Resolvable<E1> r1, Resolvable<E2> r2) {
+    public record With2<E1, E2>(Resolver resolver, Resolvable<E1> r1, Resolvable<E2> r2) {
         /**
          * Returns the supplied {@link Optional} if not
          * empty or the result of an environment lookup or
@@ -255,6 +262,15 @@ public record Resolver(Map<String, String> supplied) {
         public Tuple2<E1, E2> with(Optional<E1> v1, Optional<E2> v2) {
             return new Tuple2<>(resolver.resolve(r1).with(v1),
                     resolver.resolve(r2).with(v2));
+        }
+    }
+
+    public record With5<E1, E2, E3, E4, E5>(Resolver resolver, Resolvable<E1> r1, Resolvable<E2> r2,
+                                            Resolvable<E3> r3, Resolvable<E4> r4, Resolvable<E5> r5) {
+        public Tuple.Tuple5<E1, E2, E3, E4, E5> with(Optional<E1> v1, Optional<E2> v2, Optional<E3> v3,
+                                                     Optional<E4> v4, Optional<E5> v5) {
+            return new Tuple.Tuple5<>(resolver.resolve(r1).with(v1), resolver.resolve(r2).with(v2),
+                    resolver.resolve(r3).with(v3), resolver.resolve(r4).with(v4), resolver.resolve(r5).with(v5));
         }
     }
 }

@@ -6,6 +6,7 @@
  */
 package io.carbynestack.cli;
 
+import io.carbynestack.cli.amphora.AmphoraCommands;
 import io.carbynestack.cli.common.CompletionCommand;
 import io.carbynestack.cli.common.runners.DefaultCommandRunner;
 import picocli.CommandLine.Command;
@@ -22,7 +23,7 @@ import static picocli.CommandLine.ScopeType.INHERIT;
 @Command(name = "cs", description = "Command Line Interface to interact with Carbyne Stack Virtual Clouds",
         scope = INHERIT, usageHelpAutoWidth = true, showEndOfOptionsDelimiterInUsageHelp = true,
         mixinStandardHelpOptions = true, showAtFileInUsageHelp = true, requiredOptionMarker = '*',
-        subcommands = {CompletionCommand.class})
+        subcommands = {AmphoraCommands.class, CompletionCommand.class})
 public class CsCLI extends DefaultCommandRunner {
     /**
      * The Carbyne Stack CLI semantic version number.
