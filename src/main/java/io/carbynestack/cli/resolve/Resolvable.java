@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Character.toTitleCase;
 import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
 /**
@@ -42,13 +43,28 @@ public interface Resolvable<T> extends Describable {
     String keyPath();
 
     /**
+     * Returns the formatted command option name.
+     *
+     * @return the command option name
+     * @since 0.5.0
+     */
+    default String commandOptionKey() {
+        if (requireNonNull(keyPath()).isBlank())
+            throw new IllegalStateException("Missing Resolvable#keyPath value.");
+        return "--" + stream(keyPath().split("/"))
+                .filter(not(String::isBlank))
+                .map(String::toLowerCase)
+                .collect(Collectors.joining("-"));
+    }
+
+    /**
      * Returns the formatted environment variable name.
      *
      * @return the environment variable name
      * @since 0.5.0
      */
     default String environmentKey() {
-        if (Objects.requireNonNull(keyPath()).isBlank())
+        if (requireNonNull(keyPath()).isBlank())
             throw new IllegalStateException("Missing Resolvable#keyPath value.");
         return "CS_" + stream(keyPath().split("/"))
                 .filter(not(String::isBlank))
@@ -63,7 +79,7 @@ public interface Resolvable<T> extends Describable {
      * @since 0.5.0
      */
     default String configKey() {
-        if (Objects.requireNonNull(keyPath()).isBlank())
+        if (requireNonNull(keyPath()).isBlank())
             throw new IllegalStateException("Missing Resolvable#keyPath value.");
 
         var segments = stream(keyPath().split("/"))
