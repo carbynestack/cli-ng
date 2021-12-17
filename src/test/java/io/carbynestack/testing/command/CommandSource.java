@@ -6,6 +6,8 @@
  */
 package io.carbynestack.testing.command;
 
+import io.carbynestack.cli.CsCLI;
+import io.carbynestack.cli.common.runners.DefaultCommandRunner;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
@@ -31,6 +33,14 @@ import java.lang.annotation.*;
 @ArgumentsSource(CommandOutputProvider.class)
 public @interface CommandSource {
     /**
+     * The CLI root command.
+     *
+     * @return the root command class
+     * @since 0.9.0
+     */
+    Class<? extends DefaultCommandRunner> rootCommand() default CsCLI.class;
+
+    /**
      * The arguments used for the command execution.
      *
      * <p>If this attribute is not set explicitly, a no-args execution request
@@ -53,8 +63,16 @@ public @interface CommandSource {
     String[] env() default "";
 
     /**
-     * True if the provider should generate command expression variations
-     * for all common flags and options.
+     * The inputs used for the command execution.
+     *
+     * @return the command inputs
+     * @since 0.9.0
+     */
+    String inputs() default "";
+
+    /**
+     * True if the provider should generate command expression
+     * variations for all common flags and options.
      *
      * @return if the option is enabled (default: true)
      * @since 0.5.0
@@ -62,11 +80,20 @@ public @interface CommandSource {
     boolean generation() default true;
 
     /**
-     * True if the output option paths should be shortened for more compact
+     * True if the inputs should be shortened for more compact
      * command expressions.
+     *
+     * @return if the option is enabled (default: true)
+     * @since 0.9.0
+     */
+    boolean shortenedInputs() default true;
+
+    /**
+     * True if the output option paths should be shortened for
+     * more compact command expressions.
      *
      * @return if the option is enabled (default: true)
      * @since 0.5.0
      */
-    boolean shortened() default true;
+    boolean shortenedOutputPaths() default true;
 }

@@ -8,12 +8,15 @@ package io.carbynestack.testing.command;
 
 import io.carbynestack.cli.CsCLI;
 import io.carbynestack.cli.common.CommandExecutor;
+import io.carbynestack.cli.common.runners.DefaultCommandRunner;
+import io.carbynestack.cli.resolve.Resolver;
 import io.carbynestack.cli.util.Format;
 import io.carbynestack.cli.util.Verbosity;
 import io.carbynestack.common.Tuple.Tuple3;
 import io.carbynestack.common.Tuple.Tuple5;
 import io.carbynestack.common.Tuple.Tuple6;
 import io.carbynestack.common.Tuple.Tuple7;
+import io.carbynestack.common.function.AnyThrowingSupplier;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,18 +25,17 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.carbynestack.cli.util.Verbosity.*;
+import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -49,6 +51,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsumer<CommandSource> {
     /**
+     * A copy of the root command provided using {@link CommandSource}.
+     *
+     * @since 0.9.0
+     */
+    private Class<? extends DefaultCommandRunner> rootCommand = CsCLI.class;
+    /**
      * A copy of the arguments provided using {@link CommandSource}.
      *
      * @since 0.1.0
@@ -61,17 +69,29 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      */
     private String[] env = new String[0];
     /**
+     * A copy of the command inputs provided using {@link CommandSource}.
+     *
+     * @since 0.9.0
+     */
+    private String inputs = "";
+    /**
      * A copy of the generation option provided using {@link CommandSource}.
      *
      * @since 0.5.0
      */
     private boolean generation = true;
     /**
-     * A copy of the shortened option provided using {@link CommandSource}.
+     * A copy of the shortened output path option provided using {@link CommandSource}.
      *
      * @since 0.5.0
      */
-    private boolean shortened = true;
+    private boolean shortenedOutputPaths = true;
+    /**
+     * A copy of the shortened inputs option provided using {@link CommandSource}.
+     *
+     * @since 0.9.0
+     */
+    private boolean shortenedInputs = true;
 
     /**
      * Provides a {@link Stream} of named {@code CommandResult} record {@link Arguments}
@@ -89,7 +109,7 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         if (generation) {
-            return getOutputLocations(getOutputFormats(getVerbosityLevels(getAnsiVariables(
+            return outputLocations(outputFormats(verbosityLevels(ansiVariables(
                     Stream.<String[]>of(args))))).map(this::executeCommand);
         } else {
             return Stream.of(executeCommand(new Tuple7<>(Map.of(), new String[0], args, true,
@@ -116,9 +136,13 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
         var out = new ByteArrayOutputStream();
         var oldErr = System.err;
         var oldOut = System.out;
+        var oldIn = System.in;
+
+        var oldEnv = Resolver.environment;
 
         var oldAnsi = System.getProperty("picocli.ansi");
-        System.setProperty("picocli.ansi", String.valueOf(options.ansi));
+        var ansi = options.ansi && (!(options.format == Format.PLAIN));
+        System.setProperty("picocli.ansi", String.valueOf(ansi));
 
         var exitCode = -1;
         File outputFile = null;
@@ -134,17 +158,40 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
             }
         }
 
-        var combinedArgs = Stream.concat(Arrays.stream(options.flags),
-                        Stream.concat(Arrays.stream(additional), Arrays.stream(options.args)))
+        var combinedArgs = Stream.concat(Arrays.stream(additional),
+                        Stream.concat(Arrays.stream(options.args), Arrays.stream(options.flags)))
                 .filter(Predicate.not(String::isBlank)).toArray(String[]::new);
+
+        var combinedEnvVars = Stream.concat(Arrays.stream(env)
+                        .flatMap(entry -> {
+                            var parts = entry.split("=");
+                            if (parts.length >= 2) {
+                                return Stream.of(Map.entry(parts[0], parts[1]));
+                            } else {
+                                return Stream.empty();
+                            }
+                        }), options.env.entrySet().stream())
+                .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
+
 
         try {
             System.setErr(new PrintStream(err));
             System.setOut(new PrintStream(out));
-            exitCode = CommandExecutor.execute(CsCLI::new, combinedArgs);
+
+            Resolver.environment = combinedEnvVars::get;
+
+            System.setIn(new ByteArrayInputStream(inputs.getBytes(UTF_8)));
+
+            exitCode = CommandExecutor.execute((AnyThrowingSupplier<? extends DefaultCommandRunner>)
+                    () -> rootCommand.getDeclaredConstructor().newInstance(), combinedArgs);
+        } catch (Throwable throwable) {
+            throw new AssertionError(throwable);
         } finally {
             System.setErr(oldErr);
             System.setOut(oldOut);
+            System.setIn(oldIn);
+
+            Resolver.environment = oldEnv;
 
             if (oldAnsi == null) {
                 System.clearProperty("picocli.ansi");
@@ -156,17 +203,18 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
         if (options.filed > 0 && outputFile != null) {
             try {
                 var content = Files.readString(outputFile.toPath());
-                outputFile.delete();
-                return Arguments.of(Named.of(getFormattedCommand(options.env, combinedArgs),
-                        new CommandResult(exitCode, content, err.toString(UTF_8), options.ansi,
-                                options.verbosity, Format.DEFAULT, true)));
+                Files.delete(outputFile.toPath());
+                return Arguments.of(Named.of(formattedCommand(combinedEnvVars, inputs, combinedArgs),
+                        new CommandResult(exitCode, content, err.toString(UTF_8), ansi,
+                                options.verbosity, options.format, true)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return Arguments.of(Named.of(getFormattedCommand(options.env, combinedArgs),
-                new CommandResult(exitCode, out.toString(UTF_8), err.toString(UTF_8), options.ansi,
-                        options.verbosity, Format.DEFAULT, options.filed > 0)));
+
+        return Arguments.of(Named.of(formattedCommand(combinedEnvVars, inputs, combinedArgs),
+                new CommandResult(exitCode, out.toString(UTF_8), err.toString(UTF_8), ansi,
+                        options.verbosity, options.format, options.filed > 0)));
     }
 
     /**
@@ -181,33 +229,50 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      * @return the formatted command
      * @since 0.5.0
      */
-    private String getFormattedCommand(Map<String, String> env, String[] args) {
+    private String formattedCommand(Map<String, String> env, String inputs, String[] args) {
         var joinedArgs = Arrays.stream(args)
                 .map(arg -> (arg.startsWith("-o=") || arg.startsWith("--output="))
-                        && shortened ? getFormattedOutputOption(arg) : arg)
+                        && shortenedOutputPaths ? formattedOutputOption(arg) : arg)
                 .collect(Collectors.joining(" "));
 
         if (env.isEmpty()) {
-            return String.format("cs %s", joinedArgs);
+            return String.format("%scs %s", formattedInputs(inputs), joinedArgs);
         } else {
-            return String.format("(%s; cs %s)", env.entrySet().stream()
+            return String.format("(%s; %scs %s)", env.entrySet().stream()
                     .map(entry -> "export " + entry.getKey() + "=" + entry.getValue())
-                    .collect(Collectors.joining("; ")), joinedArgs);
+                    .collect(Collectors.joining("; ")), formattedInputs(inputs), joinedArgs);
         }
+    }
+
+    /**
+     * Returns a formatted version of the command inputs for display purposes.
+     *
+     * @param inputs the command inputs to format
+     * @return the formatted inputs
+     * @since 0.9.0
+     */
+    private String formattedInputs(String inputs) {
+        if (inputs.isEmpty()) return "";
+        var transformed = inputs.replaceAll(lineSeparator(), "\\\\n");
+        return "echo \"%s\" | ".formatted(transformed.length() < 12 || !shortenedInputs
+                ? transformed : "%s⋯%s".formatted(transformed.substring(0, 12),
+                transformed.substring(transformed.length() - 12)));
     }
 
     /**
      * Returns a formatted version of the output option for display purposes.
      *
-     * <p>If {@link CommandSource#shortened()} is true this method will return a
-     * shortened version of an output option like <em><i>{@code -o=/var/folders⋯63638751.out}</i></em>
-     * instead of <br><em><i>{@code -o=/var/folders/j9/qf1kz8jx0pl1z36s0xs23rw80000gn/T/run16723067293463638751.out}</i></em>.
+     * <p>If {@link CommandSource#shortenedOutputPaths()} ()} is true this
+     * method will return a shortened version of an output option like
+     * <em><i>{@code -o=/var/folders⋯63638751.out}</i></em> instead of
+     * <br><em><i>{@code -o=/var/folders/j9/qf1kz8jx0pl1z36s0xs23rw80000gn/T/run16723067293463638751.out}</i></em>.
      *
      * @param option the output option to format
      * @return the formatted output option
      * @since 0.5.0
      */
-    private String getFormattedOutputOption(String option) {
+    private String formattedOutputOption(String option) {
+        if (option.length() < 12) return option;
         var path = option.split("=")[1];
         return String.format(option.startsWith("-o=") ? "-o=%s⋯%s" : "--output=%s⋯%s",
                 path.substring(0, 12), path.substring(path.length() - 12));
@@ -221,7 +286,7 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      * @return the command option variations stream with ansi environment variables
      * @since 0.5.0
      */
-    private Stream<Tuple3<Map<String, String>, String[], Boolean>> getAnsiVariables(Stream<String[]> args) {
+    private Stream<Tuple3<Map<String, String>, String[], Boolean>> ansiVariables(Stream<String[]> args) {
         return args.flatMap(a -> Stream.of(
                 new Tuple3<>(Map.of(), a, true),
                 new Tuple3<>(Map.of("NO_COLOR", "0"), a, false),
@@ -241,7 +306,7 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      * @return the modified command option variations stream with verbosity levels
      * @since 0.5.0
      */
-    private Stream<Tuple5<Map<String, String>, String[], String[], Boolean, Verbosity>> getVerbosityLevels(
+    private Stream<Tuple5<Map<String, String>, String[], String[], Boolean, Verbosity>> verbosityLevels(
             Stream<Tuple3<Map<String, String>, String[], Boolean>> stream) {
         return stream.flatMap(t -> Stream.of(
                 new Tuple3<>(t, DEFAULT, ""),
@@ -266,12 +331,13 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      * @return the modified command option variations stream with output formats
      * @since 0.5.0
      */
-    private Stream<Tuple6<Map<String, String>, String[], String[], Boolean, Verbosity, Format>> getOutputFormats(
+    private Stream<Tuple6<Map<String, String>, String[], String[], Boolean, Verbosity, Format>> outputFormats(
             Stream<Tuple5<Map<String, String>, String[], String[], Boolean, Verbosity>> stream) {
         return stream.flatMap(t -> Stream.of(
                 new Tuple3<>(t, Format.DEFAULT, ""),
                 new Tuple3<>(t, Format.PLAIN, "--plain"),
-                new Tuple3<>(t, Format.JSON, "--json")
+                new Tuple3<>(t, Format.JSON, "--json"),
+                new Tuple3<>(t, Format.YAML, "--yaml")
         )).map(t -> new Tuple6<>(t.e1().e1(), Stream.concat(Arrays.stream(t.e1().e2()), Stream.of(t.e3()))
                 .filter(Predicate.not(String::isBlank))
                 .toArray(String[]::new), t.e1().e3(), t.e1().e4(), t.e1().e5(), t.e2()));
@@ -285,7 +351,7 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      * @return the modified command option variations stream with output locations
      * @since 0.5.0
      */
-    private Stream<Tuple7<Map<String, String>, String[], String[], Boolean, Verbosity, Format, Integer>> getOutputLocations(
+    private Stream<Tuple7<Map<String, String>, String[], String[], Boolean, Verbosity, Format, Integer>> outputLocations(
             Stream<Tuple6<Map<String, String>, String[], String[], Boolean, Verbosity, Format>> stream) {
         return stream.flatMap(t -> Stream.of(t.combine(0), t.combine(1), t.combine(2)));
     }
@@ -300,9 +366,12 @@ public class CommandOutputProvider implements ArgumentsProvider, AnnotationConsu
      */
     @Override
     public void accept(CommandSource commandSource) {
+        this.rootCommand = commandSource.rootCommand();
         this.args = commandSource.args();
         this.env = commandSource.env();
+        this.inputs = commandSource.inputs();
         this.generation = commandSource.generation();
-        this.shortened = commandSource.shortened();
+        this.shortenedInputs = commandSource.shortenedInputs();
+        this.shortenedOutputPaths = commandSource.shortenedOutputPaths();
     }
 }

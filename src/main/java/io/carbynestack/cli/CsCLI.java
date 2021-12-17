@@ -21,7 +21,7 @@ import static picocli.CommandLine.ScopeType.INHERIT;
  */
 @Command(name = "cs", description = "Command Line Interface to interact with Carbyne Stack Virtual Clouds",
         scope = INHERIT, usageHelpAutoWidth = true, showEndOfOptionsDelimiterInUsageHelp = true,
-        mixinStandardHelpOptions = true, showAtFileInUsageHelp = true,
+        mixinStandardHelpOptions = true, showAtFileInUsageHelp = true, requiredOptionMarker = '*',
         subcommands = {CompletionCommand.class})
 public class CsCLI extends DefaultCommandRunner {
     /**
@@ -38,6 +38,13 @@ public class CsCLI extends DefaultCommandRunner {
      * @since 0.1.0
      */
     public static void main(String[] args) {
-        exit(execute(CsCLI::new, args));
+        try {
+            exit(execute(CsCLI::new, args));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            if (t.getCause() != null) {
+                t.getCause().printStackTrace();
+            }
+        }
     }
 }

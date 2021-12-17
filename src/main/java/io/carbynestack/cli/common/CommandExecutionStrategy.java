@@ -12,7 +12,7 @@ import io.carbynestack.cli.util.args.NoArg;
 import io.carbynestack.common.result.Success;
 import picocli.CommandLine.*;
 
-import static java.util.function.Function.identity;
+import static java.util.function.UnaryOperator.identity;
 
 /**
  * CLI specific implementation responsible for "executing"
@@ -40,15 +40,16 @@ public class CommandExecutionStrategy implements IExecutionStrategy {
     public int execute(ParseResult parseResult) throws ExecutionException, ParameterException {
         record IsHelp<T>(boolean is, T other) {
         }
+
         return parseResult.asCommandLineList().stream()
                 .filter(cl -> cl.isVersionHelpRequested() || cl.isUsageHelpRequested())
                 .map(cl -> new IsHelp<>(cl.isUsageHelpRequested(), cl.getMixins().values().stream()
-                        .filter(obj -> obj instanceof Common)
-                        .map(obj -> (Common) obj)
+                        .filter(obj -> obj instanceof PicocliCommon)
+                        .map(obj -> (PicocliCommon) obj)
                         .findFirst()))
                 .map(isHelp -> isHelp.other()
-                        .map(common -> (isHelp.is() ? new HelpRunner() : new VersionRunner())
-                                .run(new NoArg(), common)))
+                        .map(common -> new Success<>(CommandExecutor.execute(() -> isHelp.is()
+                                ? new HelpRunner() : new VersionRunner(), new NoArg(), common))))
                 .findFirst()
                 .flatMap(identity())
                 .orElseGet(() -> new Success<>(new RunLast().execute(parseResult)))

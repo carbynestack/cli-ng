@@ -8,6 +8,8 @@ package io.carbynestack.cli.common.runners;
 
 import io.carbynestack.cli.common.CommandRunner;
 import io.carbynestack.cli.common.Common;
+import io.carbynestack.cli.shapeless.Fragment;
+import io.carbynestack.cli.shapeless.Fragment.Section;
 import io.carbynestack.cli.util.args.NoArg;
 import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.Stub;
@@ -15,10 +17,14 @@ import io.carbynestack.common.result.Result;
 import picocli.CommandLine;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import static io.carbynestack.cli.CsCLI.VERSION;
 import static io.carbynestack.cli.util.ExitCodes.success;
+import static io.carbynestack.cli.util.Verbosity.*;
 import static java.lang.System.getProperty;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * The version command option runner.
@@ -36,45 +42,99 @@ public class VersionRunner implements CommandRunner<NoArg> {
      */
     @Override
     public Result<Integer, ? extends CsFailureReason> run(NoArg noArg, Common common) {
-        common.out().println(getOutput());
+        common.fragmentTransform(fragment -> common.ansi(switch (common.format()) {
+            case DEFAULT, PLAIN -> textualize(fragment);
+            default -> fragment;
+        }));
+
+        switch (common.format()) {
+            case DEFAULT, PLAIN -> {
+                if (common.verbosity() == QUIET) {
+                    common.out().println(VERSION);
+                } else {
+                    common.out(DEFAULT).println(getDescription(),
+                            "Version: %s".formatted(VERSION));
+                }
+            }
+            default -> {
+                common.out(DEFAULT).println(getDescription());
+                common.out().write(new Fragment.Pair("version", VERSION));
+            }
+        }
+
+        common.out(EXTRA_VERBOSE).write(getDependencies());
+        common.out(DEBUG).write(getDebug());
+
         return success();
     }
 
     /**
-     * Returns the interpolated version of {@link #getText()}.
+     * Returns a textualized version of the section fragment
+     * keys and values.
      *
-     * @return the interpolated version information text
-     * @since 0.2.0
+     * @param fragment the fragment to transform using
+     *                 textualization
+     * @return the textualized fragment
+     * @since 0.8.0
      */
-    @Stub
-    String getOutput() {
-        return String.format(getText(), VERSION, CommandLine.VERSION, getProperty("java.version"),
-                getProperty("java.vendor"), getProperty("java.vm.name"), getProperty("java.vm.version"),
-                getProperty("os.name"), getProperty("os.version"), getProperty("os.arch"), getLocale());
+    private Fragment textualize(Fragment fragment) {
+        if (fragment instanceof Section section) {
+            return new Section(switch (section.key()) {
+                case "dependencies" -> "@|bold Dependencies|@";
+                case "environment" -> "@|bold Runtime & Environment|@";
+                default -> section.key();
+            }, section.entries().entrySet().stream().map(entry -> {
+                var key = entry.getKey();
+                return Map.entry(switch (key) {
+                    case "jvm", "os" -> key.toUpperCase();
+                    default -> key;
+                }, entry.getValue());
+            }).collect(toMap(Entry::getKey, Entry::getValue)));
+        }
+        return fragment;
     }
 
     /**
-     * Returns the raw version information text used by {@link #getOutput()}.
+     * Returns the raw version description text.
      *
-     * @return the raw version information text
-     * @since 0.2.0
+     * @return the version description
+     * @since 0.7.0
      */
-    @Stub
-    String getText() {
-        return """
-                @|bold Command Line Interface to interact with Carbyne Stack Virtual Clouds|@
-                Carbyne Stack CLI: %s
-                                
-                @|bold Dependencies:|@
-                Picocli: %s
-                Amphora: 0.1-SNAPSHOT-1261403362-2-41864d
-                Castor: 0.1-SNAPSHOT-1261403451-2-78f5f5b
-                Ephemeral: 0.1-SNAPSHOT-1261324039-3-d2504ed
-                                
-                @|bold Runtime & Environment:|@
-                JVM: %s (%s %s %s)
-                OS: %s %s %s
-                Locale: %s""";
+    private String getDescription() {
+        return "@|bold Command Line Interface to interact with Carbyne Stack Virtual Clouds|@";
+    }
+
+    /**
+     * Returns the dependency versions as a section.
+     *
+     * @return the dependency versions section
+     * @since 0.7.0
+     */
+    private Section getDependencies() {
+        return new Section("dependencies", Map.of(
+                "picocli", CommandLine.VERSION,
+                "common", "0.2-SNAPSHOT-1572433626-19-a73b4a5",
+                "amphora", "0.1-SNAPSHOT-1261403362-2-41864d",
+                "castor", "0.1-SNAPSHOT-1261403451-2-78f5f5b",
+                "ephemeral", "0.1-SNAPSHOT-1261324039-3-d2504ed"
+        ));
+    }
+
+    /**
+     * Returns the interpolated environment metadata section.
+     *
+     * @return the interpolated environment text
+     * @since 0.7.0
+     */
+    private Section getDebug() {
+        return new Section("environment", Map.of(
+                "jvm", "%s (%s %s %s)".formatted(getProperty("java.version"),
+                        getProperty("java.vendor"), getProperty("java.vm.name"),
+                        getProperty("java.vm.version")),
+                "os", "%s %s %s".formatted(getProperty("os.name"),
+                        getProperty("os.version"), getProperty("os.arch")),
+                "locale", getLocale()
+        ));
     }
 
     /**
@@ -88,7 +148,7 @@ public class VersionRunner implements CommandRunner<NoArg> {
     String getLocale() {
         var locale = Locale.getDefault();
         var target = new Locale("en", "US");
-        return String.format("%s (%s %s)", locale.toLanguageTag(),
+        return "%s (%s %s)".formatted(locale.toLanguageTag(),
                 locale.getDisplayLanguage(target), locale.getDisplayCountry(target));
     }
 }

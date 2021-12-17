@@ -45,7 +45,7 @@ public record Resolver(Map<String, String> supplied) {
      * @since 0.5.0
      */
     @Stub
-    static UnaryOperator<String> environment = System::getenv;
+    public static UnaryOperator<String> environment = System::getenv;
 
     /**
      * Creates a {@code Resolver} instance.
