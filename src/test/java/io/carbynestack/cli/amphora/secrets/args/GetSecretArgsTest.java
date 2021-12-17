@@ -13,20 +13,16 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class DeleteSecretsArgsTest {
+class GetSecretArgsTest {
     @Test
     void constructor() {
-        var secrets = new UUID[] {
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        };
-        assertThat(new DeleteSecretsArgs(secrets)
-                .secrets()).isEqualTo(secrets);
+        var id = UUID.randomUUID();
+        assertThat(new GetSecretArgs(id).id()).isEqualTo(id);
     }
 
     @Test
     void constructorNullableValue() {
-        assertThatThrownBy(() -> new DeleteSecretsArgs(null))
+        assertThatThrownBy(() -> new GetSecretArgs(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 }
