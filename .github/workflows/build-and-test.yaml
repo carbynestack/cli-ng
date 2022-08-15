@@ -5,7 +5,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 name: Artifacts
-on: push
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
 env:
   SHELL: /bin/bash
 jobs:
@@ -41,7 +48,7 @@ jobs:
         if: contains(matrix.distribution, 'graal')
         uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
+          version: '21.3.0'
           java-version: ${{ matrix.jdk }}
           components: 'native-image'
           cache: 'maven'
@@ -60,8 +67,8 @@ jobs:
           servers: |
             [{
               "id": "github",
-              "username": "${{ secrets.GHPR_USERNAME }}",
-              "password": "${{ secrets.GHPR_TOKEN }}"
+              "username": "${{ github.actor }}",
+              "password": "${{ secrets.GITHUB_TOKEN }}"
             }]
       - name: Build with Maven
         if: (!contains(matrix.compilation, 'aot'))
@@ -79,6 +86,7 @@ jobs:
         run: echo ::set-output name=reports::$(find . -regex '.*/target/site/jacoco/jacoco.xml' | tr '\n' ',' | sed 's/.$//')
         id: jacoco
       - uses: codecov/codecov-action@v2
+        if: (!contains(matrix.compilation, 'aot'))
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.jacoco.outputs.reports }}
