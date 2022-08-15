@@ -23,7 +23,7 @@ public class FragmentPairTest {
     public static final Arguments PARAMS = Arguments.of(KEY, VALUE);
 
     @Test
-    void constructor() {
+    void whenCreatingPairThenReturnExpectedPair() {
         var pair = new Fragment.Pair(KEY, VALUE);
         assertThat(pair.key()).isEqualTo(KEY);
         assertThat(pair.value()).isEqualTo(VALUE);
@@ -31,14 +31,14 @@ public class FragmentPairTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String key, String value) {
+    void givenKeyAndValueAreNullWhenCreatingPairThenThrowNullPointerException(String key, String value) {
         assertThatThrownBy(() -> new Fragment.Pair(key, value))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankKey(String key) {
+    void givenKeyIsEmptyWhenCreatingPairThenThrowIllegalArgumentException(String key) {
         assertThatThrownBy(() -> new Fragment.Pair(key, VALUE))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing pair key.");
@@ -46,7 +46,7 @@ public class FragmentPairTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankValue(String value) {
+    void givenValueIsEmptyWhenCreatingPairThenThrowIllegalArgumentException(String value) {
         assertThatThrownBy(() -> new Fragment.Pair(KEY, value))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing pair value.");

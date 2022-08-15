@@ -13,27 +13,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VerbosityTest {
     @Test
-    public void fromReturnsDefault() {
+    public void givenEmptyBooleanArrayWhenCallingFromOnVerbosityThenReturnDefaultLevel() {
         assertThat(from(new boolean[0])).isEqualTo(DEFAULT);
     }
 
     @Test
-    public void fromReturnsVerbose() {
+    public void givenSingletonBooleanArrayWhenCallingFromOnVerbosityThenReturnVerboseLevel() {
         assertThat(from(new boolean[]{true})).isEqualTo(VERBOSE);
     }
 
     @Test
-    public void fromReturnsExtraVerbose() {
+    public void givenTwoComponentBooleanArrayWhenCallingFromOnVerbosityThenReturnExtraVerboseLevel() {
         assertThat(from(new boolean[]{true, true})).isEqualTo(EXTRA_VERBOSE);
     }
 
     @Test
-    public void fromReturnsDebug() {
+    public void givenThreeComponentBooleanArrayWhenCallingFromOnVerbosityThenReturnDebugLevel() {
         assertThat(from(new boolean[]{true, true, true})).isEqualTo(DEBUG);
     }
 
     @Test
-    public void fromOverflow() {
+    public void givenMoreThanThreeComponentBooleanArrayWhenCallingFromOnVerbosityThenReturnDefaultLevel() {
         assertThat(from(new boolean[]{true, true, true, true})).isEqualTo(DEFAULT);
     }
 }

@@ -20,7 +20,7 @@ public class ShapeWriterTest {
     private static final PrintWriter WRITER = new PrintWriter(OutputStream.nullOutputStream());
 
     @Test
-    void write() {
+    void givenFragmentAndDefaultShapeWriterWhenCallingWriteOnShapeWriterThenWriterBufferContainsWrittenFragment() {
         var fragment = new Fragment.Pair("key", "value");
         var writer = new ShapeWriter.Default(SHAPE, TRANSFORM, WRITER);
         writer.write(fragment);
@@ -28,7 +28,7 @@ public class ShapeWriterTest {
     }
 
     @Test
-    void println() {
+    void givenDefaultShapeWriterWhenCallingPrintlnOnShapeWriterThenWriterBufferContainsWrittenText() {
         var writer = new ShapeWriter.Default(SHAPE, TRANSFORM, WRITER);
         writer.println("test");
         assertThat(writer.buffer()).allMatch(fragment ->

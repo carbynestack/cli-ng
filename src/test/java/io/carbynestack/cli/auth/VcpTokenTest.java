@@ -35,7 +35,7 @@ class VcpTokenTest {
             FROM = Arguments.of(BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
 
     @Test
-    void constructor() {
+    void whenCreatingVcpTokenThenCreateExpectedVcpToken() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
         assertThat(token.baseURL()).isEqualTo(BASE_URL);
         assertThat(token.accessToken()).isEqualTo(ACCESS_TOKEN);
@@ -45,14 +45,15 @@ class VcpTokenTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String baseURL, String accessToken, String refreshToken, Date expires) {
+    void givenNullableValuesWhenCreatingVcpTokenThenThrowNullPointerException(
+            String baseURL, String accessToken, String refreshToken, Date expires) {
         assertThatThrownBy(() -> new VcpToken(baseURL, accessToken, refreshToken, expires))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankBaseURL(String baseURL) {
+    void givenEmptyOrBlankBaseURLWhenCreatingVcpTokenThenThrowIllegalArgumentException(String baseURL) {
         assertThatThrownBy(() -> new VcpToken(baseURL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing base URL.");
@@ -60,7 +61,7 @@ class VcpTokenTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankAccessToken(String accessToken) {
+    void givenEmptyOrBlankAccessTokenWhenCreatingVcpTokenThenThrowIllegalArgumentException(String accessToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, accessToken, REFRESH_TOKEN, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing access token.");
@@ -68,14 +69,14 @@ class VcpTokenTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankRefreshToken(String refreshToken) {
+    void givenEmptyOrBlankRefreshTokenWhenCreatingVcpTokenThenThrowIllegalArgumentException(String refreshToken) {
         assertThatThrownBy(() -> new VcpToken(BASE_URL, ACCESS_TOKEN, refreshToken, EXPIRES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing refresh token.");
     }
 
     @Test
-    void fromWithCreation() {
+    void givenCreationDateWhenCallingFromOnVcpTokenThenReturnExpectedVcpToken() {
         var token = VcpToken.from(CREATION, BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
         var expires = Date.from(CREATION.toInstant().plus(EXPIRES_IN, SECONDS));
         assertThat(token.baseURL()).isEqualTo(BASE_URL_URI.toString());
@@ -85,7 +86,7 @@ class VcpTokenTest {
     }
 
     @Test
-    void from() {
+    void whenCallingFromOnVcpTokenThenReturnExpectedVcpToken() {
         var token = VcpToken.from(BASE_URL_URI, OAUTH_2_ACCESS_TOKEN);
         assertThat(token.baseURL()).isEqualTo(BASE_URL_URI.toString());
         assertThat(token.accessToken()).isEqualTo(ACCESS_TOKEN);
@@ -94,20 +95,22 @@ class VcpTokenTest {
 
     @ParameterizedTest
     @NullableParamSource("FROM_WITH_CREATION")
-    void fromWithCreationNullableValues(Date created, URI baseURL, OAuth2AccessToken token) {
+    void givenNullableValuesWhenCallingFromOnVcpTokenThenThrowNullPointerException(
+            Date created, URI baseURL, OAuth2AccessToken token) {
         assertThatThrownBy(() -> VcpToken.from(created, baseURL, token))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @NullableParamSource("FROM")
-    void fromWithCreationNullableValues(URI baseURL, OAuth2AccessToken token) {
+    void givenNullableValuesWhenCallingFromOnVcpTokenThenThrowNullPointerException(
+            URI baseURL, OAuth2AccessToken token) {
         assertThatThrownBy(() -> VcpToken.from(baseURL, token))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void expired() {
+    void whenCallingExpiredOnVcpTokenThenReturnCurrentExpirationState() {
         var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
         var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, MINUTES));
         assertThat(token.expired()).isTrue();

@@ -15,7 +15,7 @@ class ShapeOptionsTest {
     private final ShapedOptions shapeOptions = new ShapedOptions();
 
     @Test
-    void plain() {
+    void givenDefaultInitializedShapedOptionsInstanceWhenCallingPlainOnShapedOptionsThenReturnFalse() {
         assertThat(shapeOptions.plain).isFalse();
     }
 }

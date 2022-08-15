@@ -16,19 +16,19 @@ public class UnsupportedFragmentTest {
             = new UnsupportedFragment(new Fragment.Text("test"), new Shape.Json());
 
     @Test
-    void synopsis() {
+    void givenJsonShapedTextWrappedAsUnsupportedFragmentWhenCallingSynopsisOnUnsupportedFragmentThenReturnExpectedSynopsis() {
         assertThat(unsupportedFragment.synopsis())
                 .isEqualTo("Shaping of Text[lines=[test]] into Json[] shape failed.");
     }
 
     @Test
-    void description() {
+    void givenJsonShapedTextWrappedAsUnsupportedFragmentWhenCallingDescriptionOnUnsupportedFragmentThenReturnExpectedDescription() {
         assertThat(unsupportedFragment.description())
                 .isEqualTo("The shape implementation Json[] is missing support for Text[lines=[test]].");
     }
 
     @Test
-    void reportIssue() {
+    void givenJsonShapedTextWrappedAsUnsupportedFragmentWhenCallingReportIssueOnUnsupportedFragmentThenReturnTrue() {
         assertThat(unsupportedFragment.reportIssue()).isTrue();
     }
 }

@@ -21,13 +21,13 @@ public class FragmentTextTest {
     private static final List<String> LINES = List.of("first", "second");
 
     @Test
-    void constructor() {
+    void whenCreatingTextThenReturnExpectedText() {
         var text = new Fragment.Text(LINES);
         assertThat(text.lines()).isEqualTo(LINES);
     }
 
     @Test
-    void constructorWithMultipleLines() {
+    void givenMultilineStringsWhenCreatingTextThenReturnExpectedText() {
         assertThat(new Fragment.Text("first", "second").lines())
                 .containsExactly("first", "second");
         assertThat(new Fragment.Text("first\nsecond").lines())
@@ -39,14 +39,14 @@ public class FragmentTextTest {
     }
 
     @Test
-    void constructorNullableValue() {
+    void givenStringIsNullWhenCreatingTextThenThrowNullPointerException() {
         assertThatThrownBy(() -> new Fragment.Text((List<String>) null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankLines(String line) {
+    void givenStringsAreEmptyWhenCreatingTextThenThrowIllegalArgumentException(String line) {
         if (Objects.equals(line, "\n")) {
             assertThatThrownBy(() -> new Fragment.Text(line))
                     .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -58,7 +58,7 @@ public class FragmentTextTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankLinesWithNullValues(String line) {
+    void givenStringsAreEmptyOrAreNullWhenCallingLinesOnTextThenReturnExpectedLines(String line) {
         if (Objects.equals(line, "\n")) {
             assertThatThrownBy(() -> new Fragment.Text(line))
                     .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -74,7 +74,7 @@ public class FragmentTextTest {
     }
 
     @Test
-    void constructorEmptyLines() {
+    void givenStringIsEmptyWhenCreatingTextThenThrowIllegalArgumentException() {
         assertThatThrownBy(() -> new Fragment.Text(Collections.emptyList()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing text lines.");

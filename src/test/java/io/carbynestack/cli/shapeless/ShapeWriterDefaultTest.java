@@ -33,13 +33,14 @@ public class ShapeWriterDefaultTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(Shape shape, List<Fragment> buffer, UnaryOperator<Fragment> transform, PrintWriter writer) {
+    void givenShapeAndBufferAndTransformAndWriterAreNullWhenCreatingDefaultThenThrowNullPointerException(
+            Shape shape, List<Fragment> buffer, UnaryOperator<Fragment> transform, PrintWriter writer) {
         assertThatThrownBy(() -> new ShapeWriter.Default(shape, buffer, transform, writer))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void altConstructor() {
+    void givenNoBufferWhenCreatingDefaultThenDefaultInitializedBufferIsEmpty() {
         assertThat(new ShapeWriter.Default(SHAPE, TRANSFORM, WRITER)
                 .buffer()).isEmpty();
 
@@ -47,31 +48,32 @@ public class ShapeWriterDefaultTest {
 
     @ParameterizedTest
     @NullableParamSource("ALT_PARAMS")
-    void altConstructorNullableValues(Shape shape, UnaryOperator<Fragment> transform, PrintWriter writer) {
+    void givenNoBufferAndShapeAndTransformAndWriterAreNullWhenCreatingDefaultThenThrowNullPointerException(
+            Shape shape, UnaryOperator<Fragment> transform, PrintWriter writer) {
         assertThatThrownBy(() -> new ShapeWriter.Default(shape, transform, writer))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void shape() {
+    void givenDefaultShapeWriterInstanceWithShapeWhenCallingShapeOnShapeWriterThenReturnInputShape() {
         assertThat(new ShapeWriter.Default(SHAPE, BUFFER, TRANSFORM, WRITER)
                 .shape()).isEqualTo(SHAPE);
     }
 
     @Test
-    void buffer() {
+    void givenDefaultShapeWriterInstanceWithBufferWhenCallingBufferOnShapeWriterThenReturnInputBuffer() {
         assertThat(new ShapeWriter.Default(SHAPE, BUFFER, TRANSFORM, WRITER)
                 .buffer()).isEqualTo(BUFFER);
     }
 
     @Test
-    void transform() {
+    void givenDefaultShapeWriterInstanceWithTransformWhenCallingTransformOnShapeWriterThenReturnInputTransform() {
         assertThat(new ShapeWriter.Default(SHAPE, BUFFER, TRANSFORM, WRITER)
                 .transform()).isEqualTo(TRANSFORM);
     }
 
     @Test
-    void writer() {
+    void givenDefaultShapeWriterInstanceWithWriterWhenCallingWriterOnShapeWriterThenReturnInputWriter() {
         assertThat(new ShapeWriter.Default(SHAPE, BUFFER, TRANSFORM, WRITER)
                 .writer()).isEqualTo(WRITER);
     }

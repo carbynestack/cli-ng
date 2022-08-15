@@ -28,14 +28,15 @@ public class PathsResolvableTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String keyPath, String synopsis, String description) {
+    void givenKeyPathAndSynopsisAndDescriptionAreNullWhenCreatingPathsResolvableThenThrowNullPointerException(
+            String keyPath, String synopsis, String description) {
         assertThatThrownBy(() -> new PathsResolvable(keyPath, synopsis, description))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankKeyPath(String keyPath) {
+    void givenKeyPathIsEmptyWhenCreatingPathsResolvableThenThrowIllegalArgumentException(String keyPath) {
         assertThatThrownBy(() -> new PathsResolvable(keyPath, resolvable.synopsis(), resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing keyPath.");
@@ -43,7 +44,7 @@ public class PathsResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankSynopsis(String synopsis) {
+    void givenSynopsisIsEmptyWhenCreatingPathsResolvableThenThrowIllegalArgumentException(String synopsis) {
         assertThatThrownBy(() -> new PathsResolvable(resolvable.keyPath(), synopsis, resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing synopsis.");
@@ -51,31 +52,31 @@ public class PathsResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankDescription(String description) {
+    void givenDescriptionIsEmptyWhenCreatingPathsResolvableThenThrowIllegalArgumentException(String description) {
         assertThatThrownBy(() -> new PathsResolvable(resolvable.keyPath(), resolvable.synopsis(), description))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing description.");
     }
 
     @Test
-    void parse() {
+    void givenSingleResolvableStringWhenCallingParseOnPathsResolvableThenReturnParsedResultListOptional() {
         var path = Path.of("~/.cs/config");
         assertThat(resolvable.parse(path.toString())).contains(List.of(path));
     }
 
     @Test
-    void parseMultiple() {
+    void givenMultipleResolvableStringsWhenCallingParseOnPathsResolvableThenReturnParsedResultListOptional() {
         var path = Path.of("~/.cs/config");
         assertThat(resolvable.parse(path + "," + path)).contains(List.of(path, path));
     }
 
     @Test
-    void parseNull() {
+    void givenStringIsNullWhenCallingParseOnPathsResolvableThenReturnEmptyOptional() {
         assertThat(resolvable.parse(null)).isEmpty();
     }
 
     @Test
-    void parseNonPaths() {
+    void givenNonPathStringWhenCallingParseOnPathsResolvableThenReturnEmptyListOptional() {
         assertThat(resolvable.parse("\0")).hasValue(Collections.emptyList());
     }
 }

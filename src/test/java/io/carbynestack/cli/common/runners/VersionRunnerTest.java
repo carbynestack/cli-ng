@@ -21,7 +21,7 @@ class VersionRunnerTest {
     private final VersionRunner runner = new VersionRunner();
 
     @Test
-    void getLocale() {
+    void givenDefaultLocaleWhenCallingGetLocaleOnVersionRunnerThenReturnStringContainingLanguageTagAndDisplayLanguageAndDisplayCountry() {
         var locale = Locale.getDefault();
         var target = new Locale("en", "US");
         var result = runner.getLocale();
@@ -114,7 +114,7 @@ class VersionRunnerTest {
 
     @ParameterizedTest
     @CommandSource(args = "--version")
-    void executeVersion(CommandResult result) {
+    void whenExecutingCLIVersionThenVerifyVersionOutput(CommandResult result) {
         assertThat(result.exitCode()).isZero();
         assertThat(result.err()).isBlank();
 

@@ -28,26 +28,26 @@ class StringUtilTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"T", "Te", "Tes", "Test"})
-    void toTitleCase(String expected) {
+    void givenUniquelyCasedStringArgumentWhenCallingToTitleCaseOnStringUtilThenReturnStringInTitleCase(String expected) {
         assertThat(StringUtil.toTitleCase(expected.toLowerCase()))
                 .isEqualTo(expected);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void toTitleCaseForEmptyOrBlankStrings(String value) {
+    void givenEmptyOrBlankStringArgumentWhenCallingToTitleCaseOnStringUtilThenReturnInputString(String value) {
         assertThat(StringUtil.toTitleCase(value))
                 .isEqualTo(value);
     }
 
     @Test
-    void toTitleCaseForNullPointerException() {
+    void givenStringArgumentIsNullWhenCallingToTitleCaseOnStringUtilThenThrowNullPointerException() {
         assertThatThrownBy(() -> StringUtil.toTitleCase(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void joinf() {
+    void givenCollectionOfCharSequencesAndDelimiterWhenCallingJoinfOnStringUtilThenReturnJoinedInputCopyWithDelimiters() {
         assertThat(StringUtil.joinf(ELEMENTS, DELIMITER))
                 .isEqualTo("""
                         first
@@ -56,13 +56,14 @@ class StringUtilTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void joinfNullPointerException(Iterable<? extends CharSequence> elements, String delimiter) {
+    void givenCollectionOfCharSequencesAndDelimiterAreNullWhenCallingJoinfOnStringUtilThenThrowNullPointerException(
+            Iterable<? extends CharSequence> elements, String delimiter) {
         assertThatThrownBy(() -> StringUtil.joinf(elements, delimiter))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void joinfCollector() {
+    void givenStringStreamAndJoinfCollectorWhenCallingCollectOnStreamThenReturnJoinedStreamElementCopyWithDelimiters() {
         assertThat(ELEMENTS.stream().collect(StringUtil.joinf(DELIMITER)))
                 .isEqualTo("""
                         first
@@ -70,27 +71,27 @@ class StringUtilTest {
     }
 
     @Test
-    void joinfCollectorNullPointerException() {
+    void givenDelimiterIsNullWhenCallingJoinfOnStringUtilThenThrowNullPointerException() {
         assertThatThrownBy(() -> StringUtil.joinf(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void splitLines() {
+    void givenStringWithLineDelimitersWhenCallingSplitLinesOnStringUtilThenReturnArrayOfSplitComponents() {
         assertThat(StringUtil.splitLines("1%n2%n3%n4%n5".formatted()))
                 .hasSize(5).containsExactly("1", "2", "3", "4", "5");
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void splitLinesWithEmptyOrBlankStrings(String value) {
+    void givenEmptyOrBlankStringsWhenCallingSplitLinesOnStringUtilThenReturnInputString(String value) {
         if (Objects.equals(value, "\n")) return;
         assertThat(StringUtil.splitLines(value))
                 .hasSize(1).containsExactly(value);
     }
 
     @Test
-    void splitLinesWithNullPointerException() {
+    void givenStringIsNullWhenCallingSplitLinesOnStringUtilThenThrowNullPointerException() {
         assertThatThrownBy(() -> StringUtil.splitLines(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }

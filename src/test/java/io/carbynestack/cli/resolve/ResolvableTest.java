@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ResolvableTest {
     @Test
-    void description() {
+    void givenKeyPathIsNullWhenCallingSynopsisOnResolvableThenDescriptionIsEquivalentToSynopsis() {
         var res = new TestResolvable(null);
         assertThat(res.synopsis()).isEqualTo(res.description());
     }
@@ -26,21 +26,21 @@ class ResolvableTest {
     @ParameterizedTest
     @ValueSource(strings = {"no/Ssl/Validation", "No/Ssl/Validation", "no/ssl/validation",
             "NO/SSL/VALIDATION", "no/SSL/validation", "No/ssl/VALIDATION"})
-    void environmentKey(String keyPath) {
+    void givenUniquelyCasedKeyPathsWhenCallingEnvironmentKeyOnResolvableThenReturnUniformKey(String keyPath) {
         assertThat(new TestResolvable(keyPath).environmentKey())
                 .isEqualTo("CS_NO_SSL_VALIDATION");
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void environmentKeyEmptyOrBlankString(String keyPath) {
+    void givenKeyPathsAreEmptyWhenCallingEnvironmentKeyOnResolvableThenThrowIllegalStateException(String keyPath) {
         assertThatThrownBy(() -> new TestResolvable(keyPath).environmentKey())
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasMessage("Missing Resolvable#keyPath value.");
     }
 
     @Test
-    void environmentKeyNullPointerException() {
+    void givenKeyPathIsNullWhenCallingEnvironmentKeyOnResolvableThenThrowNullPointerException() {
         assertThatThrownBy(() -> new TestResolvable(null).environmentKey())
                 .isExactlyInstanceOf(NullPointerException.class);
     }
@@ -48,21 +48,21 @@ class ResolvableTest {
     @ParameterizedTest
     @ValueSource(strings = {"no/Ssl/Validation", "No/Ssl/Validation", "no/ssl/validation",
             "NO/SSL/VALIDATION", "no/SSL/validation", "No/ssl/VALIDATION"})
-    void configKey(String keyPath) {
+    void givenUniquelyCasedKeyPathsWhenCallingConfigKeyOnResolvableThenReturnUniformKey(String keyPath) {
         assertThat(new TestResolvable(keyPath).configKey())
                 .isEqualTo("noSslValidation");
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void configKeyEmptyOrBlankString(String keyPath) {
+    void givenKeyPathsAreEmptyWhenCallingConfigKeyOnResolvableThenThrowIllegalStateException(String keyPath) {
         assertThatThrownBy(() -> new TestResolvable(keyPath).configKey())
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasMessage("Missing Resolvable#keyPath value.");
     }
 
     @Test
-    void configKeyNullPointerException() {
+    void givenKeyPathIsNullWhenCallingConfigKeyOnResolvableThenThrowNullPointerException() {
         assertThatThrownBy(() -> new TestResolvable(null).configKey())
                 .isExactlyInstanceOf(NullPointerException.class);
     }

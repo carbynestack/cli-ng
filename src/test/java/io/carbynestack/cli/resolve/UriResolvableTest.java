@@ -26,14 +26,15 @@ public class UriResolvableTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String keyPath, String synopsis, String description) {
+    void givenKeyPathAndSynopsisAndDescriptionAreNullWhenCreatingUriResolvableThenThrowNullPointerException(
+            String keyPath, String synopsis, String description) {
         assertThatThrownBy(() -> new UriResolvable(keyPath, synopsis, description))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankKeyPath(String keyPath) {
+    void givenKeyPathIsEmptyWhenCreatingUriResolvableThenThrowIllegalArgumentException(String keyPath) {
         assertThatThrownBy(() -> new UriResolvable(keyPath, resolvable.synopsis(), resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing keyPath.");
@@ -41,7 +42,7 @@ public class UriResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankSynopsis(String synopsis) {
+    void givenSynopsisIsEmptyWhenCreatingUriResolvableThenThrowIllegalArgumentException(String synopsis) {
         assertThatThrownBy(() -> new UriResolvable(resolvable.keyPath(), synopsis, resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing synopsis.");
@@ -49,25 +50,25 @@ public class UriResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankDescription(String description) {
+    void givenDescriptionIsEmptyWhenCreatingUriResolvableThenThrowIllegalArgumentException(String description) {
         assertThatThrownBy(() -> new UriResolvable(resolvable.keyPath(), resolvable.synopsis(), description))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing description.");
     }
 
     @Test
-    void parse() {
+    void givenUriResolvableStringWhenCallingParseOnUriResolvableThenReturnParsedResultOptional() {
         var uri = URI.create("http://$APOLLO_FQDN/amphora");
         assertThat(resolvable.parse(uri.toString())).hasValue(uri);
     }
 
     @Test
-    void parseNull() {
+    void givenStringIsNullWhenCallingParseOnUriResolvableThenReturnEmptyOptional() {
         assertThat(resolvable.parse(null)).isEmpty();
     }
 
     @Test
-    void parseNonUri() {
+    void givenNonUriStringWhenCallingParseOnUriResolvableThenReturnEmptyOptional() {
         assertThat(resolvable.parse("<>")).isEmpty();
     }
 }

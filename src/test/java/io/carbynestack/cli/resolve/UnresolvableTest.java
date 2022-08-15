@@ -16,19 +16,19 @@ public class UnresolvableTest {
             new BooleanResolvable("no/ssl/validation", "synopsis", "description");
 
     @Test
-    void constructorNullableValues() {
+    void givenResolvableIsNullWhenCreatingUnresolvableThenThrowNullPointerException() {
         assertThatThrownBy(() -> new Unresolvable(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void synopsis() {
+    void whenCallingSynopsisOnUnresolvableThenReturnFailureSynopsis() {
         assertThat(new Unresolvable(resolvable).synopsis())
                 .isEqualTo("Resolving no/ssl/validation failed! (re-run with -v for more details)");
     }
 
     @Test
-    void description() {
+    void whenCallingDescriptionOnUnresolvableThenReturnFailureDescription() {
         assertThat(new Unresolvable(resolvable).description())
                 .isEqualToIgnoringWhitespace("""
                         The failure can be resolved by setting:
@@ -43,7 +43,7 @@ public class UnresolvableTest {
     }
 
     @Test
-    void simpleJsonSnippet() {
+    void whenCallingJsonSnippetOnUnresolvableThenReturnSimpleJsonSnippet() {
         assertThat(new Unresolvable(resolvable).jsonSnippet())
                 .isEqualTo("""
                         {
@@ -54,7 +54,7 @@ public class UnresolvableTest {
     }
 
     @Test
-    void nestedJsonSnippet() {
+    void givenNestedUriResolvableWhenCallingJsonSnippetOnUnresolvableThenReturnNestedJsonSnippet() {
         assertThat(new Unresolvable(new UriResolvable("vcp/apollo/amphora/service/url",
                 "s", "d")).jsonSnippet()).isEqualTo("""
                 {

@@ -26,7 +26,7 @@ public class FragmentSectionTest {
     public static final Arguments PARAMS = Arguments.of(KEY, ENTRIES);
 
     @Test
-    void constructor() {
+    void whenCreatingSectionThenReturnExpectedSection() {
         var section = new Fragment.Section(KEY, ENTRIES);
         assertThat(section.key()).isEqualTo(KEY);
         assertThat(section.entries()).isEqualTo(ENTRIES);
@@ -34,21 +34,21 @@ public class FragmentSectionTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String key, Map<String, String> entries) {
+    void givenKeyAndEntriesAreNullWhenCreatingSectionThenThrowNullPointerException(String key, Map<String, String> entries) {
         assertThatThrownBy(() -> new Fragment.Section(key, entries))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankKey(String key) {
+    void givenKeyIsEmptyWhenCreatingSectionThenThrowIllegalArgumentException(String key) {
         assertThatThrownBy(() -> new Fragment.Section(key, ENTRIES))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing section key.");
     }
 
     @Test
-    void constructorEmptyEntries() {
+    void givenEntriesIsEmptyWhenCreatingSectionThenThrowIllegalArgumentException() {
         assertThatThrownBy(() -> new Fragment.Section(KEY, Collections.emptyMap()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing section entries.");

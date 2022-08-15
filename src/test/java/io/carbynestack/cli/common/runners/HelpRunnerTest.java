@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HelpRunnerTest {
     @ParameterizedTest
     @CommandSource
-    void executeCLI(CommandResult result) {
+    void givenNoArgumentsWhenExecutingCLIThenVerifyHelpOutput(CommandResult result) {
         verifyHelp(result);
     }
 
     @ParameterizedTest
     @CommandSource(args = "--help")
-    void executeHelp(CommandResult result) {
+    void whenExecutingCLIHelpThenVerifyHelpOutput(CommandResult result) {
         verifyHelp(result);
     }
 

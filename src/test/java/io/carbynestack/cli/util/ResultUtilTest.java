@@ -16,26 +16,26 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ResultUtilTest {
     @Test
-    void succ() {
+    void givenValueWhenCallingSuccessOnResultUtilThenReturnSuccessResult() {
         var value = 12;
         assertThat(ResultUtil.success(value)).hasValue(value);
     }
 
     @Test
-    void fail() {
+    void givenReasonWhenCallingFailureOnResultUtilThenReturnFailureResult() {
         var reason = 21;
         assertThat(ResultUtil.failure(reason)).hasReason(reason);
     }
 
     @Test
-    void retry() {
+    void givenFailingSupplierWhenCallingRetryOnResultUtilThenReturnFetchedResult() {
         var value = 12;
         assertThat(ResultUtil.retry(10, () -> ResultUtil.success(value)))
                 .hasValue(value);
     }
 
     @Test
-    void retryWithDelayedSuccess() {
+    void givenFailingSupplierWithDelayedSuccessWhenCallingRetryOnResultUtilThenReturnFetchedResult() {
         var value = 12;
         var cases = List.<Result<Integer, Integer>>of(
                 ResultUtil.failure(21),
@@ -47,27 +47,27 @@ class ResultUtilTest {
     }
 
     @Test
-    void retryWithFailure() {
+    void givenAlwaysFailingSupplierWhenCallingRetryOnResultUtilThenReturnFailureResult() {
         var reason = 21;
         assertThat(ResultUtil.retry(3, () -> ResultUtil.failure(reason)))
                 .hasReason(reason);
     }
 
     @Test
-    void retryIllegalArgumentException() {
+    void givenIllegalRetryTimesWhenCallingRetryOnResultUtilThenThrowIllegalArgumentException() {
         assertThatThrownBy(() -> ResultUtil.retry(-1, () -> ResultUtil.success(12)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Times cannot be below zero.");
     }
 
     @Test
-    void retryNullPointerException() {
+    void givenSupplierIsNullWhenCallingRetryOnResultUtilThenThrowNullPointerException() {
         assertThatThrownBy(() -> ResultUtil.retry(0, null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void retryWithSuppliedNullThrowsNullPointerException() {
+    void givenNullSupplierWhenCallingRetryOnResultUtilThenThrowNullPointerException() {
         assertThatThrownBy(() -> ResultUtil.retry(0, () -> null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }

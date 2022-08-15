@@ -15,7 +15,7 @@ class VerbosityOptionsTest {
     private final VerbosityOptions verbosityOptions = new VerbosityOptions();
 
     @Test
-    void quiet() {
+    void givenDefaultInitializedVerbosityOptionsInstanceWhenCallingQuitOnVerbosityOptionsThenReturnFalse() {
         assertThat(verbosityOptions.quiet).isFalse();
     }
 }

@@ -12,7 +12,7 @@ import static io.carbynestack.testing.result.ResultAssert.assertThat;
 
 class ExitCodesTest {
     @Test
-    void success() {
+    void whenCallingSuccessOnExitCodesThenReturnZero() {
         assertThat(ExitCodes.success()).hasValue(0);
     }
 }

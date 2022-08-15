@@ -25,14 +25,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KeyStoreUtilTest {
     @Test
-    void constructor() {
+    void whenCreatingKeyStoreUtilThenThrowUnsupportedOperationException() {
         assertThatThrownBy(KeyStoreUtil::new)
                 .isExactlyInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("Instance creation of utility class KeyStoreUtil not permitted!");
     }
 
     @Test
-    void generateCertificateFileNotFound() throws CertificateException {
+    void givenX509CertificateFactoryAndInvalidCertPathWhenCallingGenerateCertificateOnKeyStoreUtilThenReturnFileNotFoundFailureResult() throws CertificateException {
         var temp = Paths.get("missing-cert", ".X509");
         var result = generateCertificate(CertificateFactory.getInstance("X509"),
                 temp);
@@ -40,7 +40,7 @@ class KeyStoreUtilTest {
     }
 
     @Test
-    void generateCertificateParsingFailure() throws CertificateException, IOException {
+    void givenX509CertificateFactoryAndEmptyCertWhenCallingGenerateCertificateOnKeyStoreUtilThenReturnCertificateParsingFailureResult() throws CertificateException, IOException {
         var temp = Files.createTempFile("empty-cert", ".X509");
         var result = generateCertificate(CertificateFactory.getInstance("X509"),
                 temp);
@@ -49,33 +49,33 @@ class KeyStoreUtilTest {
     }
 
     @Test
-    void generateCertificateNullPointer() {
+    void givenFactoryAndCertAreNullWhenCallingGenerateCertificateOnKeyStoreUtilThenReturnOtherFailureResult() {
         assertThat(generateCertificate(null, null)).hasReason(OTHER);
     }
 
     @Test
-    void tempKeyStorePemsSuccess() {
+    void givenValidCertPathsWhenCallingTempKeyStorePemsOnKeyStoreUtilThenSuccessfullyCreateTemporaryStore() {
         assertThat(tempKeyStorePems(Set.of(Path.of("",
                 "src/test/resources").resolve("cert.pem")))).isSuccess();
     }
 
     @Test
-    void tempKeyStorePemsNull() {
+    void givenCertPathsAreNullWhenCallingTempKeyStorePemsOnKeyStoreUtilThenReturnNoCertsFailureResult() {
         assertThat(tempKeyStorePems(null)).hasReason(NO_CERTS);
     }
 
     @Test
-    void tempKeyStorePemsEmpty() {
+    void givenCertPathsAreEmptyWhenCallingTempKeyStorePemsOnKeyStoreUtilThenReturnNoCertsFailureResult() {
         assertThat(tempKeyStorePems(emptyList())).hasReason(NO_CERTS);
     }
 
     @Test
-    void tempKeyStorePemsFileNotFound() {
+    void givenInvalidCertPathsWhenCallingTempKeyStorePemsOnKeyStoreUtilThenReturnFileNotFoundFailureResult() {
         assertThat(tempKeyStorePems(Set.of(Path.of("missing.file")))).hasReason(FILE_NOT_FOUND);
     }
 
     @Test
-    void tempKeyStorePemsCertificateParsing() {
+    void givenEmptyCertsWhenCallingTempKeyStorePemsOnKeyStoreUtilThenReturnCertificateParsingFailureResult() {
         assertThat(tempKeyStorePems(Set.of(Path.of("", "src/test/resources")
                 .resolve("config.json")))).hasReason(CERTIFICATE_PARSING);
     }
