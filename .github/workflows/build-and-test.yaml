@@ -41,7 +41,7 @@ jobs:
         if: contains(matrix.distribution, 'graal')
         uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
+          version: '21.3.0'
           java-version: ${{ matrix.jdk }}
           components: 'native-image'
           cache: 'maven'
