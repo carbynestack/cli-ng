@@ -108,7 +108,8 @@ class VcpTokenTest {
 
     @Test
     void expired() {
-        var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, EXPIRES);
+        var predate = Date.from(EXPIRES.toInstant().minusSeconds(1));
+        var token = new VcpToken(BASE_URL, ACCESS_TOKEN, REFRESH_TOKEN, predate);
         var expires = Date.from(EXPIRES.toInstant().minus(EXPIRES_IN, MINUTES));
         assertThat(token.expired()).isTrue();
         assertThat(token.expired(expires)).isFalse();
