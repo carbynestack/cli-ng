@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TupleTest {
     @Test
-    void testTuple2() {
+    void givenTwoValuesWhenCreatingTuple2ThenInitializeComponents() {
         var tuple = new Tuple2<>(12, 21);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
     }
 
     @Test
-    void testTuple2As() {
+    void givenClassWithTwoParameterConstructorWhenCallingAsOnTuple2ThenCreateClassInstance() {
         record IntTuple2(int e1, int e2) {
         }
         var tuple = new Tuple2<>(12, 21).as(IntTuple2::new);
@@ -29,7 +29,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple2Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple2ThenReturnCombinedTuple3() {
         var tuple = new Tuple2<>(12, 21).combine(34);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -37,7 +37,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple3() {
+    void givenThreeValuesWhenCreatingTuple3ThenInitializeComponents() {
         var tuple = new Tuple3<>(12, 21, 34);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -45,7 +45,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple3As() {
+    void givenClassWithThreeParameterConstructorWhenCallingAsOnTuple3ThenCreateClassInstance() {
         record IntTuple3(int e1, int e2, int e3) {
         }
         var tuple = new Tuple3<>(12, 21, 34).as(IntTuple3::new);
@@ -55,7 +55,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple3Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple3ThenReturnCombinedTuple4() {
         var tuple = new Tuple3<>(12, 21, 34).combine(43);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -64,7 +64,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple4() {
+    void givenFourValuesWhenCreatingTuple4ThenInitializeComponents() {
         var tuple = new Tuple4<>(12, 21, 34, 43);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -73,7 +73,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple4As() {
+    void givenClassWithFourParameterConstructorWhenCallingAsOnTuple4ThenCreateClassInstance() {
         record IntTuple4(int e1, int e2, int e3, int e4) {
         }
         var tuple = new Tuple4<>(12, 21, 34, 43).as(IntTuple4::new);
@@ -84,7 +84,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple4Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple4ThenReturnCombinedTuple5() {
         var tuple = new Tuple4<>(12, 21, 34, 43).combine(56);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -94,7 +94,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple5() {
+    void givenFiveValuesWhenCreatingTuple5ThenInitializeComponents() {
         var tuple = new Tuple5<>(12, 21, 34, 43, 56);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -104,7 +104,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple5As() {
+    void givenClassWithFiveParameterConstructorWhenCallingAsOnTuple5ThenCreateClassInstance() {
         record IntTuple5(int e1, int e2, int e3, int e4, int e5) {
         }
         var tuple = new Tuple5<>(12, 21, 34, 43, 56).as(IntTuple5::new);
@@ -116,7 +116,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple5Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple5ThenReturnCombinedTuple6() {
         var tuple = new Tuple5<>(12, 21, 34, 43, 56).combine(65);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -127,7 +127,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple6() {
+    void givenSixValuesWhenCreatingTuple6ThenInitializeComponents() {
         var tuple = new Tuple6<>(12, 21, 34, 43, 56, 65);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -138,7 +138,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple6As() {
+    void givenClassWithSixParameterConstructorWhenCallingAsOnTuple6ThenCreateClassInstance() {
         record IntTuple6(int e1, int e2, int e3, int e4, int e5, int e6) {
         }
         var tuple = new Tuple6<>(12, 21, 34, 43, 56, 65).as(IntTuple6::new);
@@ -151,7 +151,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple6Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple6ThenReturnCombinedTuple7() {
         var tuple = new Tuple6<>(12, 21, 34, 43, 56, 65).combine(78);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -163,7 +163,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple7() {
+    void givenSevenValuesWhenCreatingTuple7ThenInitializeComponents() {
         var tuple = new Tuple7<>(12, 21, 34, 43, 56, 65, 78);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -175,7 +175,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple7As() {
+    void givenClassWithSevenParameterConstructorWhenCallingAsOnTuple7ThenCreateClassInstance() {
         record IntTuple7(int e1, int e2, int e3, int e4, int e5, int e6, int e7) {
         }
         var tuple = new Tuple7<>(12, 21, 34, 43, 56, 65, 78).as(IntTuple7::new);
@@ -189,7 +189,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple7Combine() {
+    void givenExtraValueWhenCallingCombineOnTuple7ThenReturnCombinedTuple8() {
         var tuple = new Tuple7<>(12, 21, 34, 43, 56, 65, 78).combine(87);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -202,7 +202,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple8() {
+    void givenEightValuesWhenCreatingTuple8ThenInitializeComponents() {
         var tuple = new Tuple8<>(12, 21, 34, 43, 56, 65, 78, 87);
         assertThat(tuple.e1()).isEqualTo(12);
         assertThat(tuple.e2()).isEqualTo(21);
@@ -215,7 +215,7 @@ class TupleTest {
     }
 
     @Test
-    void testTuple8As() {
+    void givenClassWithEightParameterConstructorWhenCallingAsOnTuple8ThenCreateClassInstance() {
         record IntTuple8(int e1, int e2, int e3, int e4, int e5, int e6, int e7, int e8) {
         }
         var tuple = new Tuple8<>(12, 21, 34, 43, 56, 65, 78, 87).as(IntTuple8::new);

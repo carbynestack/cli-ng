@@ -20,14 +20,14 @@ public class ShapeYamlTest {
     private final Shape.Yaml yaml = new Shape.Yaml();
 
     @Test
-    void fromPair() {
+    void givenPairWhenCallingFromOnYamlThenReturnFormattedKeyValuePairResult() {
         var pair = new Fragment.Pair("key", "value");
         assertThat(yaml.from(pair)).hasValue("%s: \"%s\""
                 .formatted(pair.key(), pair.value()));
     }
 
     @Test
-    void fromText() {
+    void givenTextWhenCallingFromOnYamlThenReturnFormattedLinesArrayResult() {
         var lines = new String[]{"first", "second"};
         assertThat(yaml.from(new Fragment.Text(lines)))
                 .hasValue("[%s]".formatted(Arrays.stream(lines)
@@ -36,7 +36,7 @@ public class ShapeYamlTest {
     }
 
     @Test
-    void fromSection() {
+    void givenSectionWhenCallingFromOnYamlThenReturnFormattedObjectStructuresResult() {
         var entries = new TreeMap<String, String>();
         entries.put("first", "12");
         entries.put("second", "21");
@@ -49,17 +49,17 @@ public class ShapeYamlTest {
     }
 
     @Test
-    void fromUnknown() {
+    void givenUnknownWhenCallingFromOnYamlThenReturnFailureResult() {
         assertThat(yaml.from(new Fragment.Unknown())).isFailure();
     }
 
     @Test
-    void fromNullValue() {
+    void givenFragmentIsNullWhenCallingFromOnYamlThenReturnFailureResult() {
         assertThat(yaml.from(null)).isFailure();
     }
 
     @Test
-    void assemble() {
+    void givenFragmentStreamWhenCallingAssembleOnYamlReturnCombinedStringResult() {
         var text = new Fragment.Text("first", "second");
         assertThat(yaml.assemble(Stream.of(text, text)
                 .map(yaml::from)
@@ -73,7 +73,7 @@ public class ShapeYamlTest {
     }
 
     @Test
-    void assembleNested() {
+    void givenNestedFragmentStreamWhenCallingAssembleOnYamlReturnCombinedStringResult() {
         var pair = new Fragment.Pair("key", "value");
         var text = new Fragment.Text("first", "second");
         var section = new Fragment.Section("header", Map.of("key", "value"));
@@ -93,13 +93,13 @@ public class ShapeYamlTest {
     }
 
     @Test
-    void assembleWithNullValue() {
+    void givenStringsAreNullWhenCallingAssembleOnYamlThenThrowNullPointerException() {
         assertThatThrownBy(() -> yaml.assemble(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void assembleEmptyList() {
+    void givenStringsAreEmptyWhenCallingAssembleOnYamlThenReturnEmptyArrayResult() {
         assertThat(yaml.assemble(Collections.emptyList())).hasValue("[]");
     }
 }

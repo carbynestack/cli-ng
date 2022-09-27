@@ -14,13 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class KeyStoreUtilFailuresTest {
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    void reason(KeyStoreUtilFailures failure) {
+    void whenCallingSynopsisOnKeyStoreUtilFailuresThenReturnAssociatedSynopsis(KeyStoreUtilFailures failure) {
         assertThat(failure.synopsis()).isEqualTo("Failed to generate temporary keystore.");
     }
 
     @ParameterizedTest
     @EnumSource(value = KeyStoreUtilFailures.class)
-    void descriptionEmptyOrBlank(KeyStoreUtilFailures failure) {
+    void whenCallingDescriptionOnKeyStoreUtilFailuresThenVerifyDescriptionIsNotBlank(KeyStoreUtilFailures failure) {
         assertThat(failure.description()).isNotBlank();
     }
 }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NoArgTest {
     @Test
-    void constructor() {
+    void givenNoArgsConstructorWhenCreatingNoArgThenReturnExpectedNoArgInstance() {
         assertThat(new NoArg()).isExactlyInstanceOf(NoArg.class);
     }
 }

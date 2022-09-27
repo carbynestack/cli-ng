@@ -24,14 +24,15 @@ public class IdentityResolvableTest {
 
     @ParameterizedTest
     @NullableParamSource("PARAMS")
-    void constructorNullableValues(String keyPath, String synopsis, String description) {
+    void givenKeyPathAndSynopsisAndDescriptionAreNullWhenCreatingIdentityResolvableThenThrowNullPointerException(
+            String keyPath, String synopsis, String description) {
         assertThatThrownBy(() -> new IdentityResolvable(keyPath, synopsis, description))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankKeyPath(String keyPath) {
+    void givenKeyPathIsEmptyWhenCreatingIdentityResolvableThenThrowIllegalArgumentException(String keyPath) {
         assertThatThrownBy(() -> new IdentityResolvable(keyPath, resolvable.synopsis(), resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing keyPath.");
@@ -39,7 +40,7 @@ public class IdentityResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankSynopsis(String synopsis) {
+    void givenSynopsisIsEmptyWhenCreatingIdentityResolvableThenThrowIllegalArgumentException(String synopsis) {
         assertThatThrownBy(() -> new IdentityResolvable(resolvable.keyPath(), synopsis, resolvable.description()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing synopsis.");
@@ -47,20 +48,20 @@ public class IdentityResolvableTest {
 
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void constructorEmptyOrBlankDescription(String description) {
+    void givenDescriptionIsEmptyWhenCreatingIdentityResolvableThenThrowIllegalArgumentException(String description) {
         assertThatThrownBy(() -> new IdentityResolvable(resolvable.keyPath(), resolvable.synopsis(), description))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing description.");
     }
 
     @Test
-    void parse() {
+    void givenResolvableStringWhenCallingParseOnIdentityResolvableThenReturnParsedResultOptional() {
         var value = "identity";
         assertThat(resolvable.parse(value)).hasValue(value);
     }
 
     @Test
-    void parseNull() {
+    void givenStringIsNullWhenCallingParseOnIdentityResolvableThenReturnEmptyOptional() {
         assertThat(resolvable.parse(null)).isEmpty();
     }
 }

@@ -15,22 +15,22 @@ class PicocliCommonTest {
     private final PicocliCommon common = new PicocliCommon();
 
     @Test
-    void verbosityOptions() {
+    void givenDefaultInitializedPicocliCommonInstanceWhenCallingVerbosityOptionsOnPicocliCommonThenReturnValueIsNotNull() {
         assertThat(common.verbosityOptions).isNotNull();
     }
 
     @Test
-    void shapeOptions() {
+    void givenDefaultInitializedPicocliCommonInstanceWhenCallingShapeOptionsOnPicocliCommonThenReturnValueIsNotNull() {
         assertThat(common.shapedOptions).isNotNull();
     }
 
     @Test
-    void spec() {
+    void givenDefaultInitializedPicocliCommonInstanceWhenCallingSpecOnPicocliCommonThenReturnValueIsNull() {
         assertThat(common.spec).isNull();
     }
 
     @Test
-    void out() {
+    void givenDefaultInitializedPicocliCommonInstanceWhenCallingOutOnPicocliCommonThenThrowNullPointerException() {
         assertThatThrownBy(common::out).isExactlyInstanceOf(NullPointerException.class);
     }
 }

@@ -27,21 +27,21 @@ class ShapeFormattedTextTest {
     private final FormattedText formattedText = new FormattedText(false);
 
     @Test
-    void fromPair() {
+    void givenPairWhenCallingFromOnFormattedTextThenReturnFormattedKeyValuePairResult() {
         var pair = new Fragment.Pair("key", "value");
         assertThat(formattedText.from(pair)).hasValue("%s: %s".formatted(
                 toTitleCase(pair.key().charAt(0)) + pair.key().substring(1), pair.value()));
     }
 
     @Test
-    void fromText() {
+    void givenTextWhenCallingFromOnFormattedTextThenReturnFormattedLinesArrayResult() {
         var lines = new String[]{"first", "second"};
         assertThat(formattedText.from(new Fragment.Text(lines)))
                 .hasValue(Arrays.stream(lines).collect(joining(lineSeparator())));
     }
 
     @Test
-    void fromSection() {
+    void givenSectionWhenCallingFromOnFormattedTextThenReturnFormattedStructuresResult() {
         var entries = new TreeMap<String, String>();
         entries.put("first", "12");
         entries.put("second", "21");
@@ -53,17 +53,17 @@ class ShapeFormattedTextTest {
     }
 
     @Test
-    void fromUnknown() {
+    void givenUnknownWhenCallingFromOnFormattedTextThenReturnFailureResult() {
         assertThat(formattedText.from(new Fragment.Unknown())).isFailure();
     }
 
     @Test
-    void fromNullValue() {
+    void givenFragmentIsNullWhenCallingFromOnFormattedTextThenReturnFailureResult() {
         assertThat(formattedText.from(null)).isFailure();
     }
 
     @Test
-    void assemble() {
+    void givenFragmentStreamWhenCallingAssembleOnFormattedTextReturnCombinedStringResult() {
         var text = new Fragment.Text("first", "second");
         assertThat(Stream.of(text, text)
                 .map(formattedText::from)
@@ -78,7 +78,7 @@ class ShapeFormattedTextTest {
     }
 
     @Test
-    void assembleWithSpace() {
+    void givenFragmentStreamAndEnabledSpacedOptionWhenCallingAssembleOnFormattedTextReturnCombinedStringResultWithSpace() {
         var text = new Fragment.Text("first", "second");
         var shape = new FormattedText(true);
         assertThat(shape.assemble(Stream.of(text, text)
@@ -95,13 +95,13 @@ class ShapeFormattedTextTest {
     }
 
     @Test
-    void assembleWithNullValue() {
+    void givenStringsAreNullWhenCallingAssembleOnFormattedTextThenThrowNullPointerException() {
         assertThatThrownBy(() -> formattedText.assemble(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void assembleEmptyList() {
+    void givenStringsAreEmptyWhenCallingAssembleOnFormattedTextThenReturnEmptyStringResult() {
         assertThat(formattedText.assemble(Collections.emptyList())).hasValue("");
     }
 }

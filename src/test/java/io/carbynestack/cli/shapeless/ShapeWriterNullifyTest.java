@@ -14,23 +14,23 @@ class ShapeWriterNullifyTest {
     private final ShapeWriter.Nullify nullifyShapeWriter = new ShapeWriter.Nullify();
 
     @Test
-    void shape() {
+    void givenDefaultInitializedNullifyInstanceWhenCallingShapeOnNullifyThenReturnValueIsNull() {
         assertThat(nullifyShapeWriter.shape()).isNull();
     }
 
     @Test
-    void buffer() {
+    void givenDefaultInitializedNullifyInstanceWhenCallingBufferOnNullifyThenReturnValueIsEmpty() {
         assertThat(nullifyShapeWriter.buffer()).isEmpty();
     }
 
     @Test
-    void transform() {
+    void givenDefaultInitializedNullifyInstanceWhenCallingTransformOnNullifyThenReturnIdentityTransform() {
         var pair = new Fragment.Pair("key", "value");
         assertThat(nullifyShapeWriter.transform().apply(pair)).isEqualTo(pair);
     }
 
     @Test
-    void writer() {
+    void givenDefaultInitializedNullifyInstanceWhenCallingWriterOnNullifyThenReturnValueIsNotNull() {
         assertThat(nullifyShapeWriter.writer()).isNotNull();
     }
 }

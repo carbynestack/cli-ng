@@ -27,12 +27,12 @@ public class ResolverTest {
             .resolve("config.json").toFile());
 
     @Test
-    void environment() {
+    void whenCallingEnvironmentOnResolverThenReturnInstanceOfUnaryOperator() {
         assertThat(Resolver.environment).isInstanceOf(UnaryOperator.class);
     }
 
     @Test
-    void config() {
+    void givenDefaultInitializedResolverWhenCallingSuppliedOnResolverThenConfigIsEmpty() {
         assertThat(Resolver.config().supplied()).isEmpty();
     }
 
@@ -47,35 +47,35 @@ public class ResolverTest {
             "vcpStarbuckBaseUrl", "VCPSTARBUCKBASEURL", "VcpStarbuckBaseUrl", "vcpStarbuckCastorServiceUrl",
             "VCPSTARBUCKCASTORSERVICEURL", "VcpStarbuckCastorServiceUrl", "vcpStarbuckEphemeralServiceUrl",
             "VCPSTARBUCKEPHEMERALSERVICEURL", "VcpStarbuckEphemeralServiceUrl"})
-    void configFromConfig(String key) {
+    void givenConfigurationKeysAndValidConfigWhenCallingSuppliedOnResolverThenConfigContainsAllKeys(String key) {
         assertThat(CONFIG_RESOLVER.supplied()).containsKey(key);
     }
 
     @Test
-    void configMissingFile() {
+    void givenInvalidConfigPathWhenCallingConfigOnResolverThenConfigIsEmpty() {
         assertThat(Resolver.config(new File("missing.config")).supplied()).isEmpty();
     }
 
     @Test
-    void flattenEntriesOfWrongKeyType() {
+    void givenEntriesOfWrongKeyTypeWhenCallingFlattenEntriesOnResolverReturnEmptyFlattenedStream() {
         assertThat(Resolver.flattenEntries(Map.of("test", (Object) Map.of(1, 2))
                 .entrySet().stream())).isEmpty();
     }
 
     @Test
-    void providers() {
+    void givenValidConfigWhenCallingProvidersOnResolverThenReturnConfiguredProviders() {
         assertThat(CONFIG_RESOLVER.providers()).containsExactlyInAnyOrder("apollo", "starbuck");
     }
 
     @Test
-    void resolve() {
+    void givenValidConfigAndPrimeKeyPathWhenCallingResolveOnResolverThenReturnWithBigIntegerResolver() {
         var with = CONFIG_RESOLVER.resolve(new IntResolvable("prime"));
         assertThat(with.resolvable()).isExactlyInstanceOf(IntResolvable.class);
         assertThat(with.resolver()).isEqualTo(CONFIG_RESOLVER);
     }
 
     @Test
-    void resolve2() {
+    void givenValidConfigAndPrimeKeyPathAndRKeyPathWhenCallingResolveOnResolverThenReturnWith2BigIntegerResolver() {
         var with = CONFIG_RESOLVER.resolve(new IntResolvable("prime"),
                 new IntResolvable("r"));
         assertThat(with.r1()).isExactlyInstanceOf(IntResolvable.class);
@@ -84,13 +84,13 @@ public class ResolverTest {
     }
 
     @Test
-    void with() {
+    void givenValidConfigAndPrimeKeyPathResolvableAndNoOverrideValueWhenCallingWithOnWithThenReturnExpectedBigInteger() {
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("prime")).with(empty()))
                 .isEqualTo(new BigInteger("198766463529478683931867765928436695041"));
     }
 
     @Test
-    void with2() {
+    void givenValidConfigAndPrimeKeyPathResolvableAndRKeyPathResolvableAndNoOverrideValuesWhenCallingWithOnWith2ThenReturnExpectedBigIntegerTuple2() {
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("prime"),
                 new IntResolvable("r")).with(empty(), empty()))
                 .isEqualTo(new Tuple2<>(new BigInteger("198766463529478683931867765928436695041"),
@@ -98,7 +98,7 @@ public class ResolverTest {
     }
 
     @Test
-    void resolveSupplied() {
+    void givenRKeyPathResolvableAndEnvironmentContainingRAndOverrideValueWhenCallingWithOnWithThenReturnOverrideValue() {
         Resolver.environment = Map.of("CS_R", "1")::get;
 
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("r"))
@@ -108,7 +108,7 @@ public class ResolverTest {
     }
 
     @Test
-    void resolveEnvironment() {
+    void givenRKeyPathResolvableAndEnvironmentContainingRAndNoOverrideValueWhenCallingWithOnWithThenReturnExpectedEnvironmentValue() {
         Resolver.environment = Map.of("CS_R", "1")::get;
 
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("r"))
@@ -118,7 +118,7 @@ public class ResolverTest {
     }
 
     @Test
-    void resolveConfig() {
+    void givenValidConfigAndRKeyPathResolvableAndNoEnvironmentWhenCallingWithOnWithThenReturnExpectedConfigValue() {
         Resolver.environment = Collections.<String, String>emptyMap()::get;
 
         assertThat(CONFIG_RESOLVER.resolve(new IntResolvable("r"))

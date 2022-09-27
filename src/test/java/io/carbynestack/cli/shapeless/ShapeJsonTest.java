@@ -20,14 +20,14 @@ public class ShapeJsonTest {
     private final Shape.Json json = new Shape.Json();
 
     @Test
-    void fromPair() {
+    void givenPairWhenCallingFromOnJsonThenReturnFormattedKeyValuePairResult() {
         var pair = new Fragment.Pair("key", "value");
         assertThat(json.from(pair)).hasValue("\"%s\": \"%s\""
                 .formatted(pair.key(), pair.value()));
     }
 
     @Test
-    void fromText() {
+    void givenTextWhenCallingFromOnJsonThenReturnFormattedLinesArrayResult() {
         var lines = new String[]{"first", "second"};
         assertThat(json.from(new Fragment.Text(lines)))
                 .hasValue("[%s]".formatted(Arrays.stream(lines)
@@ -36,7 +36,7 @@ public class ShapeJsonTest {
     }
 
     @Test
-    void fromSection() {
+    void givenSectionWhenCallingFromOnJsonThenReturnFormattedObjectStructuresResult() {
         var entries = new TreeMap<String, String>();
         entries.put("first", "12");
         entries.put("second", "21");
@@ -49,17 +49,17 @@ public class ShapeJsonTest {
     }
 
     @Test
-    void fromUnknown() {
+    void givenUnknownWhenCallingFromOnJsonThenReturnFailureResult() {
         assertThat(json.from(new Fragment.Unknown())).isFailure();
     }
 
     @Test
-    void fromNullValue() {
+    void givenFragmentIsNullWhenCallingFromOnJsonThenReturnFailureResult() {
         assertThat(json.from(null)).isFailure();
     }
 
     @Test
-    void assemble() {
+    void givenFragmentStreamWhenCallingAssembleOnJsonReturnCombinedStringResult () {
         var text = new Fragment.Text("first", "second");
         assertThat(json.assemble(Stream.of(text, text)
                 .map(json::from)
@@ -74,7 +74,7 @@ public class ShapeJsonTest {
     }
 
     @Test
-    void assembleNested() {
+    void givenNestedFragmentStreamWhenCallingAssembleOnJsonReturnCombinedStringResult() {
         var pair = new Fragment.Pair("key", "value");
         var text = new Fragment.Text("first", "second");
         var section = new Fragment.Section("header", Map.of("key", "value"));
@@ -96,13 +96,13 @@ public class ShapeJsonTest {
     }
 
     @Test
-    void assembleWithNullValue() {
+    void givenStringsAreNullWhenCallingAssembleOnJsonThenThrowNullPointerException() {
         assertThatThrownBy(() -> json.assemble(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void assembleEmptyList() {
+    void givenStringsAreEmptyWhenCallingAssembleOnJsonThenReturnEmptyObjectStructureResult() {
         assertThat(json.assemble(Collections.emptyList())).hasValue("{}");
     }
 }

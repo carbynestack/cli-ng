@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommandExecutorTest {
     @Test
-    void constructor() {
+    void whenCreatingCommandExecutorThenThrowUnsupportedOperationException() {
         assertThatThrownBy(CommandExecutor::new)
                 .isExactlyInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("Instance creation of utility class CommandExecutor not permitted!");
