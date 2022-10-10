@@ -61,7 +61,7 @@
         <!-- External dependency versions -->
         <picocli.version>4.6.2</picocli.version>
         <jackson.version>2.12.3</jackson.version>
-        <scribejava.version>8.3.1</scribejava.version>
+        <scribejava.version>8.3.2</scribejava.version>
 
         <!-- Test dependency versions -->
         <junit.version>5.8.2</junit.version>
